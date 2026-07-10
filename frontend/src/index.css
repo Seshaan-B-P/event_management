@@ -1,0 +1,528 @@
+:root {
+  /* Premium Event Management Color System */
+  --gold: #d4af37;
+  --gold-light: #f5ecc8;
+  --gold-dark: #b8901c;
+  --dark-brown: #251605;
+  --medium-brown: #4d3319;
+  --warm-bg: #faf7f2;
+  --light-gray: #f2ede4;
+  --card-bg: #ffffff;
+  --text-dark: #221c17;
+  --text-muted: #6e5e53;
+  --white: #ffffff;
+
+  /* Fonts */
+  --font-sans: 'Poppins', sans-serif;
+  --font-cursive: 'Great Vibes', cursive;
+
+  /* Transitions */
+  --transition-fast: all 0.2s ease;
+  --transition-normal: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-slow: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(37, 22, 5, 0.05);
+  --shadow-md: 0 8px 24px rgba(37, 22, 5, 0.08);
+  --shadow-lg: 0 16px 40px rgba(37, 22, 5, 0.12);
+}
+
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--warm-bg);
+  color: var(--text-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Scroll Animation Utility Classes */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: var(--transition-slow);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--warm-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--medium-brown);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-dark);
+}
+
+/* Common Layout Elements */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: 100px 0;
+  position: relative;
+}
+
+/* Headings Design */
+.section-subtitle {
+  font-family: var(--font-cursive);
+  font-size: 2.2rem;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 8px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--dark-brown);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background-color: var(--gold);
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: var(--transition-normal);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.btn-primary {
+  background-color: var(--gold);
+  color: var(--dark-brown);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: var(--dark-brown);
+  color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(37, 22, 5, 0.25);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--gold);
+  border: 2px solid var(--gold);
+}
+
+.btn-secondary:hover {
+  background-color: var(--gold);
+  color: var(--dark-brown);
+  transform: translateY(-3px);
+}
+
+/* Leaf/Curve Styling for Elegant Blocks */
+.arched-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 120px 120px 0 0;
+  border: 4px solid var(--gold-light);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-normal);
+}
+
+.arched-frame:hover {
+  border-color: var(--gold);
+  transform: translateY(-5px);
+}
+
+/* Floating Elements */
+.float-wa {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #25d366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  transition: var(--transition-normal);
+  animation: float 3s ease-in-out infinite;
+}
+
+.float-wa:hover {
+  transform: scale(1.1) rotate(10deg);
+  background-color: #128c7e;
+}
+
+/* Utilities */
+.text-center {
+  text-align: center;
+}
+
+.mb-1 {
+  margin-bottom: 8px;
+}
+
+.mb-2 {
+  margin-bottom: 16px;
+}
+
+.mb-3 {
+  margin-bottom: 24px;
+}
+
+.mb-4 {
+  margin-bottom: 32px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 35px;
+  }
+
+  .section-subtitle {
+    font-size: 1.8rem;
+  }
+
+  .btn {
+    padding: 12px 24px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Premium Admin Dashboard Color Systems & Layout Utilities */
+
+:root {
+  /* Admin Theme Variables */
+  --admin-bg-dark: #0a0a0a;
+  --admin-bg-panel: rgba(20, 20, 20, 0.7);
+  --admin-primary: #d4af37;
+  --admin-primary-hover: #e5c35a;
+  --admin-primary-glow: rgba(212, 175, 55, 0.2);
+  --admin-border: rgba(255, 255, 255, 0.08);
+  --admin-border-hover: rgba(212, 175, 55, 0.4);
+  --admin-text-main: #ffffff;
+  --admin-text-muted: #9ca3af;
+  --admin-danger: #ef4444;
+  --admin-success: #10b981;
+  --admin-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Glassmorphism Utilities */
+.admin-glass-panel {
+  background: var(--admin-bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--admin-glass-shadow);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  color: var(--admin-text-main);
+}
+
+.admin-glass-panel:hover {
+  border-color: var(--admin-border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Form Elements */
+.admin-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--admin-border);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--admin-text-main);
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.admin-input:focus {
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 3px var(--admin-primary-glow);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.admin-input::placeholder {
+  color: #6b7280;
+}
+
+/* Buttons */
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  gap: 8px;
+}
+
+.admin-btn-primary {
+  background-color: var(--admin-primary);
+  color: #0a0a0a;
+  box-shadow: 0 4px 15px var(--admin-primary-glow);
+}
+
+.admin-btn-primary:hover:not(:disabled) {
+  background-color: var(--admin-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+}
+
+.admin-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.admin-btn-secondary {
+  background-color: transparent;
+  color: var(--admin-text-main);
+  border: 1px solid var(--admin-border);
+}
+
+.admin-btn-secondary:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--admin-primary);
+  color: var(--admin-primary);
+}
+
+/* Custom Scrollbar for Admin */
+.admin-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.admin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.admin-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--admin-primary);
+}
+
+/* Animations */
+@keyframes admin-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-animate-fade {
+  opacity: 0;
+  animation: admin-slide-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes admin-mesh-bg {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.admin-mesh-background {
+  background: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 40%);
+  background-size: 200% 200%;
+  animation: admin-mesh-bg 10s ease-in-out infinite;
+  background-color: var(--admin-bg-dark);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.admin-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Background Gradients */
+.admin-bg-gradient {
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+}
