@@ -93,7 +93,7 @@ const AdminLayout = ({ onLogout }) => {
   const handleSendNotification = async (e) => {
     e.preventDefault();
     if (!newNotif.title || !newNotif.message) return toast.error('Title and message are required');
-    
+
     setIsSending(true);
     try {
       const res = await fetch('http://localhost:5000/api/notifications', {
@@ -156,9 +156,18 @@ const AdminLayout = ({ onLogout }) => {
       {/* Sidebar */}
       <aside className="admin-glass-panel" style={styles.sidebar}>
         <div style={styles.logoContainer}>
-          <div style={styles.logoIconBg}>
-            <ShieldCheck size={24} style={styles.logoIcon} />
-          </div>
+          <img
+            src="/logo.png"
+            alt="BPS Events Logo"
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              border: '2px solid var(--admin-primary)',
+              objectFit: 'cover',
+              boxShadow: '0 0 15px rgba(212, 175, 55, 0.3)'
+            }}
+          />
           <h1 style={styles.logoText}>BPS Admin</h1>
         </div>
 
@@ -189,6 +198,23 @@ const AdminLayout = ({ onLogout }) => {
 
       {/* Main Content Area */}
       <main style={styles.main}>
+        {/* Global Transparent Watermark */}
+        <div style={{
+          position: 'absolute',
+          top: 200,
+          bottom: 200,
+          left: 0,
+          width: '100%',
+          height: '60%',
+          opacity: 0.2,
+          pointerEvents: 'none',
+          zIndex: 0,
+          backgroundImage: 'url(/banner.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}></div>
+
         <div style={styles.topbar}>
           <div style={styles.greeting}>
             <h2 style={{ color: 'var(--admin-text-main)', margin: 0, fontSize: '20px', fontWeight: '600' }}>
@@ -201,10 +227,10 @@ const AdminLayout = ({ onLogout }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
             {/* Notification Bell */}
             <div style={{ position: 'relative' }} ref={notificationRef}>
-              <button 
+              <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                style={{ 
-                  background: 'none', border: 'none', color: 'var(--admin-text-main)', 
+                style={{
+                  background: 'none', border: 'none', color: 'var(--admin-text-main)',
                   cursor: 'pointer', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.03)'
                 }}
@@ -212,7 +238,7 @@ const AdminLayout = ({ onLogout }) => {
                 <Bell size={20} />
                 {unreadCount > 0 && (
                   <span style={{
-                    position: 'absolute', top: '6px', right: '8px', width: '8px', height: '8px', 
+                    position: 'absolute', top: '6px', right: '8px', width: '8px', height: '8px',
                     backgroundColor: 'var(--admin-danger)', borderRadius: '50%', border: '2px solid #0a0a0a'
                   }}></span>
                 )}
@@ -221,7 +247,7 @@ const AdminLayout = ({ onLogout }) => {
               {/* Notifications Dropdown */}
               {showNotifications && (
                 <div style={{
-                  position: 'absolute', top: '50px', right: '0', width: '320px', 
+                  position: 'absolute', top: '50px', right: '0', width: '320px',
                   backgroundColor: '#1E1E1E', border: '1px solid var(--admin-border)',
                   borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 100,
                   overflow: 'hidden'
@@ -248,17 +274,17 @@ const AdminLayout = ({ onLogout }) => {
                       </div>
                     ) : (
                       notifications.map(notif => (
-                        <div 
-                          key={notif._id} 
+                        <div
+                          key={notif._id}
                           onClick={() => !notif.isRead && handleMarkAsRead(notif._id)}
-                          style={{ 
-                            padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.02)', 
+                          style={{
+                            padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.02)',
                             backgroundColor: notif.isRead ? 'transparent' : 'rgba(212, 175, 55, 0.05)',
                             cursor: notif.isRead ? 'default' : 'pointer', transition: 'background-color 0.2s',
                             display: 'flex', gap: '12px', alignItems: 'flex-start'
                           }}
                         >
-                          <div style={{ 
+                          <div style={{
                             color: notif.type === 'warning' ? 'var(--admin-primary)' : notif.type === 'error' ? 'var(--admin-danger)' : 'var(--admin-text-muted)',
                             marginTop: '2px'
                           }}>
@@ -281,17 +307,17 @@ const AdminLayout = ({ onLogout }) => {
             </div>
 
             <div style={styles.adminProfile}>
-            <div style={styles.avatar}>{username.charAt(0).toUpperCase()}</div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '14px', fontWeight: '600' }}>{username}</span>
-              <span style={{ fontSize: '12px', color: 'var(--admin-primary)', textTransform: 'capitalize' }}>
-                {userRole.replace('_', ' ')}
-              </span>
+              <div style={styles.avatar}>{username.charAt(0).toUpperCase()}</div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600' }}>{username}</span>
+                <span style={{ fontSize: '12px', color: 'var(--admin-primary)', textTransform: 'capitalize' }}>
+                  {userRole.replace('_', ' ')}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-        </div>
-        
+
         <div className="admin-scroll admin-animate-fade" style={styles.content}>
           <Outlet />
         </div>
@@ -317,13 +343,13 @@ const AdminLayout = ({ onLogout }) => {
                 </button>
               </div>
               <form onSubmit={handleSendNotification} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                
+
                 <div>
                   <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', color: 'var(--admin-text-muted)' }}>Title</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={newNotif.title}
-                    onChange={(e) => setNewNotif({...newNotif, title: e.target.value})}
+                    onChange={(e) => setNewNotif({ ...newNotif, title: e.target.value })}
                     style={{ width: '100%', padding: '10px 14px', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'white', boxSizing: 'border-box' }}
                     placeholder="E.g., System Maintenance"
                     required
@@ -332,9 +358,9 @@ const AdminLayout = ({ onLogout }) => {
 
                 <div>
                   <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', color: 'var(--admin-text-muted)' }}>Message</label>
-                  <textarea 
+                  <textarea
                     value={newNotif.message}
-                    onChange={(e) => setNewNotif({...newNotif, message: e.target.value})}
+                    onChange={(e) => setNewNotif({ ...newNotif, message: e.target.value })}
                     style={{ width: '100%', padding: '10px 14px', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'white', minHeight: '80px', resize: 'vertical', boxSizing: 'border-box' }}
                     placeholder="Enter notification details..."
                     required
@@ -344,9 +370,9 @@ const AdminLayout = ({ onLogout }) => {
                 <div style={{ display: 'flex', gap: '16px' }}>
                   <div style={{ flex: 1 }}>
                     <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', color: 'var(--admin-text-muted)' }}>Type</label>
-                    <select 
+                    <select
                       value={newNotif.type}
-                      onChange={(e) => setNewNotif({...newNotif, type: e.target.value})}
+                      onChange={(e) => setNewNotif({ ...newNotif, type: e.target.value })}
                       style={{ width: '100%', padding: '10px 14px', backgroundColor: '#1A1A1A', border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'white' }}
                     >
                       <option value="info">Info</option>
@@ -355,12 +381,12 @@ const AdminLayout = ({ onLogout }) => {
                       <option value="error">Error</option>
                     </select>
                   </div>
-                  
+
                   <div style={{ flex: 1 }}>
                     <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', color: 'var(--admin-text-muted)' }}>Target Role</label>
-                    <select 
+                    <select
                       value={newNotif.targetRole}
-                      onChange={(e) => setNewNotif({...newNotif, targetRole: e.target.value})}
+                      onChange={(e) => setNewNotif({ ...newNotif, targetRole: e.target.value })}
                       style={{ width: '100%', padding: '10px 14px', backgroundColor: '#1A1A1A', border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'white' }}
                     >
                       <option value="all">All Users</option>
@@ -372,15 +398,15 @@ const AdminLayout = ({ onLogout }) => {
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '8px' }}>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => setShowSendModal(false)}
                     style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--admin-border)', background: 'transparent', color: 'white', cursor: 'pointer' }}
                   >
                     Cancel
                   </button>
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={isSending}
                     style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--admin-primary)', color: '#000', fontWeight: '600', cursor: isSending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
                   >
@@ -417,8 +443,10 @@ const styles = {
   logoContainer: {
     padding: '32px 24px',
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
-    gap: '16px',
+    justifyContent: 'center',
+    gap: '12px',
     borderBottom: '1px solid var(--admin-border)'
   },
   logoIconBg: {
@@ -491,7 +519,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    position: 'relative'
   },
   topbar: {
     height: '88px',

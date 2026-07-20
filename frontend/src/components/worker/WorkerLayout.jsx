@@ -102,9 +102,18 @@ const WorkerLayout = ({ onLogout }) => {
       {/* Sidebar */}
       <aside className="admin-glass-panel" style={styles.sidebar}>
         <div style={styles.logoContainer}>
-          <div style={styles.logoIconBg}>
-            <Wrench size={24} style={styles.logoIcon} />
-          </div>
+          <img
+            src="/logo.png"
+            alt="BPS Events Logo"
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              border: '2px solid var(--admin-primary)',
+              objectFit: 'cover',
+              boxShadow: '0 0 15px rgba(212, 175, 55, 0.3)'
+            }}
+          />
           <h1 style={styles.logoText}>Staff Portal</h1>
         </div>
 
@@ -134,6 +143,23 @@ const WorkerLayout = ({ onLogout }) => {
 
       {/* Main Content Area */}
       <main style={styles.main}>
+        {/* Global Transparent Watermark */}
+        <div style={{
+          position: 'absolute',
+          top: 200,
+          bottom: 200,
+          left: 0,
+          width: '100%',
+          height: '60%',
+          opacity: 0.2,
+          pointerEvents: 'none',
+          zIndex: 0,
+          backgroundImage: 'url(/banner.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}></div>
+
         <div style={styles.topbar}>
           <div style={styles.greeting}>
             <h2 style={{ color: 'var(--admin-text-main)', margin: 0, fontSize: '20px', fontWeight: '600' }}>
@@ -261,8 +287,10 @@ const styles = {
   logoContainer: {
     padding: '32px 24px',
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
-    gap: '16px',
+    justifyContent: 'center',
+    gap: '12px',
     borderBottom: '1px solid var(--admin-border)'
   },
   logoIconBg: {
@@ -335,7 +363,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    position: 'relative'
   },
   topbar: {
     height: '88px',

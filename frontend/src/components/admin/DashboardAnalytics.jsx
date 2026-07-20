@@ -270,7 +270,9 @@ const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '30px'
+    gap: '30px',
+    position: 'relative',
+    minHeight: '100%'
   },
   header: {
     display: 'flex',

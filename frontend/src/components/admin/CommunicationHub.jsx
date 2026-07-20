@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, User, Truck, MessageCircle, Phone, Mail, Clock } from 'lucide-react';
+import { Send, User, Truck, MessageCircle, Phone, Mail, Clock, Check, CheckCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const CommunicationHub = () => {
@@ -197,6 +197,11 @@ const CommunicationHub = () => {
                         <div style={{ fontSize: '10px', textAlign: 'right', marginTop: '6px', opacity: 0.7, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }}>
                           <Clock size={10} />
                           {formatTime(msg.createdAt)}
+                          {isMe && (
+                            msg.isRead 
+                              ? <CheckCheck size={14} color="#3b82f6" /> 
+                              : <Check size={14} />
+                          )}
                         </div>
                       </div>
                     )

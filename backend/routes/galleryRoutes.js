@@ -2,8 +2,37 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const multer = require('multer');
 const Gallery = require('../models/Gallery');
 
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, '../uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ 
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    if (extname && mimetype) {
+      return cb(null, true);
+    } else {
+      cb('Error: Images Only (jpg, png)!');
+    }
+  }
+});
 const DATA_DIR = path.join(__dirname, '../data');
 const GALLERY_FILE = path.join(DATA_DIR, 'gallery.json');
 
@@ -64,8 +93,13 @@ router.get('/', async (req, res) => {
 // @route   POST api/gallery
 // @desc    Add a gallery item
 // @access  Public
-router.post('/', async (req, res) => {
-  const { title, location, category, image } = req.body;
+router.post('/', upload.single('imageFile'), async (req, res) => {
+  const { title, location, category } = req.body;
+  let image = req.body.image;
+
+  if (req.file) {
+    image = `http://localhost:5000/uploads/${req.file.filename}`;
+  }
 
   if (!title || !location || !category || !image) {
     return res.status(400).json({ success: false, error: 'Please provide all fields' });

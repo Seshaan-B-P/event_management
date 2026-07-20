@@ -12,7 +12,7 @@ const GalleryManager = () => {
     title: '',
     location: '',
     category: 'wedding',
-    image: ''
+    imageFile: null
   });
   const [adding, setAdding] = useState(false);
 
@@ -43,10 +43,17 @@ const GalleryManager = () => {
     e.preventDefault();
     setAdding(true);
     try {
+      const formData = new FormData();
+      formData.append('title', newImage.title);
+      formData.append('location', newImage.location);
+      formData.append('category', newImage.category);
+      if (newImage.imageFile) {
+        formData.append('imageFile', newImage.imageFile);
+      }
+
       const res = await fetch(GALLERY_API, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newImage)
+        body: formData
       });
       const data = await res.json();
       if (data.success) {
@@ -55,7 +62,7 @@ const GalleryManager = () => {
         });
         setGallery([data.data, ...gallery]);
         setShowAddForm(false);
-        setNewImage({ title: '', location: '', category: 'wedding', image: '' });
+        setNewImage({ title: '', location: '', category: 'wedding', imageFile: null });
       } else {
         toast.error(data.error || 'Failed to add image');
       }
@@ -137,14 +144,13 @@ const GalleryManager = () => {
               </select>
             </div>
             <div>
-              <label style={styles.label}>Image URL</label>
+              <label style={styles.label}>Image File</label>
               <input 
                 className="admin-input" 
                 required 
-                type="url"
-                value={newImage.image}
-                onChange={e => setNewImage({...newImage, image: e.target.value})}
-                placeholder="https://example.com/image.jpg" 
+                type="file"
+                accept=".jpg,.jpeg,.png"
+                onChange={e => setNewImage({...newImage, imageFile: e.target.files[0]})}
               />
             </div>
           </div>

@@ -4,6 +4,7 @@ import * as Icons from 'lucide-react';
 const Services = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedService, setSelectedService] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:5000/api/services')
@@ -25,12 +26,6 @@ const Services = () => {
     return <Icon size={size} style={{ color: isDark ? 'var(--dark-brown)' : 'var(--gold)' }} />;
   };
 
-  const defaultImages = [
-    "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80"
-  ];
 
   return (
     <section id="services" className="section" style={{ backgroundColor: 'var(--light-gray)' }}>
@@ -106,27 +101,157 @@ const Services = () => {
                   <h3 style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--dark-brown)', marginBottom: '15px' }}>
                     {service.title}
                   </h3>
-                  <p style={{ color: 'var(--text-muted)', marginBottom: '25px', flexGrow: 1 }}>
-                    {service.description}
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '15px', flexGrow: 1 }}>
+                    {service.description && service.description.length > 120 
+                        ? `${service.description.substring(0, 120)}...` 
+                        : service.description}
                   </p>
 
-                  {/* Features List */}
-                  {service.features && service.features.length > 0 && (
-                    <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                      {service.features.map((item, key) => (
-                        <li key={key} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem' }}>
-                          <span style={{ color: 'var(--gold)', fontWeight: 'bold' }}>✓</span>
-                          <span style={{ color: 'var(--text-dark)' }}>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  <button 
+                    onClick={() => setSelectedService(service)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--gold)',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      padding: '0',
+                      marginBottom: '10px',
+                      textAlign: 'left',
+                      alignSelf: 'flex-start',
+                      fontSize: '0.95rem',
+                      transition: 'color 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.target.style.color = 'var(--dark-brown)'}
+                    onMouseLeave={(e) => e.target.style.color = 'var(--gold)'}
+                  >
+                    Read More
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* Modal Overlay */}
+      {selectedService && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px'
+          }}
+          onClick={() => setSelectedService(null)}
+        >
+          <div 
+            style={{
+              backgroundColor: 'var(--white)',
+              borderRadius: '16px',
+              width: '100%',
+              maxWidth: '600px',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              position: 'relative',
+              boxShadow: 'var(--shadow-lg)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button 
+              onClick={() => setSelectedService(null)}
+              style={{
+                position: 'absolute',
+                top: '15px',
+                right: '15px',
+                background: 'rgba(255,255,255,0.8)',
+                border: 'none',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--dark-brown)',
+                boxShadow: 'var(--shadow-sm)',
+                zIndex: 10
+              }}
+            >
+              <Icons.X size={20} />
+            </button>
+
+            {/* Modal Content */}
+            <div style={{ height: '280px', position: 'relative' }}>
+              <img 
+                src={selectedService.imageUrl || defaultImages[services.findIndex(s => s._id === selectedService._id) % defaultImages.length]} 
+                alt={selectedService.title} 
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover',
+                  borderTopLeftRadius: '16px',
+                  borderTopRightRadius: '16px'
+                }}
+              />
+              <div style={{
+                position: 'absolute',
+                bottom: '-30px',
+                left: '30px',
+                width: '64px',
+                height: '64px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--dark-brown)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '4px solid var(--white)',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+              }}>
+                {renderIcon(selectedService.iconName, 32, false)}
+              </div>
+            </div>
+
+            <div style={{ padding: '40px 30px 30px 30px' }}>
+              <h3 style={{ fontSize: '1.8rem', fontWeight: '700', color: 'var(--dark-brown)', marginBottom: '15px' }}>
+                {selectedService.title}
+              </h3>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '25px', lineHeight: '1.6' }}>
+                {selectedService.description}
+              </p>
+
+              {selectedService.features && selectedService.features.length > 0 && (
+                <div>
+                  <h4 style={{ fontSize: '1.1rem', color: 'var(--dark-brown)', marginBottom: '15px' }}>Key Features</h4>
+                  <ul style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+                    gap: '12px 20px',
+                    margin: 0,
+                    padding: 0,
+                    listStyle: 'none'
+                  }}>
+                    {selectedService.features.map((item, key) => (
+                      <li key={key} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem' }}>
+                        <span style={{ color: 'var(--gold)', fontWeight: 'bold', marginTop: '2px' }}></span>
+                        <span style={{ color: 'var(--text-dark)' }}>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
