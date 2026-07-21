@@ -172,10 +172,10 @@ const WorkerLayout = ({ onLogout }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
             {/* Notification Bell */}
             <div style={{ position: 'relative' }} ref={notificationRef}>
-              <button 
+              <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                style={{ 
-                  background: 'none', border: 'none', color: 'var(--admin-text-main)', 
+                style={{
+                  background: 'none', border: 'none', color: 'var(--admin-text-main)',
                   cursor: 'pointer', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.03)'
                 }}
@@ -183,7 +183,7 @@ const WorkerLayout = ({ onLogout }) => {
                 <Bell size={20} />
                 {unreadCount > 0 && (
                   <span style={{
-                    position: 'absolute', top: '6px', right: '8px', width: '8px', height: '8px', 
+                    position: 'absolute', top: '6px', right: '8px', width: '8px', height: '8px',
                     backgroundColor: 'var(--admin-danger)', borderRadius: '50%', border: '2px solid #0a0a0a'
                   }}></span>
                 )}
@@ -192,7 +192,7 @@ const WorkerLayout = ({ onLogout }) => {
               {/* Notifications Dropdown */}
               {showNotifications && (
                 <div style={{
-                  position: 'absolute', top: '50px', right: '0', width: '320px', 
+                  position: 'absolute', top: '50px', right: '0', width: '320px',
                   backgroundColor: '#1E1E1E', border: '1px solid var(--admin-border)',
                   borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 100,
                   overflow: 'hidden'
@@ -214,17 +214,17 @@ const WorkerLayout = ({ onLogout }) => {
                       </div>
                     ) : (
                       notifications.map(notif => (
-                        <div 
-                          key={notif._id} 
+                        <div
+                          key={notif._id}
                           onClick={() => !notif.isRead && handleMarkAsRead(notif._id)}
-                          style={{ 
-                            padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.02)', 
+                          style={{
+                            padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.02)',
                             backgroundColor: notif.isRead ? 'transparent' : 'rgba(212, 175, 55, 0.05)',
                             cursor: notif.isRead ? 'default' : 'pointer', transition: 'background-color 0.2s',
                             display: 'flex', gap: '12px', alignItems: 'flex-start'
                           }}
                         >
-                          <div style={{ 
+                          <div style={{
                             color: notif.type === 'warning' ? 'var(--admin-primary)' : notif.type === 'error' ? 'var(--admin-danger)' : 'var(--admin-text-muted)',
                             marginTop: '2px'
                           }}>
@@ -247,17 +247,17 @@ const WorkerLayout = ({ onLogout }) => {
             </div>
 
             <div style={styles.adminProfile}>
-            <div style={styles.avatar}>{username.charAt(0).toUpperCase()}</div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '14px', fontWeight: '600' }}>{username}</span>
-              <span style={{ fontSize: '12px', color: 'var(--admin-primary)', textTransform: 'capitalize' }}>
-                {userRole.replace('_', ' ')}
-              </span>
+              <div style={styles.avatar}>{username.charAt(0).toUpperCase()}</div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600' }}>{username}</span>
+                <span style={{ fontSize: '12px', color: 'var(--admin-primary)', textTransform: 'capitalize' }}>
+                  {userRole.replace('_', ' ')}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-        </div>
-        
+
         <div className="admin-scroll admin-animate-fade" style={styles.content}>
           <Outlet />
         </div>

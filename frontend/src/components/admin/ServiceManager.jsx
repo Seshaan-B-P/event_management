@@ -186,14 +186,14 @@ const ServiceManager = () => {
               {formData.imageUrl && (
                 <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
                   <img src={formData.imageUrl} alt="Preview" style={{ width: '100px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
-                  <button type="button" onClick={() => setFormData({...formData, imageUrl: ''})} style={{ marginLeft: '10px', fontSize: '12px', color: 'var(--admin-danger)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Remove</button>
+                  <button type="button" onClick={() => setFormData({ ...formData, imageUrl: '' })} style={{ marginLeft: '10px', fontSize: '12px', color: 'var(--admin-danger)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Remove</button>
                 </div>
               )}
             </div>
 
             <div style={styles.checkboxGroup}>
               <input type="checkbox" name="isActive" id="isActive" checked={formData.isActive} onChange={handleInputChange} style={{ accentColor: 'var(--admin-primary)', width: '16px', height: '16px' }} />
-              <label htmlFor="isActive" style={{...styles.label, marginBottom: 0}}>Active (Show on website)</label>
+              <label htmlFor="isActive" style={{ ...styles.label, marginBottom: 0 }}>Active (Show on website)</label>
             </div>
 
             <div style={styles.buttonGroup}>

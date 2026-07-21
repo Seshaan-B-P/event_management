@@ -56,7 +56,7 @@ const WorkerChat = () => {
     };
 
     setNewMessage(''); // optimistic clear
-    
+
     try {
       const res = await fetch('http://localhost:5000/api/messages', {
         method: 'POST',
@@ -86,7 +86,7 @@ const WorkerChat = () => {
           <p style={styles.subtitle}>Communicate with the admin team and managers.</p>
         </div>
       </div>
-      
+
       <div className="admin-glass-panel" style={styles.chatContainer}>
         {/* Chat Header inside card */}
         <div style={styles.chatHeader}>
@@ -146,7 +146,7 @@ const WorkerChat = () => {
               placeholder="Type your message to the team..."
               style={styles.input}
             />
-            <button 
+            <button
               type="submit"
               disabled={!newMessage.trim()}
               style={{

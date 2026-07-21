@@ -75,8 +75,8 @@ const WorkerAuth = ({ onLogin }) => {
         <div style={styles.overlay}></div>
         <div style={styles.leftContent} className="admin-animate-fade">
           <div style={styles.brandIcon}>
-            <img 
-              src="/logo.png" 
+            <img
+              src="/logo.png"
               alt="BPS Events Logo"
               style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }}
             />

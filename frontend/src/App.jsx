@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 import Navbar from './components/Navbar';
@@ -83,13 +83,27 @@ function LandingPage() {
 }
 
 function App() {
+  const appMode = import.meta.env.VITE_APP_MODE || 'all';
+
   return (
     <>
       <Toaster position="top-right" />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/admin/*" element={<AdminDashboard />} />
-        <Route path="/worker/*" element={<WorkerDashboard />} />
+        {(appMode === 'all' || appMode === 'website') && (
+          <Route path="/" element={<LandingPage />} />
+        )}
+        {(appMode === 'all' || appMode === 'admin') && (
+          <>
+            <Route path="/admin/*" element={<AdminDashboard />} />
+            {appMode === 'admin' && <Route path="/" element={<Navigate to="/admin" replace />} />}
+          </>
+        )}
+        {(appMode === 'all' || appMode === 'worker') && (
+          <>
+            <Route path="/worker/*" element={<WorkerDashboard />} />
+            {appMode === 'worker' && <Route path="/" element={<Navigate to="/worker" replace />} />}
+          </>
+        )}
       </Routes>
     </>
   );

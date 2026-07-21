@@ -7,7 +7,7 @@ const WorkerReports = () => {
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     reportType: 'Daily Shift',
     content: ''
@@ -42,7 +42,7 @@ const WorkerReports = () => {
       toast.error('Report content cannot be empty');
       return;
     }
-    
+
     setIsSubmitting(true);
     try {
       const res = await fetch('http://localhost:5000/api/reports', {
@@ -88,12 +88,12 @@ const WorkerReports = () => {
         <div className="admin-glass-panel" style={styles.formCard}>
           <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>Submit a Report</h3>
           <form onSubmit={handleSubmit} style={styles.form}>
-            
+
             <div style={styles.formGroup}>
               <label style={styles.label}>Report Type</label>
-              <select 
-                value={formData.reportType} 
-                onChange={e => setFormData({...formData, reportType: e.target.value})}
+              <select
+                value={formData.reportType}
+                onChange={e => setFormData({ ...formData, reportType: e.target.value })}
                 style={styles.input}
               >
                 <option value="Daily Shift">Daily Shift Summary</option>
@@ -104,10 +104,10 @@ const WorkerReports = () => {
 
             <div style={styles.formGroup}>
               <label style={styles.label}>Report Content</label>
-              <textarea 
-                value={formData.content} 
-                onChange={e => setFormData({...formData, content: e.target.value})}
-                style={{...styles.input, minHeight: '120px', resize: 'vertical'}}
+              <textarea
+                value={formData.content}
+                onChange={e => setFormData({ ...formData, content: e.target.value })}
+                style={{ ...styles.input, minHeight: '120px', resize: 'vertical' }}
                 placeholder="Describe what happened today, or provide details about the incident..."
                 required
               />
@@ -139,20 +139,20 @@ const WorkerReports = () => {
               <div key={report._id} className="admin-glass-panel" style={styles.card}>
                 <div style={styles.cardHeader}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ 
+                    <span style={{
                       padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: '600',
                       backgroundColor: report.reportType === 'Incident' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(212, 175, 55, 0.1)',
                       color: report.reportType === 'Incident' ? 'var(--admin-danger)' : 'var(--admin-primary)'
                     }}>
                       {report.reportType}
                     </span>
-                    {report.status === 'Read' && <span style={{ fontSize: '11px', color: 'var(--admin-success)', display: 'flex', alignItems: 'center', gap: '4px' }}><Check size={12}/> Seen by Admin</span>}
+                    {report.status === 'Read' && <span style={{ fontSize: '11px', color: 'var(--admin-success)', display: 'flex', alignItems: 'center', gap: '4px' }}><Check size={12} /> Seen by Admin</span>}
                   </div>
                   <div style={{ fontSize: '12px', color: 'var(--admin-text-muted)' }}>
                     {new Date(report.createdAt).toLocaleString()}
                   </div>
                 </div>
-                
+
                 <div style={{ marginTop: '16px', fontSize: '14px', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>
                   {report.content}
                 </div>

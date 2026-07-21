@@ -9,7 +9,7 @@ const WorkerInventory = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   const [formData, setFormData] = useState({
     itemId: '',
     quantityRequested: 1,
@@ -61,7 +61,7 @@ const WorkerInventory = () => {
 
     const selectedItem = inventory.find(i => i._id === formData.itemId);
     if (!selectedItem) return;
-    
+
     setIsSubmitting(true);
     try {
       const res = await fetch('http://localhost:5000/api/inventory-requests', {
@@ -99,7 +99,7 @@ const WorkerInventory = () => {
     }
   };
 
-  const filteredInventory = inventory.filter(item => 
+  const filteredInventory = inventory.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -122,34 +122,34 @@ const WorkerInventory = () => {
         <div className="admin-glass-panel" style={styles.formCard}>
           <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>Request Equipment</h3>
           <form onSubmit={handleSubmit} style={styles.form}>
-            
+
             <div style={styles.formGroup}>
               <label style={styles.label}>Select Item</label>
               <div style={{ position: 'relative', marginBottom: '8px' }}>
-                 <Search size={14} style={{ position: 'absolute', left: '12px', top: '12px', color: 'var(--admin-text-muted)' }} />
-                 <input 
-                   type="text" 
-                   placeholder="Search equipment..." 
-                   value={searchQuery}
-                   onChange={e => setSearchQuery(e.target.value)}
-                   style={{...styles.input, paddingLeft: '32px', marginBottom: '8px', width: '100%', boxSizing: 'border-box'}}
-                 />
+                <Search size={14} style={{ position: 'absolute', left: '12px', top: '12px', color: 'var(--admin-text-muted)' }} />
+                <input
+                  type="text"
+                  placeholder="Search equipment..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  style={{ ...styles.input, paddingLeft: '32px', marginBottom: '8px', width: '100%', boxSizing: 'border-box' }}
+                />
               </div>
-              
+
               <div className="admin-scroll" style={{ maxHeight: '150px', overflowY: 'auto', border: '1px solid var(--admin-border)', borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.2)' }}>
                 {filteredInventory.map(item => (
-                  <div 
-                    key={item._id} 
-                    onClick={() => setFormData({...formData, itemId: item._id})}
-                    style={{ 
-                      padding: '10px 12px', 
+                  <div
+                    key={item._id}
+                    onClick={() => setFormData({ ...formData, itemId: item._id })}
+                    style={{
+                      padding: '10px 12px',
                       cursor: 'pointer',
                       backgroundColor: formData.itemId === item._id ? 'rgba(212, 175, 55, 0.2)' : 'transparent',
                       borderBottom: '1px solid rgba(255,255,255,0.05)',
                       display: 'flex', justifyContent: 'space-between'
                     }}
                   >
-                    <span>{item.name} <small style={{color: 'var(--admin-text-muted)'}}>({item.category})</small></span>
+                    <span>{item.name} <small style={{ color: 'var(--admin-text-muted)' }}>({item.category})</small></span>
                     <span style={{ fontSize: '12px', color: item.quantity > 0 ? 'var(--admin-success)' : 'var(--admin-danger)' }}>
                       {item.quantity} available
                     </span>
@@ -161,11 +161,11 @@ const WorkerInventory = () => {
             <div style={styles.row}>
               <div style={styles.formGroup}>
                 <label style={styles.label}>Quantity Needed</label>
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   min="1"
-                  value={formData.quantityRequested} 
-                  onChange={e => setFormData({...formData, quantityRequested: parseInt(e.target.value) || 1})}
+                  value={formData.quantityRequested}
+                  onChange={e => setFormData({ ...formData, quantityRequested: parseInt(e.target.value) || 1 })}
                   style={styles.input}
                   required
                 />
@@ -174,16 +174,16 @@ const WorkerInventory = () => {
 
             <div style={styles.formGroup}>
               <label style={styles.label}>Reason / Event Details</label>
-              <textarea 
-                value={formData.reason} 
-                onChange={e => setFormData({...formData, reason: e.target.value})}
-                style={{...styles.input, minHeight: '60px', resize: 'vertical'}}
+              <textarea
+                value={formData.reason}
+                onChange={e => setFormData({ ...formData, reason: e.target.value })}
+                style={{ ...styles.input, minHeight: '60px', resize: 'vertical' }}
                 placeholder="Why do you need this equipment?"
               />
             </div>
 
             <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-              <button type="submit" disabled={isSubmitting || !formData.itemId} style={{...styles.submitButton, opacity: formData.itemId ? 1 : 0.5}}>
+              <button type="submit" disabled={isSubmitting || !formData.itemId} style={{ ...styles.submitButton, opacity: formData.itemId ? 1 : 0.5 }}>
                 {isSubmitting ? 'Submitting...' : 'Submit Request'}
               </button>
               <button type="button" onClick={() => setShowForm(false)} style={styles.cancelButton}>
@@ -215,7 +215,7 @@ const WorkerInventory = () => {
                     {new Date(req.createdAt).toLocaleDateString()}
                   </div>
                 </div>
-                
+
                 <div style={{ margin: '12px 0' }}>
                   <div style={{ fontSize: '15px', fontWeight: '600', marginBottom: '4px' }}>
                     {req.itemName} (x{req.quantityRequested})
@@ -224,7 +224,7 @@ const WorkerInventory = () => {
                     {req.reason || 'No reason provided'}
                   </p>
                 </div>
-                
+
                 {req.adminReply && (
                   <div style={{ marginTop: '12px', padding: '12px', backgroundColor: 'rgba(212, 175, 55, 0.05)', borderRadius: '8px', border: '1px solid rgba(212, 175, 55, 0.2)' }}>
                     <div style={{ fontSize: '12px', color: 'var(--admin-primary)', marginBottom: '4px', fontWeight: '600' }}>Admin Reply:</div>

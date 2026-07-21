@@ -103,7 +103,7 @@ const PackageManager = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const url = editingId 
+      const url = editingId
         ? `http://localhost:5000/api/packages/${editingId}`
         : `http://localhost:5000/api/packages`;
       const method = editingId ? 'PUT' : 'POST';
@@ -114,7 +114,7 @@ const PackageManager = () => {
         body: JSON.stringify(formData)
       });
       const data = await res.json();
-      
+
       if (data.success) {
         toast.success(editingId ? 'Package updated' : 'Package created');
         fetchData(); // reload
@@ -184,7 +184,7 @@ const PackageManager = () => {
                 </div>
                 <div style={{ fontWeight: '700', fontSize: '18px' }}>Rs. {pkg.price}</div>
               </div>
-              
+
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '20px', flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#ccc' }}>
                   <Briefcase size={14} color="var(--admin-primary)" /> {pkg.services.length} Services
@@ -201,13 +201,13 @@ const PackageManager = () => {
               </div>
 
               <div style={{ display: 'flex', gap: '12px', borderTop: '1px solid var(--admin-border)', paddingTop: '16px' }}>
-                <button 
+                <button
                   onClick={() => openModal(pkg)}
                   style={{ flex: 1, padding: '10px', backgroundColor: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '8px', color: 'var(--admin-text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
                   <Edit2 size={14} /> Edit
                 </button>
-                <button 
+                <button
                   onClick={() => handleDelete(pkg._id)}
                   style={{ flex: 1, padding: '10px', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: 'none', borderRadius: '8px', color: 'var(--admin-danger)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
@@ -237,9 +237,9 @@ const PackageManager = () => {
                 <X size={24} />
               </button>
             </div>
-            
+
             <form onSubmit={handleSubmit} style={{ padding: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              
+
               {/* Basic Info */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div>
@@ -254,18 +254,18 @@ const PackageManager = () => {
 
               <div>
                 <label style={labelStyle}>Description</label>
-                <textarea name="description" value={formData.description} onChange={handleInputChange} style={{...inputStyle, height: '80px', resize: 'vertical'}} placeholder="What does this package include?" />
+                <textarea name="description" value={formData.description} onChange={handleInputChange} style={{ ...inputStyle, height: '80px', resize: 'vertical' }} placeholder="What does this package include?" />
               </div>
 
               {/* Resource Allocation */}
               <div style={{ borderTop: '1px solid var(--admin-border)', paddingTop: '20px', marginTop: '10px' }}>
                 <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', color: 'var(--admin-primary)' }}>Resource Allocation</h3>
-                
+
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                   {/* Services Multi-Select */}
                   <div>
                     <label style={labelStyle}>Included Services</label>
-                    <select multiple name="services" value={formData.services} onChange={(e) => handleMultiSelect(e, 'services')} style={{...inputStyle, height: '120px'}}>
+                    <select multiple name="services" value={formData.services} onChange={(e) => handleMultiSelect(e, 'services')} style={{ ...inputStyle, height: '120px' }}>
                       {services.map(s => <option key={s._id} value={s._id}>{s.title}</option>)}
                     </select>
                     <small style={{ color: 'var(--admin-text-muted)', fontSize: '11px' }}>Hold Ctrl/Cmd to select multiple</small>
@@ -274,7 +274,7 @@ const PackageManager = () => {
                   {/* Vendors Multi-Select */}
                   <div>
                     <label style={labelStyle}>Assigned Vendors</label>
-                    <select multiple name="vendors" value={formData.vendors} onChange={(e) => handleMultiSelect(e, 'vendors')} style={{...inputStyle, height: '120px'}}>
+                    <select multiple name="vendors" value={formData.vendors} onChange={(e) => handleMultiSelect(e, 'vendors')} style={{ ...inputStyle, height: '120px' }}>
                       {vendors.map(v => <option key={v._id} value={v._id}>{v.name} ({v.category})</option>)}
                     </select>
                   </div>
@@ -283,14 +283,14 @@ const PackageManager = () => {
 
               {/* Inventory & Staff */}
               <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', borderTop: '1px solid var(--admin-border)', paddingTop: '20px' }}>
-                
+
                 {/* Inventory Builder */}
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                     <label style={labelStyle}>Inventory Requirements</label>
                     <button type="button" onClick={addInventoryItem} style={{ background: 'none', border: '1px solid var(--admin-primary)', color: 'var(--admin-primary)', borderRadius: '4px', padding: '4px 8px', fontSize: '12px', cursor: 'pointer' }}>+ Add Item</button>
                   </div>
-                  
+
                   {formData.inventoryItems.length === 0 && (
                     <div style={{ padding: '16px', textAlign: 'center', border: '1px dashed var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-muted)', fontSize: '13px' }}>
                       No inventory allocated.
@@ -300,21 +300,21 @@ const PackageManager = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {formData.inventoryItems.map((inv, index) => (
                       <div key={index} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <select 
-                          value={inv.item} 
-                          onChange={(e) => updateInventoryItem(index, 'item', e.target.value)} 
-                          style={{...inputStyle, flex: 1}}
+                        <select
+                          value={inv.item}
+                          onChange={(e) => updateInventoryItem(index, 'item', e.target.value)}
+                          style={{ ...inputStyle, flex: 1 }}
                           required
                         >
                           <option value="">Select Item...</option>
                           {inventory.map(i => <option key={i._id} value={i._id}>{i.name} ({i.quantity} available)</option>)}
                         </select>
-                        <input 
-                          type="number" 
-                          min="1" 
-                          value={inv.quantity} 
-                          onChange={(e) => updateInventoryItem(index, 'quantity', e.target.value)} 
-                          style={{...inputStyle, width: '80px'}} 
+                        <input
+                          type="number"
+                          min="1"
+                          value={inv.quantity}
+                          onChange={(e) => updateInventoryItem(index, 'quantity', e.target.value)}
+                          style={{ ...inputStyle, width: '80px' }}
                         />
                         <button type="button" onClick={() => removeInventoryItem(index)} style={{ background: 'none', border: 'none', color: 'var(--admin-danger)', cursor: 'pointer', padding: '8px' }}>
                           <X size={16} />
@@ -327,7 +327,7 @@ const PackageManager = () => {
                 {/* Staffing */}
                 <div>
                   <label style={labelStyle}>Staff Members Required</label>
-                  <input type="number" min="0" name="staffCount" value={formData.staffCount} onChange={handleInputChange} style={{...inputStyle, fontSize: '24px', padding: '16px'}} />
+                  <input type="number" min="0" name="staffCount" value={formData.staffCount} onChange={handleInputChange} style={{ ...inputStyle, fontSize: '24px', padding: '16px' }} />
                 </div>
 
               </div>

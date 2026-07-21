@@ -7,7 +7,7 @@ const WorkerLeave = () => {
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     startDate: '',
     endDate: '',
@@ -43,7 +43,7 @@ const WorkerLeave = () => {
       toast.error('Please fill in all dates');
       return;
     }
-    
+
     setIsSubmitting(true);
     try {
       const res = await fetch('http://localhost:5000/api/leaves', {
@@ -100,20 +100,20 @@ const WorkerLeave = () => {
             <div style={styles.row}>
               <div style={styles.formGroup}>
                 <label style={styles.label}>Start Date</label>
-                <input 
-                  type="date" 
-                  value={formData.startDate} 
-                  onChange={e => setFormData({...formData, startDate: e.target.value})}
+                <input
+                  type="date"
+                  value={formData.startDate}
+                  onChange={e => setFormData({ ...formData, startDate: e.target.value })}
                   style={styles.input}
                   required
                 />
               </div>
               <div style={styles.formGroup}>
                 <label style={styles.label}>End Date</label>
-                <input 
-                  type="date" 
-                  value={formData.endDate} 
-                  onChange={e => setFormData({...formData, endDate: e.target.value})}
+                <input
+                  type="date"
+                  value={formData.endDate}
+                  onChange={e => setFormData({ ...formData, endDate: e.target.value })}
                   style={styles.input}
                   required
                 />
@@ -121,10 +121,10 @@ const WorkerLeave = () => {
             </div>
             <div style={styles.formGroup}>
               <label style={styles.label}>Reason</label>
-              <textarea 
-                value={formData.reason} 
-                onChange={e => setFormData({...formData, reason: e.target.value})}
-                style={{...styles.input, minHeight: '80px', resize: 'vertical'}}
+              <textarea
+                value={formData.reason}
+                onChange={e => setFormData({ ...formData, reason: e.target.value })}
+                style={{ ...styles.input, minHeight: '80px', resize: 'vertical' }}
                 placeholder="Reason for leave..."
               />
             </div>
@@ -161,7 +161,7 @@ const WorkerLeave = () => {
                     {new Date(leave.createdAt).toLocaleDateString()}
                   </div>
                 </div>
-                
+
                 <div style={{ margin: '12px 0' }}>
                   <div style={{ fontSize: '14px', marginBottom: '8px' }}>
                     <strong>From:</strong> {new Date(leave.startDate).toLocaleDateString()} <br />
@@ -171,7 +171,7 @@ const WorkerLeave = () => {
                     {leave.reason || 'No reason provided'}
                   </p>
                 </div>
-                
+
                 {leave.adminReply && (
                   <div style={{ marginTop: '12px', padding: '12px', backgroundColor: 'rgba(212, 175, 55, 0.05)', borderRadius: '8px', border: '1px solid rgba(212, 175, 55, 0.2)' }}>
                     <div style={{ fontSize: '12px', color: 'var(--admin-primary)', marginBottom: '4px', fontWeight: '600' }}>Admin Reply:</div>

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 const WorkerTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const username = localStorage.getItem('bps_staff_username');
 
   useEffect(() => {
@@ -20,9 +20,9 @@ const WorkerTasks = () => {
       const data = await res.json();
       if (data.success) {
         // Filter tasks assigned to this worker (exact username match or partial legacy match)
-        const myTasks = data.data.filter(t => 
+        const myTasks = data.data.filter(t =>
           t.assignee && (
-            t.assignee.toLowerCase() === username.toLowerCase() || 
+            t.assignee.toLowerCase() === username.toLowerCase() ||
             username.toLowerCase().includes(t.assignee.toLowerCase())
           )
         );
@@ -55,7 +55,7 @@ const WorkerTasks = () => {
   };
 
   const getStatusColor = (status) => {
-    switch(status) {
+    switch (status) {
       case 'Done': return 'var(--admin-success)';
       case 'In Progress': return 'var(--admin-warning)';
       default: return 'var(--admin-text-muted)';
@@ -78,7 +78,7 @@ const WorkerTasks = () => {
           </div>
         </div>
       </div>
-      
+
       <div style={styles.content}>
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
@@ -101,31 +101,31 @@ const WorkerTasks = () => {
                   <h3 style={styles.taskTitle}>{task.title}</h3>
                   <span style={{
                     ...styles.statusBadge,
-                    backgroundColor: task.status === 'Done' ? 'rgba(34, 197, 94, 0.1)' : 
-                                     task.status === 'In Progress' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(255,255,255,0.05)',
+                    backgroundColor: task.status === 'Done' ? 'rgba(34, 197, 94, 0.1)' :
+                      task.status === 'In Progress' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(255,255,255,0.05)',
                     color: getStatusColor(task.status),
-                    border: `1px solid ${task.status === 'Done' ? 'rgba(34, 197, 94, 0.2)' : 
-                                       task.status === 'In Progress' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255,255,255,0.1)'}`
+                    border: `1px solid ${task.status === 'Done' ? 'rgba(34, 197, 94, 0.2)' :
+                      task.status === 'In Progress' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255,255,255,0.1)'}`
                   }}>
                     {task.status}
                   </span>
                 </div>
-                
+
                 <p style={styles.taskDesc}>{task.description || 'No description provided.'}</p>
-                
+
                 {task.contactId && (
                   <div style={styles.contactInfo}>
                     <AlertCircle size={14} /> Related to event for {task.contactId.name || 'Client'}
                   </div>
                 )}
-                
+
                 <div style={styles.taskFooter}>
                   <div style={styles.timeInfo}>
                     <Clock size={14} /> Created: {new Date(task.createdAt).toLocaleDateString()}
                   </div>
-                  
+
                   <div style={styles.actions}>
-                    <select 
+                    <select
                       value={task.status}
                       onChange={(e) => handleStatusChange(task._id, e.target.value)}
                       style={styles.statusSelect}

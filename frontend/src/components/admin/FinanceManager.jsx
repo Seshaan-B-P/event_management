@@ -137,9 +137,9 @@ const FinanceManager = () => {
     // Company Header
     doc.setFontSize(28);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(255, 255, 255); 
+    doc.setTextColor(255, 255, 255);
     doc.text('BPS EVENTS', 14, 26);
-    
+
     // Invoice Title on right
     doc.setFontSize(24);
     doc.text('INVOICE', 196, 26, { align: 'right' });
@@ -160,11 +160,11 @@ const FinanceManager = () => {
     doc.text('Invoice Number:', 140, 50);
     doc.text('Date:', 140, 55);
     doc.text('Status:', 140, 60);
-    
+
     doc.setFont('helvetica', 'normal');
     doc.text(invoiceId, 170, 50);
     doc.text(date, 170, 55);
-    
+
     // Status color
     if (contact.paymentStatus === 'Paid') {
       doc.setTextColor(16, 185, 129); // Green
@@ -182,7 +182,7 @@ const FinanceManager = () => {
     doc.setDrawColor(230, 230, 230);
     doc.setFillColor(250, 250, 250);
     doc.roundedRect(14, 75, 90, 45, 3, 3, 'FD'); // x, y, w, h, rx, ry, style
-    
+
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     doc.setTextColor(50, 50, 50);
@@ -192,7 +192,7 @@ const FinanceManager = () => {
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(12);
     doc.text(`${contact.firstName} ${contact.lastName}`, 19, 93);
-    
+
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
     doc.text(`Email: ${contact.email}`, 19, 100);
@@ -220,7 +220,7 @@ const FinanceManager = () => {
     // Draw lines for totals
     doc.setDrawColor(200, 200, 200);
     doc.line(120, finalY + 10, 196, finalY + 10);
-    
+
     doc.setFontSize(11);
     doc.setTextColor(80, 80, 80);
     doc.setFont('helvetica', 'normal');
@@ -237,7 +237,7 @@ const FinanceManager = () => {
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(0, 0, 0);
     doc.text('Balance Due:', 125, finalY + 40);
-    
+
     doc.setTextColor(212, 175, 55); // Gold
     doc.text(`Rs. ${balance.toLocaleString()}`, 196, finalY + 40, { align: 'right' });
 
@@ -246,7 +246,7 @@ const FinanceManager = () => {
     doc.setDrawColor(212, 175, 55);
     doc.setLineWidth(1);
     doc.line(14, pageHeight - 30, 196, pageHeight - 30);
-    
+
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(10);
     doc.setTextColor(150, 150, 150);

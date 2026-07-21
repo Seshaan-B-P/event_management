@@ -10,7 +10,7 @@ const StaffManager = () => {
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -212,13 +212,13 @@ const StaffManager = () => {
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
           <div style={{ display: 'flex', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '8px', padding: '4px' }}>
-            <button 
+            <button
               onClick={() => setActiveTab('staff')}
               style={{ ...styles.tabBtn, backgroundColor: activeTab === 'staff' ? 'rgba(255,255,255,0.1)' : 'transparent', color: activeTab === 'staff' ? 'var(--admin-primary)' : 'var(--admin-text-muted)' }}
             >
               Staff Directory
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab('leaves')}
               style={{ ...styles.tabBtn, backgroundColor: activeTab === 'leaves' ? 'rgba(255,255,255,0.1)' : 'transparent', color: activeTab === 'leaves' ? 'var(--admin-primary)' : 'var(--admin-text-muted)' }}
             >
@@ -229,7 +229,7 @@ const StaffManager = () => {
                 </span>
               )}
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab('reports')}
               style={{ ...styles.tabBtn, backgroundColor: activeTab === 'reports' ? 'rgba(255,255,255,0.1)' : 'transparent', color: activeTab === 'reports' ? 'var(--admin-primary)' : 'var(--admin-text-muted)' }}
             >
@@ -306,75 +306,75 @@ const StaffManager = () => {
 
       {activeTab === 'staff' && !isAdding && (
         <div className="admin-glass-panel" style={styles.tableContainer}>
-        {loading ? (
-          <div style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading staff...</div>
-        ) : staffList.length === 0 ? (
-          <div style={{ padding: '48px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>
-            <Users size={48} style={{ margin: '0 auto 16px auto', opacity: 0.5, color: 'var(--admin-primary)' }} />
-            <p>No staff members found.</p>
-          </div>
-        ) : (
-          <div className="admin-scroll" style={{ overflowX: 'auto' }}>
-            <table style={styles.table}>
-              <thead>
-                <tr style={styles.thRow}>
-                  <th style={styles.th}>Name & Role</th>
-                  <th style={styles.th}>Contact Info</th>
-                  <th style={styles.th}>Status</th>
-                  <th style={styles.th}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {staffList.map((staff) => (
-                  <tr key={staff._id} style={styles.tr}>
-                    <td style={styles.td}>
-                      <div style={styles.nameWrap}>
-                        <div style={styles.avatar}>
-                          {staff.name.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <div style={styles.staffName}>{staff.name}</div>
-                          <div style={styles.staffRole}>{staff.role}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td style={styles.td}>
-                      <div style={styles.contactInfo}>
-                        <Phone size={14} style={{ color: 'var(--admin-text-muted)' }} /> {staff.contactNumber}
-                      </div>
-                      {staff.email && (
-                        <div style={styles.contactInfo}>
-                          <Mail size={14} style={{ color: 'var(--admin-text-muted)' }} /> {staff.email}
-                        </div>
-                      )}
-                    </td>
-                    <td style={styles.td}>
-                      <span style={{
-                        ...styles.statusBadge,
-                        backgroundColor: getStatusColor(staff.status).bg,
-                        color: getStatusColor(staff.status).text,
-                        border: `1px solid ${getStatusColor(staff.status).bg}`
-                      }}>
-                        {staff.status}
-                      </span>
-                    </td>
-                    <td style={styles.td}>
-                      <div style={styles.actions}>
-                        <button onClick={() => handleEdit(staff)} style={styles.iconBtn}>
-                          <Edit2 size={16} />
-                        </button>
-                        <button onClick={() => handleDelete(staff._id)} style={{...styles.iconBtn, color: 'var(--admin-danger)'}}>
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
+          {loading ? (
+            <div style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading staff...</div>
+          ) : staffList.length === 0 ? (
+            <div style={{ padding: '48px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>
+              <Users size={48} style={{ margin: '0 auto 16px auto', opacity: 0.5, color: 'var(--admin-primary)' }} />
+              <p>No staff members found.</p>
+            </div>
+          ) : (
+            <div className="admin-scroll" style={{ overflowX: 'auto' }}>
+              <table style={styles.table}>
+                <thead>
+                  <tr style={styles.thRow}>
+                    <th style={styles.th}>Name & Role</th>
+                    <th style={styles.th}>Contact Info</th>
+                    <th style={styles.th}>Status</th>
+                    <th style={styles.th}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+                </thead>
+                <tbody>
+                  {staffList.map((staff) => (
+                    <tr key={staff._id} style={styles.tr}>
+                      <td style={styles.td}>
+                        <div style={styles.nameWrap}>
+                          <div style={styles.avatar}>
+                            {staff.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div style={styles.staffName}>{staff.name}</div>
+                            <div style={styles.staffRole}>{staff.role}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={styles.td}>
+                        <div style={styles.contactInfo}>
+                          <Phone size={14} style={{ color: 'var(--admin-text-muted)' }} /> {staff.contactNumber}
+                        </div>
+                        {staff.email && (
+                          <div style={styles.contactInfo}>
+                            <Mail size={14} style={{ color: 'var(--admin-text-muted)' }} /> {staff.email}
+                          </div>
+                        )}
+                      </td>
+                      <td style={styles.td}>
+                        <span style={{
+                          ...styles.statusBadge,
+                          backgroundColor: getStatusColor(staff.status).bg,
+                          color: getStatusColor(staff.status).text,
+                          border: `1px solid ${getStatusColor(staff.status).bg}`
+                        }}>
+                          {staff.status}
+                        </span>
+                      </td>
+                      <td style={styles.td}>
+                        <div style={styles.actions}>
+                          <button onClick={() => handleEdit(staff)} style={styles.iconBtn}>
+                            <Edit2 size={16} />
+                          </button>
+                          <button onClick={() => handleDelete(staff._id)} style={{ ...styles.iconBtn, color: 'var(--admin-danger)' }}>
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       )}
 
       {activeTab === 'leaves' && (
@@ -423,10 +423,10 @@ const StaffManager = () => {
                       <td style={styles.td}>
                         {leave.status === 'Pending' && (
                           <div style={styles.actions}>
-                            <button onClick={() => handleLeaveAction(leave._id, 'Approved')} style={{...styles.iconBtn, color: 'var(--admin-success)'}} title="Approve">
+                            <button onClick={() => handleLeaveAction(leave._id, 'Approved')} style={{ ...styles.iconBtn, color: 'var(--admin-success)' }} title="Approve">
                               <Check size={16} />
                             </button>
-                            <button onClick={() => handleLeaveAction(leave._id, 'Rejected')} style={{...styles.iconBtn, color: 'var(--admin-danger)'}} title="Reject">
+                            <button onClick={() => handleLeaveAction(leave._id, 'Rejected')} style={{ ...styles.iconBtn, color: 'var(--admin-danger)' }} title="Reject">
                               <X size={16} />
                             </button>
                           </div>
@@ -452,16 +452,16 @@ const StaffManager = () => {
             <div className="admin-scroll" style={{ overflowX: 'auto', padding: '20px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {reports.map(report => (
-                  <div key={report._id} style={{ 
-                    padding: '20px', 
-                    backgroundColor: 'rgba(255,255,255,0.03)', 
-                    border: '1px solid var(--admin-border)', 
-                    borderRadius: '12px' 
+                  <div key={report._id} style={{
+                    padding: '20px',
+                    backgroundColor: 'rgba(255,255,255,0.03)',
+                    border: '1px solid var(--admin-border)',
+                    borderRadius: '12px'
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <span style={{ fontWeight: '600', color: 'var(--admin-text-main)', fontSize: '16px' }}>{report.staffName}</span>
-                        <span style={{ 
+                        <span style={{
                           padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: '600',
                           backgroundColor: report.reportType === 'Incident' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(212, 175, 55, 0.1)',
                           color: report.reportType === 'Incident' ? 'var(--admin-danger)' : 'var(--admin-primary)'
@@ -474,12 +474,12 @@ const StaffManager = () => {
                           {new Date(report.createdAt).toLocaleString()}
                         </span>
                         {report.status === 'Unread' ? (
-                          <button onClick={() => handleMarkReportRead(report._id)} style={{...styles.iconBtn, color: 'var(--admin-primary)', padding: '4px 8px', fontSize: '12px'}}>
+                          <button onClick={() => handleMarkReportRead(report._id)} style={{ ...styles.iconBtn, color: 'var(--admin-primary)', padding: '4px 8px', fontSize: '12px' }}>
                             Mark as Read
                           </button>
                         ) : (
                           <span style={{ fontSize: '12px', color: 'var(--admin-success)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <Check size={14}/> Read
+                            <Check size={14} /> Read
                           </span>
                         )}
                       </div>

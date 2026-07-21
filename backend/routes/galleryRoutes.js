@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     const filetypes = /jpeg|jpg|png/;
@@ -98,7 +98,7 @@ router.post('/', upload.single('imageFile'), async (req, res) => {
   let image = req.body.image;
 
   if (req.file) {
-    image = `http://localhost:5000/uploads/${req.file.filename}`;
+    image = `http://localhost:5000/${req.file.filename}`;
   }
 
   if (!title || !location || !category || !image) {

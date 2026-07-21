@@ -25,18 +25,18 @@ const InventoryManager = () => {
   }, []);
 
   const fetchInventory = async () => {
-      try {
-        const res = await fetch('http://localhost:5000/api/inventory');
-        const data = await res.json();
-        if (data.success) {
-          setItems(data.data);
-        }
-      } catch (err) {
-        toast.error('Failed to load inventory');
-      } finally {
-        setLoading(false);
+    try {
+      const res = await fetch('http://localhost:5000/api/inventory');
+      const data = await res.json();
+      if (data.success) {
+        setItems(data.data);
       }
-    };
+    } catch (err) {
+      toast.error('Failed to load inventory');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchRequests = async () => {
     try {
@@ -76,8 +76,8 @@ const InventoryManager = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const url = editingItemId 
-        ? `http://localhost:5000/api/inventory/${editingItemId}` 
+      const url = editingItemId
+        ? `http://localhost:5000/api/inventory/${editingItemId}`
         : 'http://localhost:5000/api/inventory';
       const method = editingItemId ? 'PUT' : 'POST';
 
@@ -141,7 +141,7 @@ const InventoryManager = () => {
   };
 
   const getStatusColor = (status) => {
-    switch(status) {
+    switch (status) {
       case 'In Stock': return 'var(--admin-success)';
       case 'Low Stock': return 'var(--admin-warning)';
       case 'Out of Stock': return 'var(--admin-danger)';
@@ -158,7 +158,7 @@ const InventoryManager = () => {
       item.quantity || 0,
       item.status || ''
     ]);
-    
+
     const csvContent = [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -179,13 +179,13 @@ const InventoryManager = () => {
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
           <div style={{ display: 'flex', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '8px', padding: '4px' }}>
-            <button 
+            <button
               onClick={() => setActiveTab('inventory')}
               style={{ padding: '8px 16px', border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', backgroundColor: activeTab === 'inventory' ? 'rgba(255,255,255,0.1)' : 'transparent', color: activeTab === 'inventory' ? 'var(--admin-primary)' : 'var(--admin-text-muted)' }}
             >
               Catalog
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab('requests')}
               style={{ padding: '8px 16px', border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', backgroundColor: activeTab === 'requests' ? 'rgba(255,255,255,0.1)' : 'transparent', color: activeTab === 'requests' ? 'var(--admin-primary)' : 'var(--admin-text-muted)', display: 'flex', alignItems: 'center' }}
             >
@@ -220,102 +220,102 @@ const InventoryManager = () => {
       </div>
 
       {activeTab === 'inventory' && (
-      <div style={{
-        backgroundColor: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--admin-border)',
-        borderRadius: '16px', overflow: 'hidden'
-      }}>
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--admin-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>Equipment Catalog</h2>
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <div style={{ position: 'relative' }}>
-              <Search size={16} style={{ position: 'absolute', left: '12px', top: '10px', color: 'var(--admin-text-muted)' }} />
-              <input
-                type="text"
-                placeholder="Search items..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  padding: '8px 12px 8px 36px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid var(--admin-border)',
-                  borderRadius: '8px', color: 'var(--admin-text-main)', fontSize: '14px', outline: 'none'
-                }}
-              />
+        <div style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--admin-border)',
+          borderRadius: '16px', overflow: 'hidden'
+        }}>
+          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--admin-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>Equipment Catalog</h2>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <div style={{ position: 'relative' }}>
+                <Search size={16} style={{ position: 'absolute', left: '12px', top: '10px', color: 'var(--admin-text-muted)' }} />
+                <input
+                  type="text"
+                  placeholder="Search items..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{
+                    padding: '8px 12px 8px 36px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid var(--admin-border)',
+                    borderRadius: '8px', color: 'var(--admin-text-main)', fontSize: '14px', outline: 'none'
+                  }}
+                />
+              </div>
+              <button style={{
+                padding: '8px 12px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid var(--admin-border)',
+                borderRadius: '8px', color: 'var(--admin-text-main)', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer'
+              }}>
+                <Filter size={16} /> Filter
+              </button>
             </div>
-            <button style={{
-              padding: '8px 12px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid var(--admin-border)',
-              borderRadius: '8px', color: 'var(--admin-text-main)', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer'
-            }}>
-              <Filter size={16} /> Filter
-            </button>
           </div>
-        </div>
-        
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: 'rgba(0,0,0,0.2)', textAlign: 'left' }}>
-              <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>ID</th>
-              <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>Item Name</th>
-              <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>Category</th>
-              <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>Quantity</th>
-              <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>Status</th>
-              <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px', textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan="6" style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading inventory...</td></tr>
-            ) : items.filter(item => 
-                (item.name && item.name.toLowerCase().includes(searchQuery.toLowerCase())) || 
+
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ backgroundColor: 'rgba(0,0,0,0.2)', textAlign: 'left' }}>
+                <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>ID</th>
+                <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>Item Name</th>
+                <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>Category</th>
+                <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>Quantity</th>
+                <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px' }}>Status</th>
+                <th style={{ padding: '16px 24px', color: 'var(--admin-text-muted)', fontWeight: '500', fontSize: '13px', textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr><td colSpan="6" style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading inventory...</td></tr>
+              ) : items.filter(item =>
+                (item.name && item.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
                 (item.category && item.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
                 (item.itemId && item.itemId.toLowerCase().includes(searchQuery.toLowerCase()))
               ).length === 0 ? (
-              <tr><td colSpan="6" style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>No inventory found.</td></tr>
-            ) : items.filter(item => 
-                (item.name && item.name.toLowerCase().includes(searchQuery.toLowerCase())) || 
+                <tr><td colSpan="6" style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>No inventory found.</td></tr>
+              ) : items.filter(item =>
+                (item.name && item.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
                 (item.category && item.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
                 (item.itemId && item.itemId.toLowerCase().includes(searchQuery.toLowerCase()))
               ).map((item) => (
-              <tr key={item._id} style={{ borderBottom: '1px solid var(--admin-border)' }}>
-                <td style={{ padding: '16px 24px', fontWeight: '500', color: 'var(--admin-text-muted)' }}>{item.itemId || item._id}</td>
-                <td style={{ padding: '16px 24px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Box size={16} color="var(--admin-text-muted)" />
+                <tr key={item._id} style={{ borderBottom: '1px solid var(--admin-border)' }}>
+                  <td style={{ padding: '16px 24px', fontWeight: '500', color: 'var(--admin-text-muted)' }}>{item.itemId || item._id}</td>
+                  <td style={{ padding: '16px 24px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Box size={16} color="var(--admin-text-muted)" />
+                      </div>
+                      {item.name}
                     </div>
-                    {item.name}
-                  </div>
-                </td>
-                <td style={{ padding: '16px 24px', color: 'var(--admin-text-muted)' }}>{item.category}</td>
-                <td style={{ padding: '16px 24px', fontWeight: '600' }}>{item.quantity}</td>
-                <td style={{ padding: '16px 24px' }}>
-                  <span style={{
-                    display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 10px',
-                    backgroundColor: `${getStatusColor(item.status)}15`, color: getStatusColor(item.status),
-                    borderRadius: '20px', fontSize: '12px', fontWeight: '600'
-                  }}>
-                    {item.status === 'In Stock' && <Check size={12} />}
-                    {item.status !== 'In Stock' && <AlertTriangle size={12} />}
-                    {item.status}
-                  </span>
-                </td>
-                <td style={{ padding: '16px 24px', textAlign: 'right' }}>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-                    <button onClick={() => openEditModal(item)} style={{
-                      background: 'none', border: 'none', color: 'var(--admin-text-muted)', cursor: 'pointer', padding: '4px'
-                    }} onMouseEnter={e => e.currentTarget.style.color = 'var(--admin-primary)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--admin-text-muted)'}>
-                      <Edit2 size={16} />
-                    </button>
-                    <button onClick={() => handleDelete(item._id)} style={{
-                      background: 'none', border: 'none', color: 'var(--admin-text-muted)', cursor: 'pointer', padding: '4px'
-                    }} onMouseEnter={e => e.currentTarget.style.color = 'var(--admin-danger)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--admin-text-muted)'}>
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                  </td>
+                  <td style={{ padding: '16px 24px', color: 'var(--admin-text-muted)' }}>{item.category}</td>
+                  <td style={{ padding: '16px 24px', fontWeight: '600' }}>{item.quantity}</td>
+                  <td style={{ padding: '16px 24px' }}>
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 10px',
+                      backgroundColor: `${getStatusColor(item.status)}15`, color: getStatusColor(item.status),
+                      borderRadius: '20px', fontSize: '12px', fontWeight: '600'
+                    }}>
+                      {item.status === 'In Stock' && <Check size={12} />}
+                      {item.status !== 'In Stock' && <AlertTriangle size={12} />}
+                      {item.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: '16px 24px', textAlign: 'right' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                      <button onClick={() => openEditModal(item)} style={{
+                        background: 'none', border: 'none', color: 'var(--admin-text-muted)', cursor: 'pointer', padding: '4px'
+                      }} onMouseEnter={e => e.currentTarget.style.color = 'var(--admin-primary)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--admin-text-muted)'}>
+                        <Edit2 size={16} />
+                      </button>
+                      <button onClick={() => handleDelete(item._id)} style={{
+                        background: 'none', border: 'none', color: 'var(--admin-text-muted)', cursor: 'pointer', padding: '4px'
+                      }} onMouseEnter={e => e.currentTarget.style.color = 'var(--admin-danger)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--admin-text-muted)'}>
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {activeTab === 'requests' && (
@@ -402,7 +402,7 @@ const InventoryManager = () => {
                 <X size={24} />
               </button>
             </div>
-            
+
             <form onSubmit={handleAddSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', color: 'var(--admin-text-muted)', fontSize: '14px' }}>Item ID</label>
@@ -410,35 +410,35 @@ const InventoryManager = () => {
                   type="text"
                   required
                   value={newItem.itemId}
-                  onChange={(e) => setNewItem({...newItem, itemId: e.target.value})}
+                  onChange={(e) => setNewItem({ ...newItem, itemId: e.target.value })}
                   style={{
                     width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                     border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)', boxSizing: 'border-box'
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', color: 'var(--admin-text-muted)', fontSize: '14px' }}>Item Name</label>
                 <input
                   type="text"
                   required
                   value={newItem.name}
-                  onChange={(e) => setNewItem({...newItem, name: e.target.value})}
+                  onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
                   style={{
                     width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                     border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)', boxSizing: 'border-box'
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', color: 'var(--admin-text-muted)', fontSize: '14px' }}>Category</label>
                 <input
                   type="text"
                   required
                   value={newItem.category}
-                  onChange={(e) => setNewItem({...newItem, category: e.target.value})}
+                  onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
                   style={{
                     width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                     border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)', boxSizing: 'border-box'
@@ -454,7 +454,7 @@ const InventoryManager = () => {
                     min="0"
                     required
                     value={newItem.quantity}
-                    onChange={(e) => setNewItem({...newItem, quantity: parseInt(e.target.value) || 0})}
+                    onChange={(e) => setNewItem({ ...newItem, quantity: parseInt(e.target.value) || 0 })}
                     style={{
                       width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                       border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)', boxSizing: 'border-box'
@@ -465,7 +465,7 @@ const InventoryManager = () => {
                   <label style={{ display: 'block', marginBottom: '8px', color: 'var(--admin-text-muted)', fontSize: '14px' }}>Status</label>
                   <select
                     value={newItem.status}
-                    onChange={(e) => setNewItem({...newItem, status: e.target.value})}
+                    onChange={(e) => setNewItem({ ...newItem, status: e.target.value })}
                     style={{
                       width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                       border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)', boxSizing: 'border-box'

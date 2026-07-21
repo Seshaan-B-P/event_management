@@ -6,7 +6,7 @@ const ReviewManager = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
-  
+
   // Form State
   const [newReview, setNewReview] = useState({
     name: '',
@@ -72,7 +72,7 @@ const ReviewManager = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this review?')) return;
-    
+
     try {
       const res = await fetch(`${REVIEWS_API}/${id}`, { method: 'DELETE' });
       const data = await res.json();
@@ -93,9 +93,9 @@ const ReviewManager = () => {
     <div style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>Review Manager</h2>
-        <button 
+        <button
           className="admin-btn admin-btn-primary"
-          style={styles.addButton} 
+          style={styles.addButton}
           onClick={() => setShowAddForm(!showAddForm)}
         >
           <Plus size={20} />
@@ -109,20 +109,20 @@ const ReviewManager = () => {
           <div style={styles.formGrid}>
             <div>
               <label style={styles.label}>Client Name</label>
-              <input 
-                className="admin-input" 
-                required 
+              <input
+                className="admin-input"
+                required
                 value={newReview.name}
-                onChange={e => setNewReview({...newReview, name: e.target.value})}
-                placeholder="e.g. John Doe" 
+                onChange={e => setNewReview({ ...newReview, name: e.target.value })}
+                placeholder="e.g. John Doe"
               />
             </div>
             <div>
               <label style={styles.label}>Rating (1-5)</label>
-              <select 
+              <select
                 className="admin-input"
                 value={newReview.rating}
-                onChange={e => setNewReview({...newReview, rating: e.target.value})}
+                onChange={e => setNewReview({ ...newReview, rating: e.target.value })}
               >
                 <option value="5">5 - Excellent</option>
                 <option value="4">4 - Very Good</option>
@@ -133,21 +133,21 @@ const ReviewManager = () => {
             </div>
             <div>
               <label style={styles.label}>Source Platform</label>
-              <input 
-                className="admin-input" 
+              <input
+                className="admin-input"
                 value={newReview.source}
-                onChange={e => setNewReview({...newReview, source: e.target.value})}
-                placeholder="e.g. Google Review, Facebook" 
+                onChange={e => setNewReview({ ...newReview, source: e.target.value })}
+                placeholder="e.g. Google Review, Facebook"
               />
             </div>
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={styles.label}>Review Comment</label>
-              <textarea 
-                className="admin-input" 
-                required 
+              <textarea
+                className="admin-input"
+                required
                 value={newReview.comment}
-                onChange={e => setNewReview({...newReview, comment: e.target.value})}
-                placeholder="Write the client's feedback here..." 
+                onChange={e => setNewReview({ ...newReview, comment: e.target.value })}
+                placeholder="Write the client's feedback here..."
                 style={{ minHeight: '80px', resize: 'vertical' }}
               />
             </div>
@@ -169,7 +169,7 @@ const ReviewManager = () => {
               <button style={styles.deleteButton} onClick={() => handleDelete(review._id)}>
                 <Trash2 size={16} />
               </button>
-              
+
               <div style={styles.cardHeader}>
                 <div style={styles.avatar}>{review.avatar || review.name.charAt(0)}</div>
                 <div>
@@ -177,18 +177,18 @@ const ReviewManager = () => {
                   <div style={styles.sourceText}>{review.source}</div>
                 </div>
               </div>
-              
+
               <div style={styles.stars}>
                 {[...Array(5)].map((_, i) => (
-                  <Star 
-                    key={i} 
-                    size={16} 
-                    fill={i < review.rating ? "var(--admin-primary)" : "none"} 
-                    color={i < review.rating ? "var(--admin-primary)" : "rgba(255,255,255,0.1)"} 
+                  <Star
+                    key={i}
+                    size={16}
+                    fill={i < review.rating ? "var(--admin-primary)" : "none"}
+                    color={i < review.rating ? "var(--admin-primary)" : "rgba(255,255,255,0.1)"}
                   />
                 ))}
               </div>
-              
+
               <p style={styles.comment}>"{review.comment}"</p>
             </div>
           ))}
@@ -202,7 +202,7 @@ const styles = {
   container: { display: 'flex', flexDirection: 'column', gap: '24px' },
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' },
   title: { fontSize: '24px', fontWeight: '700', color: 'var(--admin-text-main)', margin: 0 },
-  addButton: { 
+  addButton: {
     display: 'flex', alignItems: 'center', gap: '8px'
   },
   formCard: {
@@ -224,7 +224,7 @@ const styles = {
   },
   deleteButton: {
     position: 'absolute', top: '16px', right: '16px', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--admin-danger)',
-    border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', width: '32px', height: '32px', 
+    border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', width: '32px', height: '32px',
     display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s'
   },
   cardHeader: { display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' },

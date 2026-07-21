@@ -10,7 +10,7 @@ const CRMManager = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [adding, setAdding] = useState(false);
-  
+
   const [editForm, setEditForm] = useState({ status: '', adminNotes: '', eventDate: '', totalAmount: 0, paidAmount: 0, paymentStatus: 'Unpaid' });
 
   const [newBooking, setNewBooking] = useState({
@@ -143,14 +143,14 @@ const CRMManager = () => {
         </div>
 
         <div style={styles.controls}>
-          <button 
+          <button
             className="admin-btn admin-btn-primary"
             onClick={() => setShowAddForm(!showAddForm)}
           >
             <Plus size={18} />
             {showAddForm ? 'Cancel' : 'Add Booking'}
           </button>
-          
+
           <div style={styles.searchBox}>
             <Search size={18} style={styles.searchIcon} />
             <input
@@ -186,56 +186,56 @@ const CRMManager = () => {
           <div style={styles.formGrid}>
             <div>
               <label style={styles.label}>First Name</label>
-              <input 
-                className="admin-input" 
-                required 
+              <input
+                className="admin-input"
+                required
                 value={newBooking.firstName}
-                onChange={e => setNewBooking({...newBooking, firstName: e.target.value})}
+                onChange={e => setNewBooking({ ...newBooking, firstName: e.target.value })}
               />
             </div>
             <div>
               <label style={styles.label}>Last Name</label>
-              <input 
-                className="admin-input" 
-                required 
+              <input
+                className="admin-input"
+                required
                 value={newBooking.lastName}
-                onChange={e => setNewBooking({...newBooking, lastName: e.target.value})}
+                onChange={e => setNewBooking({ ...newBooking, lastName: e.target.value })}
               />
             </div>
             <div>
               <label style={styles.label}>Email</label>
-              <input 
-                className="admin-input" 
+              <input
+                className="admin-input"
                 type="email"
-                required 
+                required
                 value={newBooking.email}
-                onChange={e => setNewBooking({...newBooking, email: e.target.value})}
+                onChange={e => setNewBooking({ ...newBooking, email: e.target.value })}
               />
             </div>
             <div>
               <label style={styles.label}>Phone</label>
-              <input 
-                className="admin-input" 
-                required 
+              <input
+                className="admin-input"
+                required
                 value={newBooking.phone}
-                onChange={e => setNewBooking({...newBooking, phone: e.target.value})}
+                onChange={e => setNewBooking({ ...newBooking, phone: e.target.value })}
               />
             </div>
             <div>
               <label style={styles.label}>Event Date</label>
-              <input 
+              <input
                 type="date"
-                className="admin-input" 
+                className="admin-input"
                 value={newBooking.eventDate}
-                onChange={e => setNewBooking({...newBooking, eventDate: e.target.value})}
+                onChange={e => setNewBooking({ ...newBooking, eventDate: e.target.value })}
               />
             </div>
             <div>
               <label style={styles.label}>Initial Status</label>
-              <select 
+              <select
                 className="admin-input"
                 value={newBooking.status}
-                onChange={e => setNewBooking({...newBooking, status: e.target.value})}
+                onChange={e => setNewBooking({ ...newBooking, status: e.target.value })}
               >
                 <option value="Pending">Pending</option>
                 <option value="Contacted">Contacted</option>
@@ -244,28 +244,28 @@ const CRMManager = () => {
             </div>
             <div>
               <label style={styles.label}>Total Amount (₹)</label>
-              <input 
+              <input
                 type="number"
-                className="admin-input" 
+                className="admin-input"
                 value={newBooking.totalAmount}
-                onChange={e => setNewBooking({...newBooking, totalAmount: Number(e.target.value)})}
+                onChange={e => setNewBooking({ ...newBooking, totalAmount: Number(e.target.value) })}
               />
             </div>
             <div>
               <label style={styles.label}>Paid Amount (₹)</label>
-              <input 
+              <input
                 type="number"
-                className="admin-input" 
+                className="admin-input"
                 value={newBooking.paidAmount}
-                onChange={e => setNewBooking({...newBooking, paidAmount: Number(e.target.value)})}
+                onChange={e => setNewBooking({ ...newBooking, paidAmount: Number(e.target.value) })}
               />
             </div>
             <div>
               <label style={styles.label}>Payment Status</label>
-              <select 
+              <select
                 className="admin-input"
                 value={newBooking.paymentStatus}
-                onChange={e => setNewBooking({...newBooking, paymentStatus: e.target.value})}
+                onChange={e => setNewBooking({ ...newBooking, paymentStatus: e.target.value })}
               >
                 <option value="Unpaid">Unpaid</option>
                 <option value="Partial">Partial</option>
@@ -274,10 +274,10 @@ const CRMManager = () => {
             </div>
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={styles.label}>Client Message / Notes</label>
-              <textarea 
-                className="admin-input" 
+              <textarea
+                className="admin-input"
                 value={newBooking.message}
-                onChange={e => setNewBooking({...newBooking, message: e.target.value})}
+                onChange={e => setNewBooking({ ...newBooking, message: e.target.value })}
                 style={{ minHeight: '80px', resize: 'vertical' }}
               />
             </div>

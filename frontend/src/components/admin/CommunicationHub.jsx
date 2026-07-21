@@ -77,7 +77,7 @@ const CommunicationHub = () => {
     };
 
     setNewMessage(''); // optimistic clear
-    
+
     try {
       const res = await fetch('http://localhost:5000/api/messages', {
         method: 'POST',
@@ -109,28 +109,28 @@ const CommunicationHub = () => {
         <p style={{ color: 'var(--admin-text-muted)', margin: 0 }}>Internal chat and vendor communication logs.</p>
       </div>
 
-      <div style={{ 
-        flex: 1, display: 'flex', 
+      <div style={{
+        flex: 1, display: 'flex',
         backgroundColor: 'var(--admin-bg-panel)', border: '1px solid var(--admin-border)',
         borderRadius: '16px', overflow: 'hidden'
       }}>
         {/* Left Pane: Contacts */}
         <div style={{ width: '320px', borderRight: '1px solid var(--admin-border)', display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', borderBottom: '1px solid var(--admin-border)' }}>
-            <button 
+            <button
               onClick={() => setActiveTab('Staff')}
               style={{ flex: 1, padding: '16px', background: 'none', border: 'none', borderBottom: activeTab === 'Staff' ? '2px solid var(--admin-primary)' : '2px solid transparent', color: activeTab === 'Staff' ? 'var(--admin-primary)' : 'var(--admin-text-muted)', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
             >
               <User size={18} /> Staff
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab('Vendor')}
               style={{ flex: 1, padding: '16px', background: 'none', border: 'none', borderBottom: activeTab === 'Vendor' ? '2px solid var(--admin-primary)' : '2px solid transparent', color: activeTab === 'Vendor' ? 'var(--admin-primary)' : 'var(--admin-text-muted)', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
             >
               <Truck size={18} /> Vendors
             </button>
           </div>
-          
+
           <div style={{ flex: 1, overflowY: 'auto' }} className="admin-scroll">
             {loadingContacts ? (
               <div style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading...</div>
@@ -138,7 +138,7 @@ const CommunicationHub = () => {
               <div style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>No contacts found.</div>
             ) : (
               contacts.map(c => (
-                <div 
+                <div
                   key={c._id}
                   onClick={() => setActiveContact(c)}
                   style={{
@@ -165,8 +165,8 @@ const CommunicationHub = () => {
                 <div>
                   <h3 style={{ margin: '0 0 4px 0', fontSize: '18px' }}>{activeContact.name}</h3>
                   <div style={{ display: 'flex', gap: '16px', color: 'var(--admin-text-muted)', fontSize: '13px' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Phone size={12}/> {activeContact.contactNumber || activeContact.phone}</span>
-                    {activeContact.email && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Mail size={12}/> {activeContact.email}</span>}
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Phone size={12} /> {activeContact.contactNumber || activeContact.phone}</span>
+                    {activeContact.email && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Mail size={12} /> {activeContact.email}</span>}
                   </div>
                 </div>
               </div>
@@ -198,8 +198,8 @@ const CommunicationHub = () => {
                           <Clock size={10} />
                           {formatTime(msg.createdAt)}
                           {isMe && (
-                            msg.isRead 
-                              ? <CheckCheck size={14} color="#3b82f6" /> 
+                            msg.isRead
+                              ? <CheckCheck size={14} color="#3b82f6" />
                               : <Check size={14} />
                           )}
                         </div>
@@ -224,7 +224,7 @@ const CommunicationHub = () => {
                       color: 'var(--admin-text-main)', outline: 'none'
                     }}
                   />
-                  <button 
+                  <button
                     type="submit"
                     disabled={!newMessage.trim()}
                     style={{

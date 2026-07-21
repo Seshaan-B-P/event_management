@@ -102,12 +102,12 @@ const Services = () => {
                     {service.title}
                   </h3>
                   <p style={{ color: 'var(--text-muted)', marginBottom: '15px', flexGrow: 1 }}>
-                    {service.description && service.description.length > 120 
-                        ? `${service.description.substring(0, 120)}...` 
-                        : service.description}
+                    {service.description && service.description.length > 120
+                      ? `${service.description.substring(0, 120)}...`
+                      : service.description}
                   </p>
 
-                  <button 
+                  <button
                     onClick={() => setSelectedService(service)}
                     style={{
                       background: 'none',
@@ -136,7 +136,7 @@ const Services = () => {
 
       {/* Modal Overlay */}
       {selectedService && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             top: 0,
@@ -152,7 +152,7 @@ const Services = () => {
           }}
           onClick={() => setSelectedService(null)}
         >
-          <div 
+          <div
             style={{
               backgroundColor: 'var(--white)',
               borderRadius: '16px',
@@ -166,7 +166,7 @@ const Services = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
-            <button 
+            <button
               onClick={() => setSelectedService(null)}
               style={{
                 position: 'absolute',
@@ -191,12 +191,12 @@ const Services = () => {
 
             {/* Modal Content */}
             <div style={{ height: '280px', position: 'relative' }}>
-              <img 
-                src={selectedService.imageUrl || defaultImages[services.findIndex(s => s._id === selectedService._id) % defaultImages.length]} 
-                alt={selectedService.title} 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
+              <img
+                src={selectedService.imageUrl || defaultImages[services.findIndex(s => s._id === selectedService._id) % defaultImages.length]}
+                alt={selectedService.title}
+                style={{
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'cover',
                   borderTopLeftRadius: '16px',
                   borderTopRightRadius: '16px'
@@ -231,9 +231,9 @@ const Services = () => {
               {selectedService.features && selectedService.features.length > 0 && (
                 <div>
                   <h4 style={{ fontSize: '1.1rem', color: 'var(--dark-brown)', marginBottom: '15px' }}>Key Features</h4>
-                  <ul style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+                  <ul style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
                     gap: '12px 20px',
                     margin: 0,
                     padding: 0,

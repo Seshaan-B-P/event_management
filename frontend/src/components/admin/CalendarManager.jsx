@@ -26,7 +26,7 @@ const CalendarManager = () => {
         }
       });
       const data = await res.json();
-      
+
       if (data.success) {
         // Filter contacts that have an eventDate and format them for react-big-calendar
         const calendarEvents = data.data
@@ -59,10 +59,10 @@ const CalendarManager = () => {
   const eventStyleGetter = (event) => {
     let backgroundColor = 'rgba(255, 255, 255, 0.1)';
     let borderLeft = '4px solid var(--admin-text-muted)';
-    
+
     // Color code based on status
     if (event.resource.status === 'Completed') {
-      backgroundColor = 'rgba(16, 185, 129, 0.15)'; 
+      backgroundColor = 'rgba(16, 185, 129, 0.15)';
       borderLeft = '4px solid var(--admin-success)';
     } else if (event.resource.status === 'Pending') {
       backgroundColor = 'rgba(212, 175, 55, 0.15)';

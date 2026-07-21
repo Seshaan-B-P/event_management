@@ -6,7 +6,7 @@ const GalleryManager = () => {
   const [gallery, setGallery] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
-  
+
   // Form State
   const [newImage, setNewImage] = useState({
     title: '',
@@ -75,7 +75,7 @@ const GalleryManager = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this image?')) return;
-    
+
     try {
       const res = await fetch(`${GALLERY_API}/${id}`, { method: 'DELETE' });
       const data = await res.json();
@@ -96,9 +96,9 @@ const GalleryManager = () => {
     <div style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>Gallery Manager</h2>
-        <button 
+        <button
           className="admin-btn admin-btn-primary"
-          style={styles.addButton} 
+          style={styles.addButton}
           onClick={() => setShowAddForm(!showAddForm)}
         >
           <Plus size={20} />
@@ -112,30 +112,30 @@ const GalleryManager = () => {
           <div style={styles.formGrid}>
             <div>
               <label style={styles.label}>Title / Description</label>
-              <input 
-                className="admin-input" 
-                required 
+              <input
+                className="admin-input"
+                required
                 value={newImage.title}
-                onChange={e => setNewImage({...newImage, title: e.target.value})}
-                placeholder="e.g. Royal Wedding Mandap" 
+                onChange={e => setNewImage({ ...newImage, title: e.target.value })}
+                placeholder="e.g. Royal Wedding Mandap"
               />
             </div>
             <div>
               <label style={styles.label}>Location / Venue</label>
-              <input 
-                className="admin-input" 
-                required 
+              <input
+                className="admin-input"
+                required
                 value={newImage.location}
-                onChange={e => setNewImage({...newImage, location: e.target.value})}
-                placeholder="e.g. Karur Grand Palace" 
+                onChange={e => setNewImage({ ...newImage, location: e.target.value })}
+                placeholder="e.g. Karur Grand Palace"
               />
             </div>
             <div>
               <label style={styles.label}>Category</label>
-              <select 
+              <select
                 className="admin-input"
                 value={newImage.category}
-                onChange={e => setNewImage({...newImage, category: e.target.value})}
+                onChange={e => setNewImage({ ...newImage, category: e.target.value })}
               >
                 <option value="wedding">Wedding</option>
                 <option value="corporate">Corporate</option>
@@ -145,12 +145,12 @@ const GalleryManager = () => {
             </div>
             <div>
               <label style={styles.label}>Image File</label>
-              <input 
-                className="admin-input" 
-                required 
+              <input
+                className="admin-input"
+                required
                 type="file"
                 accept=".jpg,.jpeg,.png"
-                onChange={e => setNewImage({...newImage, imageFile: e.target.files[0]})}
+                onChange={e => setNewImage({ ...newImage, imageFile: e.target.files[0] })}
               />
             </div>
           </div>
@@ -193,7 +193,7 @@ const styles = {
   container: { display: 'flex', flexDirection: 'column', gap: '24px' },
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' },
   title: { fontSize: '24px', fontWeight: '700', color: 'var(--admin-text-main)', margin: 0 },
-  addButton: { 
+  addButton: {
     display: 'flex', alignItems: 'center', gap: '8px'
   },
   formCard: {
@@ -218,7 +218,7 @@ const styles = {
   image: { width: '100%', height: '100%', objectFit: 'cover' },
   deleteButton: {
     position: 'absolute', top: '12px', right: '12px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: '#fff',
-    border: 'none', borderRadius: '8px', width: '32px', height: '32px', 
+    border: 'none', borderRadius: '8px', width: '32px', height: '32px',
     display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
     backdropFilter: 'blur(4px)'
   },

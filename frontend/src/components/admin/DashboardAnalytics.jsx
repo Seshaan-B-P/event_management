@@ -103,21 +103,21 @@ const DashboardAnalytics = () => {
 
   const generateDashboardPDF = () => {
     const doc = new jsPDF();
-    
+
     // Header
     doc.setFontSize(20);
     doc.setTextColor(212, 175, 55);
     doc.text('BPS Event Management', 14, 20);
-    
+
     doc.setFontSize(12);
     doc.setTextColor(100, 100, 100);
     doc.text(`Dashboard Analytics Report - ${new Date().toLocaleDateString()}`, 14, 28);
-    
+
     // Stats Summary
     doc.setFontSize(14);
     doc.setTextColor(0, 0, 0);
     doc.text('Performance Summary', 14, 40);
-    
+
     const statsData = [
       ['Total Leads', stats.totalInquiries.toString()],
       ['Completed Events', stats.completedEvents.toString()],
@@ -125,7 +125,7 @@ const DashboardAnalytics = () => {
       ['In Progress', stats.inProgressLeads.toString()],
       ['Average Rating', stats.avgRating.toString()]
     ];
-    
+
     autoTable(doc, {
       startY: 45,
       head: [['Metric', 'Value']],
@@ -134,11 +134,11 @@ const DashboardAnalytics = () => {
       headStyles: { fillColor: [30, 30, 30] },
       styles: { fontSize: 10 }
     });
-    
+
     // Chart Data
     const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY : 45;
     doc.text('Recent Monthly Trends', 14, finalY + 15);
-    
+
     const trendData = chartData.map(d => [d.name, d.inquiries.toString(), d.events.toString()]);
     autoTable(doc, {
       startY: finalY + 20,
@@ -147,14 +147,14 @@ const DashboardAnalytics = () => {
       theme: 'striped',
       headStyles: { fillColor: [212, 175, 55], textColor: [0, 0, 0] }
     });
-    
+
     doc.save('BPS_Analytics_Report.pdf');
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <button 
+        <button
           onClick={generateDashboardPDF}
           style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '8px', border: '1px solid var(--admin-primary)', backgroundColor: 'transparent', color: 'var(--admin-primary)', cursor: 'pointer', fontWeight: '500', marginRight: '16px' }}
         >
@@ -199,9 +199,9 @@ const DashboardAnalytics = () => {
               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--admin-text-muted)', fontSize: 12 }} dy={10} />
               <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--admin-text-muted)', fontSize: 12 }} dx={-10} />
               <Tooltip
-                contentStyle={{ 
-                  borderRadius: '12px', 
-                  border: '1px solid var(--admin-border)', 
+                contentStyle={{
+                  borderRadius: '12px',
+                  border: '1px solid var(--admin-border)',
                   backgroundColor: 'rgba(15, 15, 15, 0.9)',
                   backdropFilter: 'blur(10px)',
                   boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)',
@@ -230,7 +230,7 @@ const DashboardAnalytics = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontWeight: '600', color: 'var(--admin-text-main)' }}>{report.staffName}</span>
-                    <span style={{ 
+                    <span style={{
                       padding: '2px 8px', borderRadius: '10px', fontSize: '10px', fontWeight: '600',
                       backgroundColor: report.reportType === 'Incident' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(212, 175, 55, 0.1)',
                       color: report.reportType === 'Incident' ? 'var(--admin-danger)' : 'var(--admin-primary)'
@@ -256,7 +256,7 @@ const DashboardAnalytics = () => {
 
 const StatCard = ({ title, value, icon: Icon, color }) => (
   <div className="admin-glass-panel" style={styles.statCard}>
-    <div style={{...styles.iconWrapper, backgroundColor: `${color}15`, color: color, boxShadow: `0 0 15px ${color}20`}}>
+    <div style={{ ...styles.iconWrapper, backgroundColor: `${color}15`, color: color, boxShadow: `0 0 15px ${color}20` }}>
       <Icon size={24} />
     </div>
     <div style={styles.statInfo}>

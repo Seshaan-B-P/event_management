@@ -18,7 +18,7 @@ const KanbanBoard = () => {
     fetchTasks();
     fetchContacts();
     fetchStaff();
-    
+
     // Poll for background task updates (e.g. completed by worker)
     const interval = setInterval(fetchTasks, 5000);
     return () => clearInterval(interval);
@@ -235,8 +235,8 @@ const KanbanBoard = () => {
                   >
                     <div style={styles.taskHeader}>
                       <h4 style={styles.taskTitle}>{task.title}</h4>
-                      <button 
-                        onClick={() => handleDelete(task._id)} 
+                      <button
+                        onClick={() => handleDelete(task._id)}
                         style={styles.deleteBtn}
                         onMouseEnter={e => e.currentTarget.style.color = 'var(--admin-danger)'}
                         onMouseLeave={e => e.currentTarget.style.color = 'var(--admin-text-muted)'}

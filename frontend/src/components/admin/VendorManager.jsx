@@ -86,7 +86,7 @@ const VendorManager = () => {
       `"${vendor.location || ''}"`,
       vendor.rating || 0
     ]);
-    
+
     const csvContent = [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -127,9 +127,9 @@ const VendorManager = () => {
       <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
         <div style={{ position: 'relative', flex: 1 }}>
           <Search size={18} style={{ position: 'absolute', left: '16px', top: '14px', color: 'var(--admin-text-muted)' }} />
-          <input 
-            type="text" 
-            placeholder="Search vendors by name or category..." 
+          <input
+            type="text"
+            placeholder="Search vendors by name or category..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -168,7 +168,7 @@ const VendorManager = () => {
                 </div>
                 <div>
                   <h3 style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: '600' }}>{vendor.name}</h3>
-                  <span style={{ 
+                  <span style={{
                     fontSize: '12px', padding: '2px 8px', borderRadius: '12px',
                     backgroundColor: 'rgba(255,255,255,0.1)', color: 'var(--admin-text-muted)'
                   }}>
@@ -180,8 +180,8 @@ const VendorManager = () => {
                 background: 'none', border: 'none', color: 'var(--admin-text-muted)', cursor: 'pointer',
                 padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--admin-danger)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'var(--admin-text-muted)'}
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--admin-danger)'}
+                onMouseLeave={e => e.currentTarget.style.color = 'var(--admin-text-muted)'}
               >
                 <Trash2 size={18} />
               </button>
@@ -198,22 +198,22 @@ const VendorManager = () => {
                 <MapPin size={16} /> {vendor.location}
               </div>
             </div>
-            
+
             <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-              <button 
+              <button
                 onClick={() => setSelectedVendor(vendor)}
                 style={{
-                flex: 1, padding: '10px 0', backgroundColor: 'transparent', border: '1px solid var(--admin-primary)',
-                borderRadius: '8px', color: 'var(--admin-primary)', fontWeight: '500', cursor: 'pointer'
-              }}>
+                  flex: 1, padding: '10px 0', backgroundColor: 'transparent', border: '1px solid var(--admin-primary)',
+                  borderRadius: '8px', color: 'var(--admin-primary)', fontWeight: '500', cursor: 'pointer'
+                }}>
                 View Profile
               </button>
-              <button 
+              <button
                 onClick={() => window.location.href = `tel:${vendor.phone}`}
                 style={{
-                flex: 1, padding: '10px 0', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid var(--admin-border)',
-                borderRadius: '8px', color: 'var(--admin-text-main)', fontWeight: '500', cursor: 'pointer'
-              }}>
+                  flex: 1, padding: '10px 0', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid var(--admin-border)',
+                  borderRadius: '8px', color: 'var(--admin-text-main)', fontWeight: '500', cursor: 'pointer'
+                }}>
                 Contact
               </button>
             </div>
@@ -239,7 +239,7 @@ const VendorManager = () => {
                 <X size={24} />
               </button>
             </div>
-            
+
             <form onSubmit={handleAddVendor} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', color: 'var(--admin-text-muted)', fontSize: '14px' }}>Vendor Name</label>
@@ -247,7 +247,7 @@ const VendorManager = () => {
                   type="text"
                   required
                   value={newVendor.name}
-                  onChange={(e) => setNewVendor({...newVendor, name: e.target.value})}
+                  onChange={(e) => setNewVendor({ ...newVendor, name: e.target.value })}
                   style={{
                     width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                     border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)',
@@ -255,14 +255,14 @@ const VendorManager = () => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', color: 'var(--admin-text-muted)', fontSize: '14px' }}>Category</label>
                 <input
                   type="text"
                   required
                   value={newVendor.category}
-                  onChange={(e) => setNewVendor({...newVendor, category: e.target.value})}
+                  onChange={(e) => setNewVendor({ ...newVendor, category: e.target.value })}
                   style={{
                     width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                     border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)',
@@ -270,14 +270,14 @@ const VendorManager = () => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', color: 'var(--admin-text-muted)', fontSize: '14px' }}>Phone Number</label>
                 <input
                   type="text"
                   required
                   value={newVendor.phone}
-                  onChange={(e) => setNewVendor({...newVendor, phone: e.target.value})}
+                  onChange={(e) => setNewVendor({ ...newVendor, phone: e.target.value })}
                   style={{
                     width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                     border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)',
@@ -285,14 +285,14 @@ const VendorManager = () => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', color: 'var(--admin-text-muted)', fontSize: '14px' }}>Location</label>
                 <input
                   type="text"
                   required
                   value={newVendor.location}
-                  onChange={(e) => setNewVendor({...newVendor, location: e.target.value})}
+                  onChange={(e) => setNewVendor({ ...newVendor, location: e.target.value })}
                   style={{
                     width: '100%', padding: '12px', backgroundColor: 'rgba(255,255,255,0.03)',
                     border: '1px solid var(--admin-border)', borderRadius: '8px', color: 'var(--admin-text-main)',
@@ -343,7 +343,7 @@ const VendorManager = () => {
                   <h2 style={{ fontSize: '22px', fontWeight: '700', margin: '0 0 6px 0', color: 'var(--admin-text-main)' }}>
                     {selectedVendor.name}
                   </h2>
-                  <span style={{ 
+                  <span style={{
                     fontSize: '12px', padding: '4px 10px', borderRadius: '12px',
                     backgroundColor: 'rgba(255,255,255,0.1)', color: 'var(--admin-text-muted)'
                   }}>
@@ -357,7 +357,7 @@ const VendorManager = () => {
                 <X size={24} />
               </button>
             </div>
-            
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '32px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: 'var(--admin-text-main)' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -368,7 +368,7 @@ const VendorManager = () => {
                   <p style={{ margin: 0, fontSize: '15px', fontWeight: '500' }}>{selectedVendor.rating} / 5.0</p>
                 </div>
               </div>
-              
+
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: 'var(--admin-text-main)' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Phone size={20} color="var(--admin-primary)" />
@@ -378,7 +378,7 @@ const VendorManager = () => {
                   <p style={{ margin: 0, fontSize: '15px', fontWeight: '500' }}>{selectedVendor.phone}</p>
                 </div>
               </div>
-              
+
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: 'var(--admin-text-main)' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <MapPin size={20} color="var(--admin-primary)" />
