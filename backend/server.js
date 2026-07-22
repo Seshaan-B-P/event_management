@@ -30,6 +30,14 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Event Management API is running 🚀",
+    health: "/api/health"
+  });
+});
+
 // Routes
 app.use('/api/contacts', contactRoutes);
 app.use('/api/reviews', reviewRoutes);
