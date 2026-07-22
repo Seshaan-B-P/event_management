@@ -2,6 +2,72 @@ import { API_BASE_URL } from '../config';
 import React, { useState, useEffect } from 'react';
 import * as Icons from 'lucide-react';
 
+const defaultImages = [
+  'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80'
+];
+
+const fallbackServices = [
+  {
+    _id: 'fallback-1',
+    title: 'Marriage Stage Decoration',
+    description: 'Exquisite Marriage Stage Decoration and traditional floral mandaps crafted by expert Wedding Decorators in Karur. We design royal backdrop themes, floral arches, and ambient lighting.',
+    iconName: 'Heart',
+    imageUrl: defaultImages[0],
+    isActive: true,
+    features: ['Royal Stage Backdrops', 'Fresh Floral Cascades', 'Traditional Mandap Styling', 'Ambient Stage Lighting']
+  },
+  {
+    _id: 'fallback-2',
+    title: 'Corporate Event Planning',
+    description: 'Top-grade Corporate Event Planners in Karur offering seamless audio-visual setups, stage rigging, keynote backdrops, and product launch venue management.',
+    iconName: 'Briefcase',
+    imageUrl: defaultImages[1],
+    isActive: true,
+    features: ['Keynote Stage Rigging', 'AV & Sound Systems', 'Brand LED Screens', 'Executive Hospitality']
+  },
+  {
+    _id: 'fallback-3',
+    title: 'Sangeet & Party Styling',
+    description: 'As premier Luxury Reception & Party Organizers, we deliver energetic Sangeet dance floors, pro DJ sound setups, intelligent lighting, and memorable celebration decor.',
+    iconName: 'Music',
+    imageUrl: defaultImages[2],
+    isActive: true,
+    features: ['Interactive Dance Floors', 'Intelligent Truss Lights', 'Custom Photo Booths', 'Pro DJ Sound']
+  },
+  {
+    _id: 'fallback-4',
+    title: 'Theme Birthday & Baby Showers',
+    description: 'Custom thematic decorations for milestone birthdays and traditional baby showers in Karur with balloon archways, customized backdrops, and dessert tables.',
+    iconName: 'Gift',
+    imageUrl: defaultImages[3],
+    isActive: true,
+    features: ['3D Theme Backdrops', 'Custom Balloon Sculptures', 'Dessert Table Styling', 'Kid Entertainment']
+  },
+  {
+    _id: 'fallback-5',
+    title: 'Gourmet Catering Services',
+    description: 'Comprehensive Event Management in Karur featuring authentic South Indian and multi-cuisine banquets tailored for weddings, receptions, and corporate galas.',
+    iconName: 'Utensils',
+    imageUrl: defaultImages[4],
+    isActive: true,
+    features: ['Authentic South Indian Menus', 'Live Food Counters', 'Professional Buffet Setup', 'Hygienic Serving Staff']
+  },
+  {
+    _id: 'fallback-6',
+    title: 'Sound, DJ & Intelligent Lighting',
+    description: 'Professional concert-grade line array sound systems, truss lighting setups, haze machines, and expert DJ curation for high-energy wedding receptions.',
+    iconName: 'Sparkles',
+    imageUrl: defaultImages[5],
+    isActive: true,
+    features: ['Line Array Sound Tech', 'Intelligent Moving Heads', 'Special Haze & Pyro Effects', 'Live Music Band Setup']
+  }
+];
+
 const Services = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,13 +77,17 @@ const Services = () => {
     fetch(`${API_BASE_URL}/api/services`)
       .then(res => res.json())
       .then(data => {
-        if (data.success) {
-          setServices(data.data.filter(s => s.isActive));
+        if (data.success && data.data && data.data.length > 0) {
+          const active = data.data.filter(s => s.isActive);
+          setServices(active.length > 0 ? active : fallbackServices);
+        } else {
+          setServices(fallbackServices);
         }
         setLoading(false);
       })
       .catch(err => {
         console.error('Failed to load services:', err);
+        setServices(fallbackServices);
         setLoading(false);
       });
   }, []);
@@ -27,12 +97,11 @@ const Services = () => {
     return <Icon size={size} style={{ color: isDark ? 'var(--dark-brown)' : 'var(--gold)' }} />;
   };
 
-
   return (
     <section id="services" className="section" style={{ backgroundColor: 'var(--light-gray)' }}>
       <div className="container">
         <p className="section-subtitle">What We Do Best</p>
-        <h2 className="section-title">Our Event Services</h2>
+        <h2 className="section-title">Our Event Services in Karur</h2>
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px' }}>Loading services...</div>

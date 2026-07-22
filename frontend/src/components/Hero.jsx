@@ -52,36 +52,36 @@ const Hero = () => {
         {/* Main Brand Title */}
         <h1
           style={{
-            fontSize: 'calc(2.5rem + 2vw)',
+            fontSize: 'calc(2.2rem + 1.8vw)',
             fontWeight: '800',
-            letterSpacing: '3px',
-            lineHeight: 1.1,
+            letterSpacing: '2px',
+            lineHeight: 1.25,
             textTransform: 'uppercase',
             marginBottom: '20px',
-            animation: 'fadeInUp 1 ease-out forwards',
+            animation: 'fadeInUp 1s ease-out forwards',
             background: 'linear-gradient(to right, #ffffff 30%, var(--gold-light) 70%, var(--gold) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             textShadow: '0 4px 20px rgba(0,0,0,0.5)'
           }}
         >
-          BPS EVENTS
+          BPS EVENTS | Premier Event Management &amp; Wedding Decorators in Karur
         </h1>
 
-        {/* Secondary Title */}
+        {/* Secondary Title & Copy */}
         <p
           style={{
             fontSize: '1.2rem',
             fontWeight: '300',
-            maxWidth: '700px',
+            maxWidth: '780px',
             margin: '0 auto 40px',
             color: 'var(--light-gray)',
-            lineHeight: 1.6,
-            letterSpacing: '1px',
+            lineHeight: 1.7,
+            letterSpacing: '0.5px',
             animation: 'fadeInUp 1.2s ease-out forwards'
           }}
         >
-          Event planners and wedding decorators at Karur - turning your dreams into reality with custom stage settings, exquisite lighting, great sound, and exquisite catering.
+          Top-rated <strong>Event Management in Karur</strong> and specialized <strong>Wedding Decorators in Karur</strong>. We turn your dream celebrations into magical realities with handcrafted <strong>Marriage Stage Decoration</strong>, thematic sangeet setups, and full-scale corporate galas.
         </p>
 
         {/* CTA Button Row */}

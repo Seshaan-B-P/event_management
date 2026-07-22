@@ -28,13 +28,16 @@ const About = () => {
                 fontWeight: '600'
               }}
             >
-              Making Every Event a Masterpiece Since 2024
+              Making Every Event a Visual Masterpiece Since 2024
             </h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '1.05rem', lineHeight: '1.7' }}>
-              Based in the heart of Karur, Tamil Nadu, <strong>BPS Events</strong> is a team of passionate creators, planners, and designers who believe that every celebration deserves to be legendary. We specialize in curating custom stages, wedding backdrops, sound configurations, and themed corporate layouts.
+            <p style={{ color: 'var(--text-muted)', marginBottom: '18px', fontSize: '1.05rem', lineHeight: '1.7' }}>
+              Headquartered in Vengamedu, Karur, <strong>BPS Events</strong> stands as a benchmark for professional <strong>Event Management in Karur</strong> and surrounding regions in Tamil Nadu. Our creative team of designers, artisans, and event strategists transform ordinary venues into extraordinary spaces that captivate guests and leave lasting memories.
             </p>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '30px', fontSize: '1.05rem', lineHeight: '1.7' }}>
-              Whether it is an intimate engagement, a grand wedding sangeet, a thematic birthday party, or a formal business meeting, we deliver a flawless end-to-end execution. From concept stage to final light trigger, we take care of it all.
+            <p style={{ color: 'var(--text-muted)', marginBottom: '18px', fontSize: '1.05rem', lineHeight: '1.7' }}>
+              As leading <strong>Wedding Decorators in Karur</strong>, we take pride in executing bespoke <strong>Marriage Stage Decoration</strong>, traditional Muhurtham mandaps, vibrant Sangeet dance floors, and regal wedding receptions. Beyond weddings, our expert team operates as premier <strong>Corporate Event Planners</strong> and <strong>Luxury Reception &amp; Party Organizers</strong> for product launches, milestone anniversaries, and thematic birthdays.
+            </p>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '28px', fontSize: '1.05rem', lineHeight: '1.7' }}>
+              From initial floor plan conceptualization and floral selections to high-end acoustic sound management, ambient LED illumination, and premium catering, BPS Events manages every intricacy so you can savor your special day stress-free.
             </p>
 
             {/* Achievement indicators */}
@@ -51,7 +54,7 @@ const About = () => {
               >
                 <Award size={24} style={{ color: 'var(--gold)', margin: '0 auto 8px' }} />
                 <h4 style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--dark-brown)' }}>2+</h4>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Years</p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Years Experience</p>
               </div>
 
               <div
@@ -66,7 +69,7 @@ const About = () => {
               >
                 <Users size={24} style={{ color: 'var(--gold)', margin: '0 auto 8px' }} />
                 <h4 style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--dark-brown)' }}>50+</h4>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Events</p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Events Delivered</p>
               </div>
 
               <div
@@ -81,7 +84,7 @@ const About = () => {
               >
                 <Heart size={24} style={{ color: 'var(--gold)', margin: '0 auto 8px' }} />
                 <h4 style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--dark-brown)' }}>100%</h4>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Happy</p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Client Satisfaction</p>
               </div>
             </div>
           </div>
@@ -98,14 +101,14 @@ const About = () => {
             <div className="arched-frame" style={{ height: '320px', marginTop: '40px' }}>
               <img
                 src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80"
-                alt="Wedding Stage Backdrop decoration"
+                alt="BPS Events luxury Marriage Stage Decoration by Wedding Decorators Karur"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
             <div className="arched-frame" style={{ height: '320px' }}>
               <img
                 src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=600&q=80"
-                alt="Birthday balloon theme decorations"
+                alt="Theme Birthday and Luxury Party Organizers setup in Karur"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>

@@ -9,6 +9,7 @@ import Services from './components/Services';
 import Timeline from './components/Timeline';
 import Gallery from './components/Gallery';
 import Reviews from './components/Reviews';
+import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -70,6 +71,7 @@ function LandingPage() {
       <Timeline />
       <Gallery />
       <Reviews />
+      <FAQ />
       
       {/* Contact */}
       <Contact />

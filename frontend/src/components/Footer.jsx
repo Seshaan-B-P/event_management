@@ -49,7 +49,7 @@ const Footer = () => {
               Quick Links
             </h4>
             <ul style={{ display: 'grid', gap: '10px' }}>
-              {['Home', 'About', 'Services', 'Timeline', 'Gallery', 'Reviews', 'Contact'].map((item) => (
+              {['Home', 'About', 'Services', 'Timeline', 'Gallery', 'Reviews', 'FAQ', 'Contact'].map((item) => (
                 <li key={item}>
                   <a
                     href={`#${item.toLowerCase()}`}
@@ -76,7 +76,7 @@ const Footer = () => {
                   onMouseEnter={(e) => e.target.style.color = 'var(--white)'}
                   onMouseLeave={(e) => e.target.style.color = 'var(--gold)'}
                 >
-                  Login
+                  Staff / Admin Login
                 </a>
               </li>
             </ul>
@@ -85,15 +85,15 @@ const Footer = () => {
           {/* Services Column */}
           <div>
             <h4 style={{ color: 'var(--gold)', fontSize: '1rem', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase' }}>
-              Our Services
+              Specializations
             </h4>
             <ul style={{ display: 'grid', gap: '10px', color: 'var(--light-gray)' }}>
-              <li>Premium Weddings</li>
-              <li>Sangeet Decoration</li>
-              <li>Theme Birthday Parties</li>
-              <li>Surprise Proposals</li>
-              <li>Corporate Meetings</li>
-              <li>Lighting & DJ setup</li>
+              <li>Marriage Stage Decoration</li>
+              <li>Wedding Decorators Karur</li>
+              <li>Corporate Event Planners</li>
+              <li>Sangeet & Party Organizers</li>
+              <li>Theme Birthday Celebrations</li>
+              <li>Lighting & Line Array Sound</li>
             </ul>
           </div>
 
@@ -106,9 +106,36 @@ const Footer = () => {
               25, S.P.Colony, Vengamedu,<br />
               Karur, Tamil Nadu 639006
             </p>
-            <p style={{ color: 'var(--gold)', fontWeight: '600' }}>
+            <p style={{ color: 'var(--gold)', fontWeight: '600', marginBottom: '15px' }}>
               Ph: +91 81249-31018
             </p>
+            {/* External Social Links */}
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--gold)', fontSize: '0.85rem', textDecoration: 'underline' }}
+              >
+                Instagram
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--gold)', fontSize: '0.85rem', textDecoration: 'underline' }}
+              >
+                Facebook
+              </a>
+              <a
+                href="https://wa.me/918124931018"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--gold)', fontSize: '0.85rem', textDecoration: 'underline' }}
+              >
+                WhatsApp
+              </a>
+            </div>
           </div>
         </div>
 
@@ -127,7 +154,7 @@ const Footer = () => {
             gap: '10px'
           }}
         >
-          <p>© {new Date().getFullYear()} BPS Events. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} BPS Events Karur. All Rights Reserved. Top Choice for Event Management in Karur.</p>
         </div>
       </div>
     </footer>

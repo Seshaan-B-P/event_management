@@ -121,14 +121,15 @@ const Contact = ({ onOpenAdmin }) => {
               </div>
             </div>
 
-            {/* Google Map Iframe */}
+            {/* Google Map Iframe & External Directions Link */}
             <div
               style={{
                 borderRadius: '16px',
                 overflow: 'hidden',
                 boxShadow: 'var(--shadow-sm)',
                 height: '240px',
-                border: '1px solid rgba(212,175,55,0.2)'
+                border: '1px solid rgba(212,175,55,0.2)',
+                position: 'relative'
               }}
             >
               <iframe
@@ -141,6 +142,16 @@ const Contact = ({ onOpenAdmin }) => {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
+            </div>
+            <div style={{ marginTop: '10px', textAlign: 'right' }}>
+              <a
+                href="https://maps.google.com/?q=10.981691,78.078331"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--gold)', fontSize: '0.85rem', fontWeight: '600', textDecoration: 'underline' }}
+              >
+                Open BPS Events in Google Maps ↗
+              </a>
             </div>
           </div>
 
