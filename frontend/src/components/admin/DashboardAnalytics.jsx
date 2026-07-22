@@ -27,9 +27,9 @@ const DashboardAnalytics = () => {
     const fetchAnalyticsData = async () => {
       try {
         const [contactsRes, reviewsRes, reportsRes] = await Promise.all([
-          fetch('http://api/contacts'),
-          fetch('http://https://event-management-kvfo.onrender.com/api/reviews'),
-          fetch('http://https://event-management-kvfo.onrender.com/api/reports')
+          fetch('https://event-management-kvfo.onrender.com/api/contacts'),
+          fetch('https://event-management-kvfo.onrender.com/api/reviews'),
+          fetch('https://event-management-kvfo.onrender.com/api/reports')
         ]);
         const contactsData = await contactsRes.json();
         const reviewsData = await reviewsRes.json();
