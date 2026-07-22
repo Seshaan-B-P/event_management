@@ -1,51 +1,6 @@
 import { API_BASE_URL } from '../config';
 import React, { useState, useEffect } from 'react';
 
-const fallbackGallery = [
-  {
-    _id: 'gal-1',
-    title: 'Royal Mandap Marriage Stage',
-    location: 'Vengamedu, Karur',
-    category: 'wedding',
-    image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'gal-2',
-    title: 'Theme Birthday & Balloon Styling',
-    location: 'Karur Town',
-    category: 'birthday',
-    image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'gal-3',
-    title: 'Sangeet DJ Light Setup',
-    location: 'Karur City Hall',
-    category: 'wedding',
-    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'gal-4',
-    title: 'Corporate Conference Rigging',
-    location: 'Industrial Estate, Karur',
-    category: 'other',
-    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'gal-5',
-    title: 'Outdoor Reception Backdrop',
-    location: 'Green Meadows, Karur',
-    category: 'wedding',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'gal-6',
-    title: 'Grand Baby Shower Stage',
-    location: 'Pasupathipalayam, Karur',
-    category: 'birthday',
-    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80'
-  }
-];
-
 const Gallery = () => {
   const [filter, setFilter] = useState('all');
   const [items, setItems] = useState([]);
@@ -58,14 +13,14 @@ const Gallery = () => {
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        if (data.success && data.data && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data)) {
           setItems(data.data);
         } else {
-          setItems(fallbackGallery);
+          setItems([]);
         }
       } catch (err) {
         console.error('Error fetching gallery:', err);
-        setItems(fallbackGallery);
+        setItems([]);
       } finally {
         setLoading(false);
       }

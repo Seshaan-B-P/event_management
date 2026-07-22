@@ -26,31 +26,8 @@ const Reviews = () => {
       }
     } catch (err) {
       console.error('Fetch reviews error:', err);
-      setError('Could not connect to the backend server. Showing offline default testimonials.');
-      // Fallback fallback reviews if server is not running
-      setReviews([
-        {
-          name: "Prabhu Jin",
-          rating: 5,
-          comment: "Excellent decoration and management. They organized my cousin's wedding in Karur. The stage setup was wonderful and flower arrangements were outstanding. Highly professional!",
-          avatar: "P",
-          source: "Google Review"
-        },
-        {
-          name: "Nirmal Raj",
-          rating: 5,
-          comment: "Very professional team. They handled a theme-based birthday party for my kid. The balloon decorations and special cake were amazing! Everyone in the family loved it.",
-          avatar: "N",
-          source: "Google Review"
-        },
-        {
-          name: "Gowri Shankar",
-          rating: 5,
-          comment: "Best event planner in Karur! The wedding timeline was perfectly executed. Lighting, DJ, and stage decorations were top tier. Very budget friendly. Highly recommend!",
-          avatar: "G",
-          source: "Google Review"
-        }
-      ]);
+      setError('Could not load reviews from the server.');
+      setReviews([]);
     } finally {
       setLoading(false);
     }
