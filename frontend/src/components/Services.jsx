@@ -7,7 +7,7 @@ const Services = () => {
   const [selectedService, setSelectedService] = useState(null);
 
   useEffect(() => {
-    fetch('https://em-backend.onrender.com')
+    fetch('https://event-management-kvfo.onrender.com/api/services')
       .then(res => res.json())
       .then(data => {
         if (data.success) {

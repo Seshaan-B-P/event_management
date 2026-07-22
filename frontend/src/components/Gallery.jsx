@@ -5,7 +5,7 @@ const Gallery = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = 'https://em-backend.onrender.com/api/gallery';
+  const API_URL = 'https://event-management-kvfo.onrender.com/api/gallery';
 
   useEffect(() => {
     const fetchGallery = async () => {
