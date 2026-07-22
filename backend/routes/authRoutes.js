@@ -24,8 +24,8 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     let admin = await Admin.findOne({ username });
 
-    // Auto-seed default admin if database has no admin records yet
-    if (!admin && (await Admin.countDocuments()) === 0 && username === 'admin' && password === 'admin@bps') {
+    // Auto-seed default admin if missing
+    if (!admin && username === 'admin' && password === 'admin@bps') {
       admin = await Admin.create({ username: 'admin', password: 'admin@bps', role: 'superadmin' });
     }
 
@@ -88,11 +88,11 @@ router.post('/staff-login', async (req, res) => {
   try {
     if (process.env.MOCK_DB === 'true') {
       const { username, password } = req.body;
-      if (username === 'worker' && password === 'worker123') {
+      if ((username === 'worker' || username === 'worker@bpsevent.com') && password === 'worker123') {
         const token = jwt.sign({ id: 'mock_staff_id', role: 'staff' }, process.env.JWT_SECRET || 'fallback_secret', {
           expiresIn: '30d'
         });
-        return res.json({ success: true, token, username: 'worker', role: 'staff', _id: 'mock_staff_id' });
+        return res.json({ success: true, token, username: 'worker@bpsevent.com', role: 'staff', _id: 'mock_staff_id' });
       } else {
         return res.status(401).json({ success: false, message: 'Invalid credentials' });
       }
@@ -108,8 +108,8 @@ router.post('/staff-login', async (req, res) => {
       $or: [{ username }, { username: queryUsername }]
     });
 
-    // Auto-seed default staff if database has no staff records yet
-    if (!staff && (await Staff.countDocuments()) === 0 && (username === 'worker' || username === 'worker@bpsevent.com') && password === 'worker123') {
+    // Auto-seed default staff if missing and default credentials are provided
+    if (!staff && (username === 'worker' || username === 'worker@bpsevent.com') && password === 'worker123') {
       staff = await Staff.create({
         name: 'Default Worker',
         username: 'worker@bpsevent.com',
