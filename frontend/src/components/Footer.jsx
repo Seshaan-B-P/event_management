@@ -49,7 +49,7 @@ const Footer = () => {
               Quick Links
             </h4>
             <ul style={{ display: 'grid', gap: '10px' }}>
-              {['Home', 'About', 'Services', 'Timeline', 'Gallery', 'Reviews', 'FAQ', 'Contact'].map((item) => (
+              {['Home', 'About', 'Services', 'Timeline', 'Gallery', 'Reviews', 'Contact'].map((item) => (
                 <li key={item}>
                   <a
                     href={`#${item.toLowerCase()}`}

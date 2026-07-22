@@ -65,7 +65,7 @@ const Hero = () => {
             textShadow: '0 4px 20px rgba(0,0,0,0.5)'
           }}
         >
-          BPS EVENTS | Premier Event Management &amp; Wedding Decorators in Karur
+          BPS EVENTS | Best Event Decorators in Karur
         </h1>
 
         {/* Secondary Title & Copy */}
