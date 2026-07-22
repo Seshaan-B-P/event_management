@@ -10,7 +10,7 @@ const Contact = ({ onOpenAdmin }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const API_URL = 'http://localhost:5000/api/contacts';
+  const API_URL = 'https://em-backend.onrender.com/api/contacts';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

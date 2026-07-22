@@ -41,7 +41,7 @@ const AdminLayout = ({ onLogout }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/notifications?role=${userRole}`);
+        const res = await fetch(`https://em-backend.onrender.com/api/notifications?role=${userRole}`);
         const data = await res.json();
         if (data.success) {
           setNotifications(data.data);
