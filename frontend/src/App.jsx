@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import AdminDashboard from './components/AdminDashboard';
 import WorkerDashboard from './components/WorkerDashboard';
+import UnifiedLogin from './components/UnifiedLogin';
 
 function LandingPage() {
   // Implement Scroll Reveal Animation Observer
@@ -83,27 +84,15 @@ function LandingPage() {
 }
 
 function App() {
-  const appMode = import.meta.env.VITE_APP_MODE || 'all';
-
   return (
     <>
       <Toaster position="top-right" />
       <Routes>
-        {(appMode === 'all' || appMode === 'website') && (
-          <Route path="/" element={<LandingPage />} />
-        )}
-        {(appMode === 'all' || appMode === 'admin') && (
-          <>
-            <Route path="/admin/*" element={<AdminDashboard />} />
-            {appMode === 'admin' && <Route path="/" element={<Navigate to="/admin" replace />} />}
-          </>
-        )}
-        {(appMode === 'all' || appMode === 'worker') && (
-          <>
-            <Route path="/worker/*" element={<WorkerDashboard />} />
-            {appMode === 'worker' && <Route path="/" element={<Navigate to="/worker" replace />} />}
-          </>
-        )}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<UnifiedLogin />} />
+        <Route path="/admin/*" element={<AdminDashboard />} />
+        <Route path="/worker/*" element={<WorkerDashboard />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );

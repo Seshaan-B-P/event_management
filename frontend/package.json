@@ -5,9 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:website": "cross-env VITE_APP_MODE=website vite --port 5173",
-    "dev:admin": "cross-env VITE_APP_MODE=admin vite --port 5174",
-    "dev:worker": "cross-env VITE_APP_MODE=worker vite --port 5175",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

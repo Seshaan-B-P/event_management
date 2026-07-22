@@ -61,6 +61,24 @@ const Footer = () => {
                   </a>
                 </li>
               ))}
+              <li style={{ marginTop: '5px', paddingTop: '8px', borderTop: '1px solid rgba(212, 175, 55, 0.2)' }}>
+                <a
+                  href="/login"
+                  style={{
+                    color: 'var(--gold)',
+                    fontWeight: '600',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '0.9rem',
+                    transition: 'var(--transition-fast)'
+                  }}
+                  onMouseEnter={(e) => e.target.style.color = 'var(--white)'}
+                  onMouseLeave={(e) => e.target.style.color = 'var(--gold)'}
+                >
+                  Login
+                </a>
+              </li>
             </ul>
           </div>
 
