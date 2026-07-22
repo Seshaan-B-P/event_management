@@ -98,7 +98,7 @@ router.post('/', upload.single('imageFile'), async (req, res) => {
   let image = req.body.image;
 
   if (req.file) {
-    image = `http://https://event-management-kvfo.onrender.com/${req.file.filename}`;
+    image = `https://event-management-kvfo.onrender.com/${req.file.filename}`;
   }
 
   if (!title || !location || !category || !image) {
