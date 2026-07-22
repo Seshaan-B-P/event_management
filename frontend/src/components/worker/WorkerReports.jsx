@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { FileText, Plus, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -24,7 +25,7 @@ const WorkerReports = () => {
 
   const fetchReports = async () => {
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/reports/staff/${staffId}`);
+      const res = await fetch(`${API_BASE_URL}/api/reports/staff/${staffId}`);
       const data = await res.json();
       if (data.success) {
         setReports(data.data);
@@ -45,7 +46,7 @@ const WorkerReports = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/reports', {
+      const res = await fetch(`${API_BASE_URL}/api/reports`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

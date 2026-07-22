@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState } from 'react';
 import { Lock, User, ChevronRight, Loader2, Wrench, Calendar, MessageSquare, ClipboardList } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,7 @@ const WorkerAuth = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/auth/staff-login', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/staff-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -50,7 +51,7 @@ const WorkerAuth = ({ onLogin }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/auth/staff-forgot-password', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/staff-forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: forgotUsername })

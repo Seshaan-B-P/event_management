@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, CheckCircle, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -17,7 +18,7 @@ const ServiceManager = () => {
     imageUrl: ''
   });
 
-  const API_URL = 'http://https://event-management-kvfo.onrender.com/api/services';
+  const API_URL = `${API_BASE_URL}/api/services`;
 
   useEffect(() => {
     fetchServices();

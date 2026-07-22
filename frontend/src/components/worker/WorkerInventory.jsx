@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Package, Plus, Clock, CheckCircle, XCircle, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -28,7 +29,7 @@ const WorkerInventory = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/inventory-requests/staff/${staffId}`);
+      const res = await fetch(`${API_BASE_URL}/api/inventory-requests/staff/${staffId}`);
       const data = await res.json();
       if (data.success) {
         setRequests(data.data);
@@ -42,7 +43,7 @@ const WorkerInventory = () => {
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/inventory');
+      const res = await fetch(`${API_BASE_URL}/api/inventory`);
       const data = await res.json();
       if (data.success) {
         setInventory(data.data);
@@ -64,7 +65,7 @@ const WorkerInventory = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/inventory-requests', {
+      const res = await fetch(`${API_BASE_URL}/api/inventory-requests`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

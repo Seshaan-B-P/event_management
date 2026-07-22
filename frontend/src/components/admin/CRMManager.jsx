@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Mail, Phone, Calendar, Clock, Edit3, Check, ChevronRight, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -26,7 +27,7 @@ const CRMManager = () => {
     paymentStatus: 'Unpaid'
   });
 
-  const CONTACT_API = 'http://https://event-management-kvfo.onrender.com/api/contacts';
+  const CONTACT_API = `${API_BASE_URL}/api/contacts`;
 
   const fetchMessages = async () => {
     setLoading(true);

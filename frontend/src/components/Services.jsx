@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useState, useEffect } from 'react';
 import * as Icons from 'lucide-react';
 
@@ -7,7 +8,7 @@ const Services = () => {
   const [selectedService, setSelectedService] = useState(null);
 
   useEffect(() => {
-    fetch('https://event-management-kvfo.onrender.com/api/services')
+    fetch('https/api/services')
       .then(res => res.json())
       .then(data => {
         if (data.success) {

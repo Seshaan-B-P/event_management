@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Package, Plus, Edit2, Trash2, X, Search, Filter, Box, Users, Truck, Briefcase } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -30,10 +31,10 @@ const PackageManager = () => {
     setLoading(true);
     try {
       const [pkgRes, srvRes, invRes, vndRes] = await Promise.all([
-        fetch('http://https://event-management-kvfo.onrender.com/api/packages'),
-        fetch('http://https://event-management-kvfo.onrender.com/api/services'),
-        fetch('http://https://event-management-kvfo.onrender.com/api/inventory'),
-        fetch('http://https://event-management-kvfo.onrender.com/api/vendors')
+        fetch(`${API_BASE_URL}/api/packages`),
+        fetch(`${API_BASE_URL}/api/services`),
+        fetch(`${API_BASE_URL}/api/inventory`),
+        fetch(`${API_BASE_URL}/api/vendors`)
       ]);
       const [pkgData, srvData, invData, vndData] = await Promise.all([
         pkgRes.json(), srvRes.json(), invRes.json(), vndRes.json()
@@ -104,8 +105,8 @@ const PackageManager = () => {
     setIsSubmitting(true);
     try {
       const url = editingId
-        ? `http://https://event-management-kvfo.onrender.com/api/packages/${editingId}`
-        : `http://https://event-management-kvfo.onrender.com/api/packages`;
+        ? `${API_BASE_URL}/api/packages/${editingId}`
+        : `${API_BASE_URL}/api/packages`;
       const method = editingId ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -132,7 +133,7 @@ const PackageManager = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this package?')) return;
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/packages/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/api/packages/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         setPackages(packages.filter(p => p._id !== id));

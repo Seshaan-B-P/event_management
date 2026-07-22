@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 
@@ -10,7 +11,7 @@ const Contact = ({ onOpenAdmin }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const API_URL = 'https://event-management-kvfo.onrender.com/api/contacts';
+  const API_URL = 'https/api/contacts';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

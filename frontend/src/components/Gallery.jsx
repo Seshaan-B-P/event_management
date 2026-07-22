@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useState, useEffect } from 'react';
 
 const Gallery = () => {
@@ -5,7 +6,7 @@ const Gallery = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = 'https://event-management-kvfo.onrender.com/api/gallery';
+  const API_URL = 'https/api/gallery';
 
   useEffect(() => {
     const fetchGallery = async () => {

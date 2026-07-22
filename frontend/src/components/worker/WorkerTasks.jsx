@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { ClipboardList, Loader2, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -16,7 +17,7 @@ const WorkerTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/tasks');
+      const res = await fetch(`${API_BASE_URL}/api/tasks`);
       const data = await res.json();
       if (data.success) {
         // Filter tasks assigned to this worker (exact username match or partial legacy match)
@@ -37,7 +38,7 @@ const WorkerTasks = () => {
 
   const handleStatusChange = async (taskId, newStatus) => {
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/tasks/${taskId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })

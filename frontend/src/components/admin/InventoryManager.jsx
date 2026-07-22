@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Package, Search, Filter, Plus, AlertTriangle, Box, Check, X, Edit2, Trash2, Download } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -26,7 +27,7 @@ const InventoryManager = () => {
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/inventory');
+      const res = await fetch(`${API_BASE_URL}/api/inventory`);
       const data = await res.json();
       if (data.success) {
         setItems(data.data);
@@ -40,7 +41,7 @@ const InventoryManager = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/inventory-requests');
+      const res = await fetch(`${API_BASE_URL}/api/inventory-requests`);
       const data = await res.json();
       if (data.success) {
         setRequests(data.data);
@@ -52,7 +53,7 @@ const InventoryManager = () => {
 
   const handleRequestAction = async (id, status) => {
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/inventory-requests/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/inventory-requests/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })
@@ -77,8 +78,8 @@ const InventoryManager = () => {
     setIsSubmitting(true);
     try {
       const url = editingItemId
-        ? `http://https://event-management-kvfo.onrender.com/api/inventory/${editingItemId}`
-        : 'http://https://event-management-kvfo.onrender.com/api/inventory';
+        ? `${API_BASE_URL}/api/inventory/${editingItemId}`
+        : `${API_BASE_URL}/api/inventory`;
       const method = editingItemId ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -127,7 +128,7 @@ const InventoryManager = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/inventory/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/api/inventory/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         setItems(items.filter(item => item._id !== id));

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -20,7 +21,7 @@ const CalendarManager = () => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/contacts', {
+      const res = await fetch(`${API_BASE_URL}/api/contacts`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('bps_admin_token')}`
         }

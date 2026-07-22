@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Calendar, Plus, Clock, CheckCircle, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -25,7 +26,7 @@ const WorkerLeave = () => {
 
   const fetchLeaves = async () => {
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/leaves/staff/${staffId}`);
+      const res = await fetch(`${API_BASE_URL}/api/leaves/staff/${staffId}`);
       const data = await res.json();
       if (data.success) {
         setLeaves(data.data);
@@ -46,7 +47,7 @@ const WorkerLeave = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/leaves', {
+      const res = await fetch(`${API_BASE_URL}/api/leaves`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Truck, Search, Filter, Plus, Phone, Mail, MapPin, Star, X, Trash2, Download } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -20,7 +21,7 @@ const VendorManager = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const res = await fetch('http://https://event-management-kvfo.onrender.com/api/vendors');
+        const res = await fetch(`${API_BASE_URL}/api/vendors`);
         const data = await res.json();
         if (data.success) {
           setVendors(data.data);
@@ -38,7 +39,7 @@ const VendorManager = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/vendors', {
+      const res = await fetch(`${API_BASE_URL}/api/vendors`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -64,7 +65,7 @@ const VendorManager = () => {
   const handleDeleteVendor = async (id) => {
     if (!window.confirm('Are you sure you want to delete this vendor?')) return;
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/vendors/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/api/vendors/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         setVendors(vendors.filter(v => v._id !== id));

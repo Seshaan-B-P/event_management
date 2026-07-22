@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Users, Calendar, Star, Phone, Activity, Download } from 'lucide-react';
@@ -18,7 +19,7 @@ const DashboardAnalytics = () => {
 
   useEffect(() => {
     // Check health
-    fetch('http://https://event-management-kvfo.onrender.com/api/health')
+    fetch(`${API_BASE_URL}/api/health`)
       .then(res => res.json())
       .then(data => setDbHealthy(data.mockMode === false ? 'Online (MongoDB)' : 'Mock Mode'))
       .catch(() => setDbHealthy('Offline'));
@@ -27,9 +28,9 @@ const DashboardAnalytics = () => {
     const fetchAnalyticsData = async () => {
       try {
         const [contactsRes, reviewsRes, reportsRes] = await Promise.all([
-          fetch('http://https://event-management-kvfo.onrender.com/api/contacts'),
-          fetch('http://https://event-management-kvfo.onrender.com/api/reviews'),
-          fetch('http://https://event-management-kvfo.onrender.com/api/reports')
+          fetch(`${API_BASE_URL}/api/contacts`),
+          fetch(`${API_BASE_URL}/api/reviews`),
+          fetch(`${API_BASE_URL}/api/reports`)
         ]);
         const contactsData = await contactsRes.json();
         const reviewsData = await reviewsRes.json();

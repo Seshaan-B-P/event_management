@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { IndianRupee, FileText, Download, Plus, Search, Filter, CheckCircle, AlertCircle, Clock, X } from 'lucide-react';
 import { jsPDF } from 'jspdf';
@@ -13,7 +14,7 @@ const FinanceManager = () => {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const res = await fetch('http://https://event-management-kvfo.onrender.com/api/contacts');
+        const res = await fetch(`${API_BASE_URL}/api/contacts`);
         const data = await res.json();
         if (data.success) {
           setContacts(data.data);

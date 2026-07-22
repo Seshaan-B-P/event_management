@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Calendar as CalendarIcon, User } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -10,9 +11,9 @@ const KanbanBoard = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [newTask, setNewTask] = useState({ title: '', description: '', contactId: '', assignee: '' });
 
-  const API_URL = 'http://https://event-management-kvfo.onrender.com/api/tasks';
-  const CONTACTS_API = 'http://https://event-management-kvfo.onrender.com/api/contacts';
-  const STAFF_API = 'http://https://event-management-kvfo.onrender.com/api/staff';
+  const API_URL = `${API_BASE_URL}/api/tasks`;
+  const CONTACTS_API = `${API_BASE_URL}/api/contacts`;
+  const STAFF_API = `${API_BASE_URL}/api/staff`;
 
   useEffect(() => {
     fetchTasks();

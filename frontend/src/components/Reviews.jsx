@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useState, useEffect, useRef } from 'react';
 import { Star, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -11,7 +12,7 @@ const Reviews = () => {
 
   const autoPlayRef = useRef(null);
 
-  const API_URL = 'https://event-management-kvfo.onrender.com/api/reviews';
+  const API_URL = 'https/api/reviews';
 
   // Fetch reviews from backend
   const fetchReviews = async () => {

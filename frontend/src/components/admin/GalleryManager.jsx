@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, MapPin, Tag } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -16,7 +17,7 @@ const GalleryManager = () => {
   });
   const [adding, setAdding] = useState(false);
 
-  const GALLERY_API = 'http://https://event-management-kvfo.onrender.com/api/gallery';
+  const GALLERY_API = `${API_BASE_URL}/api/gallery`;
 
   const fetchGallery = async () => {
     setLoading(true);

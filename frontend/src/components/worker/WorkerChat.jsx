@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, MessageCircle, Clock, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -32,7 +33,7 @@ const WorkerChat = () => {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/messages/Staff/${staffId}`);
+      const res = await fetch(`${API_BASE_URL}/api/messages/Staff/${staffId}`);
       const data = await res.json();
       if (data.success) {
         setMessages(data.data);
@@ -58,7 +59,7 @@ const WorkerChat = () => {
     setNewMessage(''); // optimistic clear
 
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/messages', {
+      const res = await fetch(`${API_BASE_URL}/api/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(messageData)

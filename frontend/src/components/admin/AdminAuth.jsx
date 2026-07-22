@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState } from 'react';
 import { Lock, Mail, ChevronRight, Loader2, CalendarHeart, ShieldCheck, Users, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +15,7 @@ const AdminAuth = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/auth/login', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

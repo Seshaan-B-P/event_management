@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Star, User } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -16,7 +17,7 @@ const ReviewManager = () => {
   });
   const [adding, setAdding] = useState(false);
 
-  const REVIEWS_API = 'http://https://event-management-kvfo.onrender.com/api/reviews';
+  const REVIEWS_API = `${API_BASE_URL}/api/reviews`;
 
   const fetchReviews = async () => {
     setLoading(true);

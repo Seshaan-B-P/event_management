@@ -23,7 +23,7 @@ const WorkerDashboard = () => {
   return (
     <Routes>
       <Route 
-        path="/login" 
+        path="/worker/login" 
         element={
           isAuthenticated ? 
           <Navigate to="/worker" replace /> : 
