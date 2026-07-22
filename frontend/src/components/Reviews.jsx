@@ -11,7 +11,7 @@ const Reviews = () => {
 
   const autoPlayRef = useRef(null);
 
-  const API_URL = 'https://em-backend.onrender.com/api/reviews';
+  const API_URL = 'https://event-management-kvfo.onrender.com/api/reviews';
 
   // Fetch reviews from backend
   const fetchReviews = async () => {

@@ -16,7 +16,7 @@ const GalleryManager = () => {
   });
   const [adding, setAdding] = useState(false);
 
-  const GALLERY_API = 'http://localhost:5000/api/gallery';
+  const GALLERY_API = 'http://https://event-management-kvfo.onrender.com/api/gallery';
 
   const fetchGallery = async () => {
     setLoading(true);

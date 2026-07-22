@@ -17,7 +17,7 @@ const ServiceManager = () => {
     imageUrl: ''
   });
 
-  const API_URL = 'http://localhost:5000/api/services';
+  const API_URL = 'http://https://event-management-kvfo.onrender.com/api/services';
 
   useEffect(() => {
     fetchServices();

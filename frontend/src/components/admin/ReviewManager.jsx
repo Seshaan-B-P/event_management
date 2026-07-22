@@ -16,7 +16,7 @@ const ReviewManager = () => {
   });
   const [adding, setAdding] = useState(false);
 
-  const REVIEWS_API = 'http://localhost:5000/api/reviews';
+  const REVIEWS_API = 'http://https://event-management-kvfo.onrender.com/api/reviews';
 
   const fetchReviews = async () => {
     setLoading(true);

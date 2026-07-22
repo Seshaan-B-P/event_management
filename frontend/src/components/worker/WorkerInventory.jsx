@@ -28,7 +28,7 @@ const WorkerInventory = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/inventory-requests/staff/${staffId}`);
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/inventory-requests/staff/${staffId}`);
       const data = await res.json();
       if (data.success) {
         setRequests(data.data);
@@ -42,7 +42,7 @@ const WorkerInventory = () => {
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/inventory');
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/inventory');
       const data = await res.json();
       if (data.success) {
         setInventory(data.data);
@@ -64,7 +64,7 @@ const WorkerInventory = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/inventory-requests', {
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/inventory-requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

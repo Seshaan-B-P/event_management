@@ -21,7 +21,7 @@ const StaffManager = () => {
     password: ''
   });
 
-  const API_URL = 'http://localhost:5000/api/staff';
+  const API_URL = 'http://https://event-management-kvfo.onrender.com/api/staff';
 
   useEffect(() => {
     fetchStaff();
@@ -31,7 +31,7 @@ const StaffManager = () => {
 
   const fetchReports = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/reports');
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/reports');
       const data = await res.json();
       if (data.success) {
         setReports(data.data);
@@ -43,7 +43,7 @@ const StaffManager = () => {
 
   const handleMarkReportRead = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/reports/${id}/read`, {
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/reports/${id}/read`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -59,7 +59,7 @@ const StaffManager = () => {
 
   const fetchLeaves = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/leaves');
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/leaves');
       const data = await res.json();
       if (data.success) {
         setLeaves(data.data);
@@ -71,7 +71,7 @@ const StaffManager = () => {
 
   const handleLeaveAction = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/leaves/${id}`, {
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/leaves/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })

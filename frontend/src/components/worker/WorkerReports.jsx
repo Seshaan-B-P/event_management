@@ -24,7 +24,7 @@ const WorkerReports = () => {
 
   const fetchReports = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/reports/staff/${staffId}`);
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/reports/staff/${staffId}`);
       const data = await res.json();
       if (data.success) {
         setReports(data.data);
@@ -45,7 +45,7 @@ const WorkerReports = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/reports', {
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/reports', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

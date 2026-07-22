@@ -18,7 +18,7 @@ const DashboardAnalytics = () => {
 
   useEffect(() => {
     // Check health
-    fetch('http://localhost:5000/api/health')
+    fetch('http://https://event-management-kvfo.onrender.com/api/health')
       .then(res => res.json())
       .then(data => setDbHealthy(data.mockMode === false ? 'Online (MongoDB)' : 'Mock Mode'))
       .catch(() => setDbHealthy('Offline'));
@@ -27,9 +27,9 @@ const DashboardAnalytics = () => {
     const fetchAnalyticsData = async () => {
       try {
         const [contactsRes, reviewsRes, reportsRes] = await Promise.all([
-          fetch('http://localhost:5000/api/contacts'),
-          fetch('http://localhost:5000/api/reviews'),
-          fetch('http://localhost:5000/api/reports')
+          fetch('http://api/contacts'),
+          fetch('http://https://event-management-kvfo.onrender.com/api/reviews'),
+          fetch('http://https://event-management-kvfo.onrender.com/api/reports')
         ]);
         const contactsData = await contactsRes.json();
         const reviewsData = await reviewsRes.json();

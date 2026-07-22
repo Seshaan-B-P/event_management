@@ -41,7 +41,7 @@ const AdminLayout = ({ onLogout }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await fetch(`https://em-backend.onrender.com/api/notifications?role=${userRole}`);
+        const res = await fetch(`https://event-management-kvfo.onrender.com/api/notifications?role=${userRole}`);
         const data = await res.json();
         if (data.success) {
           setNotifications(data.data);
@@ -68,7 +68,7 @@ const AdminLayout = ({ onLogout }) => {
 
   const handleMarkAsRead = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/notifications/${id}/read`, { method: 'PUT' });
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/notifications/${id}/read`, { method: 'PUT' });
       const data = await res.json();
       if (data.success) {
         setNotifications(notifications.map(n => n._id === id ? { ...n, isRead: true } : n));
@@ -80,7 +80,7 @@ const AdminLayout = ({ onLogout }) => {
 
   const handleMarkAllAsRead = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/notifications/read-all`, { method: 'PUT' });
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/notifications/read-all`, { method: 'PUT' });
       const data = await res.json();
       if (data.success) {
         setNotifications(notifications.map(n => ({ ...n, isRead: true })));
@@ -96,7 +96,7 @@ const AdminLayout = ({ onLogout }) => {
 
     setIsSending(true);
     try {
-      const res = await fetch('http://localhost:5000/api/notifications', {
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/notifications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newNotif)

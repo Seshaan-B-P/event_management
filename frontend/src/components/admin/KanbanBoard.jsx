@@ -10,9 +10,9 @@ const KanbanBoard = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [newTask, setNewTask] = useState({ title: '', description: '', contactId: '', assignee: '' });
 
-  const API_URL = 'http://localhost:5000/api/tasks';
-  const CONTACTS_API = 'http://localhost:5000/api/contacts';
-  const STAFF_API = 'http://localhost:5000/api/staff';
+  const API_URL = 'http://https://event-management-kvfo.onrender.com/api/tasks';
+  const CONTACTS_API = 'http://https://event-management-kvfo.onrender.com/api/contacts';
+  const STAFF_API = 'http://https://event-management-kvfo.onrender.com/api/staff';
 
   useEffect(() => {
     fetchTasks();

@@ -25,7 +25,7 @@ const WorkerLeave = () => {
 
   const fetchLeaves = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/leaves/staff/${staffId}`);
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/leaves/staff/${staffId}`);
       const data = await res.json();
       if (data.success) {
         setLeaves(data.data);
@@ -46,7 +46,7 @@ const WorkerLeave = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/leaves', {
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/leaves', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

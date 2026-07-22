@@ -32,7 +32,7 @@ const WorkerChat = () => {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/Staff/${staffId}`);
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/messages/Staff/${staffId}`);
       const data = await res.json();
       if (data.success) {
         setMessages(data.data);
@@ -58,7 +58,7 @@ const WorkerChat = () => {
     setNewMessage(''); // optimistic clear
 
     try {
-      const res = await fetch('http://localhost:5000/api/messages', {
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(messageData)

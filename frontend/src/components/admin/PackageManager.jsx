@@ -30,10 +30,10 @@ const PackageManager = () => {
     setLoading(true);
     try {
       const [pkgRes, srvRes, invRes, vndRes] = await Promise.all([
-        fetch('http://localhost:5000/api/packages'),
-        fetch('http://localhost:5000/api/services'),
-        fetch('http://localhost:5000/api/inventory'),
-        fetch('http://localhost:5000/api/vendors')
+        fetch('http://https://event-management-kvfo.onrender.com/api/packages'),
+        fetch('http://https://event-management-kvfo.onrender.com/api/services'),
+        fetch('http://https://event-management-kvfo.onrender.com/api/inventory'),
+        fetch('http://https://event-management-kvfo.onrender.com/api/vendors')
       ]);
       const [pkgData, srvData, invData, vndData] = await Promise.all([
         pkgRes.json(), srvRes.json(), invRes.json(), vndRes.json()
@@ -104,8 +104,8 @@ const PackageManager = () => {
     setIsSubmitting(true);
     try {
       const url = editingId
-        ? `http://localhost:5000/api/packages/${editingId}`
-        : `http://localhost:5000/api/packages`;
+        ? `http://https://event-management-kvfo.onrender.com/api/packages/${editingId}`
+        : `http://https://event-management-kvfo.onrender.com/api/packages`;
       const method = editingId ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -132,7 +132,7 @@ const PackageManager = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this package?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/packages/${id}`, { method: 'DELETE' });
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/packages/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         setPackages(packages.filter(p => p._id !== id));

@@ -20,7 +20,7 @@ const CalendarManager = () => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/contacts', {
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/contacts', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('bps_admin_token')}`
         }

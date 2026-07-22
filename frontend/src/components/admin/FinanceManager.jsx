@@ -13,7 +13,7 @@ const FinanceManager = () => {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/contacts');
+        const res = await fetch('http://https://event-management-kvfo.onrender.com/api/contacts');
         const data = await res.json();
         if (data.success) {
           setContacts(data.data);

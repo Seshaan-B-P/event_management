@@ -26,7 +26,7 @@ const CRMManager = () => {
     paymentStatus: 'Unpaid'
   });
 
-  const CONTACT_API = 'http://localhost:5000/api/contacts';
+  const CONTACT_API = 'http://https://event-management-kvfo.onrender.com/api/contacts';
 
   const fetchMessages = async () => {
     setLoading(true);

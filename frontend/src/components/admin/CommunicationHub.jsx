@@ -40,7 +40,7 @@ const CommunicationHub = () => {
     setLoadingContacts(true);
     try {
       const endpoint = activeTab === 'Staff' ? '/api/staff' : '/api/vendors';
-      const res = await fetch(`http://localhost:5000${endpoint}`);
+      const res = await fetch(`https://event-management-kvfo.onrender.com${endpoint}`);
       const data = await res.json();
       if (data.success) {
         setContacts(data.data);
@@ -55,7 +55,7 @@ const CommunicationHub = () => {
   const fetchMessages = async () => {
     if (!activeContact) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/${activeTab}/${activeContact._id}`);
+      const res = await fetch(`http://https://event-management-kvfo.onrender.com/api/messages/${activeTab}/${activeContact._id}`);
       const data = await res.json();
       if (data.success) {
         setMessages(data.data);
@@ -79,7 +79,7 @@ const CommunicationHub = () => {
     setNewMessage(''); // optimistic clear
 
     try {
-      const res = await fetch('http://localhost:5000/api/messages', {
+      const res = await fetch('http://https://event-management-kvfo.onrender.com/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(messageData)
