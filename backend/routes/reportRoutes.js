@@ -1,9 +1,30 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
 const Report = require('../models/Report');
+
+const DATA_DIR = path.join(__dirname, '../data');
+const REPORTS_FILE = path.join(DATA_DIR, 'reports.json');
+
+const ensureFileExists = () => {
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (!fs.existsSync(REPORTS_FILE)) fs.writeFileSync(REPORTS_FILE, JSON.stringify([], null, 2));
+};
 
 // GET all reports
 router.get('/', async (req, res) => {
+  if (process.env.MOCK_DB === 'true') {
+    try {
+      ensureFileExists();
+      const fileData = fs.readFileSync(REPORTS_FILE, 'utf8');
+      const reports = JSON.parse(fileData);
+      return res.json({ success: true, data: reports });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: 'Mock database error' });
+    }
+  }
+
   try {
     const reports = await Report.find().sort({ createdAt: -1 });
     res.json({ success: true, data: reports });
@@ -14,6 +35,17 @@ router.get('/', async (req, res) => {
 
 // GET reports by staff ID
 router.get('/staff/:staffId', async (req, res) => {
+  if (process.env.MOCK_DB === 'true') {
+    try {
+      ensureFileExists();
+      const fileData = fs.readFileSync(REPORTS_FILE, 'utf8');
+      const reports = JSON.parse(fileData).filter(r => r.staffId === req.params.staffId);
+      return res.json({ success: true, data: reports });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: 'Mock database error' });
+    }
+  }
+
   try {
     const reports = await Report.find({ staffId: req.params.staffId }).sort({ createdAt: -1 });
     res.json({ success: true, data: reports });
@@ -24,6 +56,29 @@ router.get('/staff/:staffId', async (req, res) => {
 
 // POST new report
 router.post('/', async (req, res) => {
+  if (process.env.MOCK_DB === 'true') {
+    try {
+      ensureFileExists();
+      const fileData = fs.readFileSync(REPORTS_FILE, 'utf8');
+      const reports = JSON.parse(fileData);
+      const { staffId, staffName, reportType, content } = req.body;
+      const newReport = {
+        _id: 'mock_' + Date.now().toString(),
+        staffId,
+        staffName,
+        reportType,
+        content,
+        status: 'Unread',
+        createdAt: new Date().toISOString()
+      };
+      reports.unshift(newReport);
+      fs.writeFileSync(REPORTS_FILE, JSON.stringify(reports, null, 2));
+      return res.status(201).json({ success: true, data: newReport });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: 'Mock database error' });
+    }
+  }
+
   try {
     const { staffId, staffName, reportType, content } = req.body;
     const report = new Report({ staffId, staffName, reportType, content });
@@ -45,6 +100,23 @@ router.post('/', async (req, res) => {
 
 // PATCH mark as read
 router.patch('/:id/read', async (req, res) => {
+  if (process.env.MOCK_DB === 'true') {
+    try {
+      ensureFileExists();
+      const fileData = fs.readFileSync(REPORTS_FILE, 'utf8');
+      const reports = JSON.parse(fileData);
+      const report = reports.find(r => r._id === req.params.id);
+      if (report) {
+        report.status = 'Read';
+        fs.writeFileSync(REPORTS_FILE, JSON.stringify(reports, null, 2));
+        return res.json({ success: true, data: report });
+      }
+      return res.status(404).json({ success: false, error: 'Report not found' });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: 'Mock database error' });
+    }
+  }
+
   try {
     const report = await Report.findByIdAndUpdate(req.params.id, { status: 'Read' }, { new: true });
     if (!report) return res.status(404).json({ success: false, error: 'Report not found' });
