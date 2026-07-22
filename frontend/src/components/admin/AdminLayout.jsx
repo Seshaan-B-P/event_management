@@ -42,7 +42,7 @@ const AdminLayout = ({ onLogout }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await fetch(`https/api/notifications?role=${userRole}`);
+        const res = await fetch(`${API_BASE_URL}/api/notifications?role=${userRole}`);
         const data = await res.json();
         if (data.success) {
           setNotifications(data.data);

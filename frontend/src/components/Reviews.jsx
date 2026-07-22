@@ -12,7 +12,7 @@ const Reviews = () => {
 
   const autoPlayRef = useRef(null);
 
-  const API_URL = 'https/api/reviews';
+  const API_URL = `${API_BASE_URL}/api/reviews`;
 
   // Fetch reviews from backend
   const fetchReviews = async () => {

@@ -8,7 +8,7 @@ const Services = () => {
   const [selectedService, setSelectedService] = useState(null);
 
   useEffect(() => {
-    fetch('https/api/services')
+    fetch(`${API_BASE_URL}/api/services`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {

@@ -6,7 +6,7 @@ const Gallery = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = 'https/api/gallery';
+  const API_URL = `${API_BASE_URL}/api/gallery`;
 
   useEffect(() => {
     const fetchGallery = async () => {

@@ -11,7 +11,7 @@ const Contact = ({ onOpenAdmin }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const API_URL = 'https/api/contacts';
+  const API_URL = `${API_BASE_URL}/api/contacts`;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
