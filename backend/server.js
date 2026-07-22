@@ -63,8 +63,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+const seedInitialData = require('./config/seed');
+
 const startServer = async () => {
   await connectDB();
+  await seedInitialData();
 
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {

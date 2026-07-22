@@ -22,7 +22,12 @@ router.post('/login', async (req, res) => {
     }
 
     const { username, password } = req.body;
-    const admin = await Admin.findOne({ username });
+    let admin = await Admin.findOne({ username });
+
+    // Auto-seed default admin if database has no admin records yet
+    if (!admin && (await Admin.countDocuments()) === 0 && username === 'admin' && password === 'admin@bps') {
+      admin = await Admin.create({ username: 'admin', password: 'admin@bps', role: 'superadmin' });
+    }
 
     if (admin && (await admin.matchPassword(password))) {
       const token = jwt.sign({ id: admin._id, role: admin.role }, process.env.JWT_SECRET || 'fallback_secret', {
@@ -94,7 +99,26 @@ router.post('/staff-login', async (req, res) => {
     }
 
     const { username, password } = req.body;
-    const staff = await Staff.findOne({ username });
+    let queryUsername = username;
+    if (queryUsername && !queryUsername.includes('@')) {
+      queryUsername = `${username}@bpsevent.com`;
+    }
+
+    let staff = await Staff.findOne({
+      $or: [{ username }, { username: queryUsername }]
+    });
+
+    // Auto-seed default staff if database has no staff records yet
+    if (!staff && (await Staff.countDocuments()) === 0 && (username === 'worker' || username === 'worker@bpsevent.com') && password === 'worker123') {
+      staff = await Staff.create({
+        name: 'Default Worker',
+        username: 'worker@bpsevent.com',
+        password: 'worker123',
+        role: 'Event Staff',
+        contactNumber: '9876543210',
+        status: 'Active'
+      });
+    }
 
     if (staff && (await staff.matchPassword(password))) {
       const token = jwt.sign({ id: staff._id, role: 'staff' }, process.env.JWT_SECRET || 'fallback_secret', {
