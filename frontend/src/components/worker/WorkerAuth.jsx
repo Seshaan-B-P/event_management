@@ -158,28 +158,6 @@ const WorkerAuth = ({ onLogin }) => {
             </form>
           ) : (
             <form onSubmit={handleLogin} style={styles.form}>
-              <button
-                type="button"
-                onClick={() => {
-                  setUsername('worker@bpsevent.com');
-                  setPassword('worker123');
-                }}
-                style={{
-                  padding: '8px 12px',
-                  borderRadius: '8px',
-                  backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                  border: '1px solid rgba(212, 175, 55, 0.3)',
-                  color: '#d4af37',
-                  fontSize: '0.82rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  marginBottom: '6px',
-                  textAlign: 'center',
-                  width: '100%'
-                }}
-              >
-                🔑 Auto-fill Worker Demo Login (worker@bpsevent.com / worker123)
-              </button>
               <div style={styles.inputGroup}>
                 <User size={18} style={styles.inputIcon} />
                 <input

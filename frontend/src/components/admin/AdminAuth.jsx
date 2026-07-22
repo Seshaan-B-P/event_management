@@ -98,28 +98,6 @@ const AdminAuth = ({ onLogin }) => {
           </div>
 
           <form onSubmit={handleLogin} style={styles.form}>
-            <button
-              type="button"
-              onClick={() => {
-                setUsername('admin');
-                setPassword('admin@bps');
-              }}
-              style={{
-                padding: '8px 12px',
-                borderRadius: '8px',
-                backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                border: '1px solid rgba(212, 175, 55, 0.3)',
-                color: '#d4af37',
-                fontSize: '0.82rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                marginBottom: '6px',
-                textAlign: 'center',
-                width: '100%'
-              }}
-            >
-              🔑 Auto-fill Admin Demo Login (admin / admin@bps)
-            </button>
             <div style={styles.inputGroup}>
               <Mail size={18} style={styles.inputIcon} />
               <input
