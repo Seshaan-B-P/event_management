@@ -31,8 +31,8 @@ const Gallery = () => {
     fetchGallery();
   }, []);
 
-  const getImageUrl = (imagePath, fallbackIndex = 0) => {
-    if (!imagePath) return FALLBACK_IMAGES[fallbackIndex % FALLBACK_IMAGES.length];
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
       return imagePath;
     }
@@ -118,8 +118,7 @@ const Gallery = () => {
             }}
           >
             {filteredItems.map((item, index) => {
-              const imageSrc = getImageUrl(item.image, index);
-              const fallbackUrl = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length];
+              const imageSrc = getImageUrl(item.image);
 
               return (
                 <div
@@ -146,9 +145,8 @@ const Gallery = () => {
                       transition: 'var(--transition-slow)'
                     }}
                     onError={(e) => {
-                      // Fallback to high quality curated image if uploaded image fails or returns 404
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = fallbackUrl;
+                      e.currentTarget.style.display = 'none';
                     }}
                   />
                   {/* Overlay with info revealed on hover */}

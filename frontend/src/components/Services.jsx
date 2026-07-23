@@ -26,8 +26,8 @@ const Services = () => {
       });
   }, []);
 
-  const getImageUrl = (imagePath, fallbackIndex = 0) => {
-    if (!imagePath) return defaultImages[fallbackIndex % defaultImages.length];
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
       return imagePath;
     }
@@ -60,8 +60,7 @@ const Services = () => {
             }}
           >
             {services.map((service, index) => {
-              const imageSrc = getImageUrl(service.imageUrl, index);
-              const fallbackUrl = defaultImages[index % defaultImages.length];
+              const imageSrc = getImageUrl(service.imageUrl);
 
               return (
                 <div
@@ -92,7 +91,7 @@ const Services = () => {
                       style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'var(--transition-slow)' }}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = fallbackUrl;
+                        e.currentTarget.style.display = 'none';
                       }}
                       onMouseEnter={(e) => e.target.style.transform = 'scale(1.08)'}
                       onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
@@ -214,11 +213,11 @@ const Services = () => {
             {/* Modal Content */}
             <div style={{ height: '280px', position: 'relative' }}>
               <img
-                src={getImageUrl(selectedService.imageUrl, services.findIndex(s => s._id === selectedService._id))}
+                src={getImageUrl(selectedService.imageUrl)}
                 alt={selectedService.title}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
-                  e.currentTarget.src = defaultImages[0];
+                  e.currentTarget.style.display = 'none';
                 }}
                 style={{
                   width: '100%',
