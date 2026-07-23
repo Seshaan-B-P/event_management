@@ -146,7 +146,7 @@ const GalleryManager = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80';
+
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
       return imagePath;
     }
@@ -263,7 +263,7 @@ const GalleryManager = () => {
                   style={styles.image}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80';
+                    e.currentTarget.src = '';
                   }}
                 />
                 <button style={styles.deleteButton} onClick={() => handleDelete(item._id)}>
