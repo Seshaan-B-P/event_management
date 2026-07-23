@@ -148,7 +148,7 @@ const Footer = () => {
                 onMouseLeave={(e) => e.currentTarget.style.color = 'var(--gold)'}
               >
                 <InstagramIcon size={18} />
-                <span>Instagram</span>
+
               </a>
               <a
                 href="https://facebook.com"
@@ -167,7 +167,7 @@ const Footer = () => {
                 onMouseLeave={(e) => e.currentTarget.style.color = 'var(--gold)'}
               >
                 <FacebookIcon size={18} />
-                <span>Facebook</span>
+
               </a>
               <a
                 href="https://wa.me/918124931018"
@@ -186,7 +186,7 @@ const Footer = () => {
                 onMouseLeave={(e) => e.currentTarget.style.color = 'var(--gold)'}
               >
                 <WhatsAppIcon size={18} />
-                <span>WhatsApp</span>
+
               </a>
             </div>
           </div>
