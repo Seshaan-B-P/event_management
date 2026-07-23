@@ -56,33 +56,58 @@ const GalleryManager = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (!newImage.imageFile && !newImage.imageUrl && !previewUrl) {
+    const backupImage = newImage.imageUrl || previewUrl;
+    if (!newImage.imageFile && !backupImage) {
       toast.error('Please select an image file or provide an image URL');
       return;
     }
 
     setAdding(true);
     try {
-      const formData = new FormData();
-      formData.append('title', newImage.title);
-      formData.append('location', newImage.location);
-      formData.append('category', newImage.category);
-      
+      let res;
+      let data;
+
+      // Try FormData (file upload) first if file exists
       if (newImage.imageFile) {
-        formData.append('imageFile', newImage.imageFile);
-      }
-      // Pass base64 data URL or URL string as backup for mock mode / direct storage
-      const backupImage = newImage.imageUrl || previewUrl;
-      if (backupImage) {
-        formData.append('image', backupImage);
+        try {
+          const formData = new FormData();
+          formData.append('title', newImage.title);
+          formData.append('location', newImage.location);
+          formData.append('category', newImage.category);
+          formData.append('imageFile', newImage.imageFile);
+          if (backupImage) {
+            formData.append('image', backupImage);
+          }
+
+          res = await fetch(GALLERY_API, {
+            method: 'POST',
+            body: formData
+          });
+
+          if (res.ok) {
+            data = await res.json();
+          }
+        } catch (formDataErr) {
+          console.warn('FormData upload warning, trying JSON fallback:', formDataErr);
+        }
       }
 
-      const res = await fetch(GALLERY_API, {
-        method: 'POST',
-        body: formData
-      });
-      const data = await res.json();
-      if (data.success) {
+      // Fallback to JSON payload (Data URL / Web URL) if FormData wasn't sent or failed
+      if (!data) {
+        res = await fetch(GALLERY_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: newImage.title,
+            location: newImage.location,
+            category: newImage.category,
+            image: backupImage
+          })
+        });
+        data = await res.json();
+      }
+
+      if (data && data.success) {
         toast.success('Image added successfully', {
           style: { background: 'var(--admin-bg-panel)', color: 'var(--admin-success)', border: '1px solid var(--admin-success)' }
         });
@@ -91,10 +116,11 @@ const GalleryManager = () => {
         setNewImage({ title: '', location: '', category: 'wedding', imageUrl: '', imageFile: null });
         setPreviewUrl('');
       } else {
-        toast.error(data.error || 'Failed to add image');
+        toast.error((data && data.error) || 'Failed to add image');
       }
     } catch (err) {
-      toast.error('Server error while adding image');
+      console.error('Gallery add error:', err);
+      toast.error(err.message || 'Server error while adding image');
     } finally {
       setAdding(false);
     }
