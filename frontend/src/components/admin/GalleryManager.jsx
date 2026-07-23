@@ -92,8 +92,8 @@ const GalleryManager = () => {
         }
       }
 
-      // Fallback to JSON payload (Data URL / Web URL) if FormData wasn't sent or failed
-      if (!data) {
+      // Fallback to JSON payload (Data URL / Web URL) if FormData wasn't sent or returned non-200
+      if (!data || !data.success) {
         res = await fetch(GALLERY_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -111,7 +111,7 @@ const GalleryManager = () => {
         toast.success('Image added successfully', {
           style: { background: 'var(--admin-bg-panel)', color: 'var(--admin-success)', border: '1px solid var(--admin-success)' }
         });
-        setGallery([data.data, ...gallery]);
+        fetchGallery();
         setShowAddForm(false);
         setNewImage({ title: '', location: '', category: 'wedding', imageUrl: '', imageFile: null });
         setPreviewUrl('');

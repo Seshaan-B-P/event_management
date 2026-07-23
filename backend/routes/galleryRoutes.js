@@ -46,9 +46,12 @@ const upload = multer({
 
 // Middleware wrapper to catch Multer errors gracefully
 const uploadSingleImage = (req, res, next) => {
+  if (req.is('application/json')) {
+    return next();
+  }
   upload.single('imageFile')(req, res, (err) => {
     if (err) {
-      console.warn('Multer notice:', err.message);
+      console.warn('Multer upload warning:', err.message);
     }
     next();
   });
