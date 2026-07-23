@@ -1,6 +1,60 @@
 import { API_BASE_URL } from '../config';
 import React, { useState, useEffect } from 'react';
 
+const FALLBACK_IMAGES = [
+  'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1545232979-fbfd43da012b?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80'
+];
+
+const DEFAULT_GALLERY = [
+  {
+    _id: 'default_1',
+    title: 'Luxury Stage Decoration',
+    location: 'Karur Grand Palace',
+    category: 'wedding',
+    image: FALLBACK_IMAGES[0]
+  },
+  {
+    _id: 'default_2',
+    title: 'Royal Mandap Setup',
+    location: 'Vengamedu, Karur',
+    category: 'wedding',
+    image: FALLBACK_IMAGES[1]
+  },
+  {
+    _id: 'default_3',
+    title: 'Theme Birthday Decor',
+    location: 'Karur Club',
+    category: 'birthday',
+    image: FALLBACK_IMAGES[2]
+  },
+  {
+    _id: 'default_4',
+    title: 'Ambient Lighting & Gala',
+    location: 'Texvalley Convention',
+    category: 'other',
+    image: FALLBACK_IMAGES[3]
+  },
+  {
+    _id: 'default_5',
+    title: 'Floral Entrance Arch',
+    location: 'Karur Residency',
+    category: 'wedding',
+    image: FALLBACK_IMAGES[4]
+  },
+  {
+    _id: 'default_6',
+    title: 'Sangeet & Musical Night',
+    location: 'Karur Lawn',
+    category: 'other',
+    image: FALLBACK_IMAGES[5]
+  }
+];
+
 const Gallery = () => {
   const [filter, setFilter] = useState('all');
   const [items, setItems] = useState([]);
@@ -13,14 +67,14 @@ const Gallery = () => {
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        if (data.success && Array.isArray(data.data)) {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           setItems(data.data);
         } else {
-          setItems([]);
+          setItems(DEFAULT_GALLERY);
         }
       } catch (err) {
-        console.error('Error fetching gallery:', err);
-        setItems([]);
+        console.error('Error fetching gallery, using default gallery items:', err);
+        setItems(DEFAULT_GALLERY);
       } finally {
         setLoading(false);
       }
@@ -29,9 +83,20 @@ const Gallery = () => {
     fetchGallery();
   }, []);
 
+  const getImageUrl = (imagePath, fallbackIndex = 0) => {
+    if (!imagePath) return FALLBACK_IMAGES[fallbackIndex % FALLBACK_IMAGES.length];
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
+      return imagePath;
+    }
+    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+    return `${API_BASE_URL}${cleanPath}`;
+  };
+
+  const displayItems = items.length > 0 ? items : DEFAULT_GALLERY;
+
   const filteredItems = filter === 'all'
-    ? items
-    : items.filter(item => item.category === filter);
+    ? displayItems
+    : displayItems.filter(item => (item.category || '').toLowerCase() === filter.toLowerCase());
 
   return (
     <section id="gallery" className="section" style={{ backgroundColor: 'var(--light-gray)' }}>
@@ -50,35 +115,40 @@ const Gallery = () => {
             flexWrap: 'wrap'
           }}
         >
-          {['all', 'wedding', 'birthday', 'other'].map((cat) => (
+          {[
+            { id: 'all', label: 'All Work' },
+            { id: 'wedding', label: 'Weddings' },
+            { id: 'birthday', label: 'Birthdays' },
+            { id: 'other', label: 'Others' }
+          ].map((cat) => (
             <button
-              key={cat}
-              onClick={() => setFilter(cat)}
+              key={cat.id}
+              onClick={() => setFilter(cat.id)}
               style={{
-                padding: '8px 24px',
+                padding: '10px 26px',
                 borderRadius: '30px',
                 fontWeight: '600',
                 fontSize: '0.9rem',
                 textTransform: 'uppercase',
-                border: filter === cat ? '2px solid var(--gold)' : '2px solid transparent',
-                backgroundColor: filter === cat ? 'var(--dark-brown)' : 'var(--white)',
-                color: filter === cat ? 'var(--gold)' : 'var(--text-dark)',
+                border: filter === cat.id ? '2px solid var(--gold)' : '2px solid transparent',
+                backgroundColor: filter === cat.id ? 'var(--dark-brown)' : 'var(--white)',
+                color: filter === cat.id ? 'var(--gold)' : 'var(--text-dark)',
                 cursor: 'pointer',
-                boxShadow: 'var(--shadow-sm)',
+                boxShadow: filter === cat.id ? '0 4px 15px rgba(212, 175, 55, 0.3)' : 'var(--shadow-sm)',
                 transition: 'var(--transition-normal)'
               }}
               onMouseEnter={(e) => {
-                if (filter !== cat) {
+                if (filter !== cat.id) {
                   e.currentTarget.style.borderColor = 'var(--gold-light)';
                 }
               }}
               onMouseLeave={(e) => {
-                if (filter !== cat) {
+                if (filter !== cat.id) {
                   e.currentTarget.style.borderColor = 'transparent';
                 }
               }}
             >
-              {cat === 'all' ? 'All Work' : cat + 's'}
+              {cat.label}
             </button>
           ))}
         </div>
@@ -101,80 +171,91 @@ const Gallery = () => {
               gap: '30px'
             }}
           >
-            {filteredItems.map((item, index) => (
-              <div
-                key={`${item._id || item.title}-${filter}`}
-                style={{
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  position: 'relative',
-                  height: '350px',
-                  boxShadow: 'var(--shadow-sm)',
-                  cursor: 'pointer',
-                  animationDelay: `${index * 0.1}s`
-                }}
-                className="gallery-card animate-item"
-              >
-                <img
-                  src={item.image}
-                  alt={`${item.title || 'BPS Events Stage Decoration'} - Wedding Decorators in Karur`}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    transition: 'var(--transition-slow)'
-                  }}
-                />
-                {/* Overlay with info revealed on hover */}
+            {filteredItems.map((item, index) => {
+              const imageSrc = getImageUrl(item.image, index);
+              const fallbackUrl = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length];
+
+              return (
                 <div
+                  key={`${item._id || item.title}-${index}-${filter}`}
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(37, 22, 5, 0.85)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '30px',
-                    opacity: 0,
-                    transition: 'var(--transition-normal)',
-                    textAlign: 'center'
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    height: '350px',
+                    boxShadow: 'var(--shadow-md)',
+                    backgroundColor: 'var(--white)',
+                    cursor: 'pointer',
+                    animationDelay: `${index * 0.1}s`
                   }}
-                  className="gallery-overlay"
+                  className="gallery-card animate-item"
                 >
-                  <h3
+                  <img
+                    src={imageSrc}
+                    alt={`${item.title || 'BPS Events Stage Decoration'} - Wedding Decorators in Karur`}
                     style={{
-                      color: 'var(--gold)',
-                      fontFamily: 'var(--font-cursive)',
-                      fontSize: '2rem',
-                      marginBottom: '8px'
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      transition: 'var(--transition-slow)'
                     }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p style={{ color: 'var(--white)', fontSize: '0.95rem', fontWeight: '500' }}>
-                    {item.location}
-                  </p>
-                  <span
+                    onError={(e) => {
+                      // Fallback to high quality curated image if uploaded image fails or returns 404
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = fallbackUrl;
+                    }}
+                  />
+                  {/* Overlay with info revealed on hover */}
+                  <div
                     style={{
-                      marginTop: '15px',
-                      fontSize: '0.8rem',
-                      color: 'var(--light-gray)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1.5px',
-                      border: '1px solid var(--gold)',
-                      padding: '4px 12px',
-                      borderRadius: '20px'
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: 'rgba(37, 22, 5, 0.85)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '30px',
+                      opacity: 0,
+                      transition: 'var(--transition-normal)',
+                      textAlign: 'center'
                     }}
+                    className="gallery-overlay"
                   >
-                    {item.category}
-                  </span>
+                    <h3
+                      style={{
+                        color: 'var(--gold)',
+                        fontFamily: 'var(--font-cursive)',
+                        fontSize: '2rem',
+                        marginBottom: '8px'
+                      }}
+                    >
+                      {item.title}
+                    </h3>
+                    <p style={{ color: 'var(--white)', fontSize: '0.95rem', fontWeight: '500' }}>
+                      {item.location}
+                    </p>
+                    <span
+                      style={{
+                        marginTop: '15px',
+                        fontSize: '0.8rem',
+                        color: 'var(--light-gray)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1.5px',
+                        border: '1px solid var(--gold)',
+                        padding: '4px 12px',
+                        borderRadius: '20px'
+                      }}
+                    >
+                      {item.category}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -207,3 +288,4 @@ const Gallery = () => {
 };
 
 export default Gallery;
+

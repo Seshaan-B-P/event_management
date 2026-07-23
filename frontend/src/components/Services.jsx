@@ -34,6 +34,15 @@ const Services = () => {
       });
   }, []);
 
+  const getImageUrl = (imagePath, fallbackIndex = 0) => {
+    if (!imagePath) return defaultImages[fallbackIndex % defaultImages.length];
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
+      return imagePath;
+    }
+    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+    return `${API_BASE_URL}${cleanPath}`;
+  };
+
   const renderIcon = (name, size = 28, isDark = false) => {
     const Icon = Icons[name] || Icons.Star;
     return <Icon size={size} style={{ color: isDark ? 'var(--dark-brown)' : 'var(--gold)' }} />;
@@ -58,90 +67,99 @@ const Services = () => {
               marginBottom: '60px'
             }}
           >
-            {services.map((service, index) => (
-              <div
-                key={service._id}
-                style={{
-                  backgroundColor: 'var(--white)',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  boxShadow: 'var(--shadow-md)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'var(--transition-normal)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                }}
-              >
-                {/* Image Frame */}
-                <div style={{ height: '240px', overflow: 'hidden', position: 'relative' }}>
-                  <img
-                    src={service.imageUrl || defaultImages[index % defaultImages.length]}
-                    alt={service.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'var(--transition-slow)' }}
-                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.08)'}
-                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '20px',
-                      right: '20px',
-                      width: '55px',
-                      height: '55px',
-                      borderRadius: '50%',
-                      backgroundColor: 'var(--dark-brown)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      border: '2px solid var(--gold)',
-                      boxShadow: 'var(--shadow-sm)'
-                    }}
-                  >
-                    {renderIcon(service.iconName, 28, false)}
+            {services.map((service, index) => {
+              const imageSrc = getImageUrl(service.imageUrl, index);
+              const fallbackUrl = defaultImages[index % defaultImages.length];
+
+              return (
+                <div
+                  key={service._id}
+                  style={{
+                    backgroundColor: 'var(--white)',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    boxShadow: 'var(--shadow-md)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'var(--transition-normal)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                  }}
+                >
+                  {/* Image Frame */}
+                  <div style={{ height: '240px', overflow: 'hidden', position: 'relative' }}>
+                    <img
+                      src={imageSrc}
+                      alt={service.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'var(--transition-slow)' }}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = fallbackUrl;
+                      }}
+                      onMouseEnter={(e) => e.target.style.transform = 'scale(1.08)'}
+                      onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                    />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '20px',
+                        right: '20px',
+                        width: '55px',
+                        height: '55px',
+                        borderRadius: '50%',
+                        backgroundColor: 'var(--dark-brown)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: '2px solid var(--gold)',
+                        boxShadow: 'var(--shadow-sm)'
+                      }}
+                    >
+                      {renderIcon(service.iconName, 28, false)}
+                    </div>
+                  </div>
+
+                  {/* Text Body */}
+                  <div style={{ padding: '30px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                    <h3 style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--dark-brown)', marginBottom: '15px' }}>
+                      {service.title}
+                    </h3>
+                    <p style={{ color: 'var(--text-muted)', marginBottom: '15px', flexGrow: 1 }}>
+                      {service.description && service.description.length > 120
+                        ? `${service.description.substring(0, 120)}...`
+                        : service.description}
+                    </p>
+
+                    <button
+                      onClick={() => setSelectedService(service)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--gold)',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        padding: '0',
+                        marginBottom: '10px',
+                        textAlign: 'left',
+                        alignSelf: 'flex-start',
+                        fontSize: '0.95rem',
+                        transition: 'color 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => e.target.style.color = 'var(--dark-brown)'}
+                      onMouseLeave={(e) => e.target.style.color = 'var(--gold)'}
+                    >
+                      Read More
+                    </button>
                   </div>
                 </div>
-
-                {/* Text Body */}
-                <div style={{ padding: '30px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--dark-brown)', marginBottom: '15px' }}>
-                    {service.title}
-                  </h3>
-                  <p style={{ color: 'var(--text-muted)', marginBottom: '15px', flexGrow: 1 }}>
-                    {service.description && service.description.length > 120
-                      ? `${service.description.substring(0, 120)}...`
-                      : service.description}
-                  </p>
-
-                  <button
-                    onClick={() => setSelectedService(service)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--gold)',
-                      fontWeight: 'bold',
-                      cursor: 'pointer',
-                      padding: '0',
-                      marginBottom: '10px',
-                      textAlign: 'left',
-                      alignSelf: 'flex-start',
-                      fontSize: '0.95rem',
-                      transition: 'color 0.3s ease'
-                    }}
-                    onMouseEnter={(e) => e.target.style.color = 'var(--dark-brown)'}
-                    onMouseLeave={(e) => e.target.style.color = 'var(--gold)'}
-                  >
-                    Read More
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -204,8 +222,12 @@ const Services = () => {
             {/* Modal Content */}
             <div style={{ height: '280px', position: 'relative' }}>
               <img
-                src={selectedService.imageUrl || defaultImages[services.findIndex(s => s._id === selectedService._id) % defaultImages.length]}
+                src={getImageUrl(selectedService.imageUrl, services.findIndex(s => s._id === selectedService._id))}
                 alt={selectedService.title}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = defaultImages[0];
+                }}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -253,7 +275,7 @@ const Services = () => {
                   }}>
                     {selectedService.features.map((item, key) => (
                       <li key={key} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem' }}>
-                        <span style={{ color: 'var(--gold)', fontWeight: 'bold', marginTop: '2px' }}></span>
+                        <span style={{ color: 'var(--gold)', fontWeight: 'bold', marginTop: '2px' }}>✓</span>
                         <span style={{ color: 'var(--text-dark)' }}>{item}</span>
                       </li>
                     ))}
@@ -269,3 +291,4 @@ const Services = () => {
 };
 
 export default Services;
+
