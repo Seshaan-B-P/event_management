@@ -41,7 +41,7 @@ const CommunicationHub = () => {
     setLoadingContacts(true);
     try {
       const endpoint = activeTab === 'Staff' ? '/api/staff' : '/api/vendors';
-      const res = await fetch(`https${endpoint}`);
+      const res = await fetch(`${API_BASE_URL}${endpoint}`);
       const data = await res.json();
       if (data.success) {
         setContacts(data.data);
