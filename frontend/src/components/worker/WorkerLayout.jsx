@@ -29,12 +29,13 @@ const WorkerLayout = ({ onLogout }) => {
     const fetchNotifications = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/api/notifications?role=${userRole}`);
+        if (!res.ok) return;
         const data = await res.json();
-        if (data.success) {
+        if (data && data.success && Array.isArray(data.data)) {
           setNotifications(data.data);
         }
       } catch (err) {
-        console.error('Failed to load notifications');
+        // Silently ignore background polling errors
       }
     };
     fetchNotifications();

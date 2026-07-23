@@ -13,8 +13,10 @@ const GalleryManager = () => {
     title: '',
     location: '',
     category: 'wedding',
+    imageUrl: '',
     imageFile: null
   });
+  const [previewUrl, setPreviewUrl] = useState('');
   const [adding, setAdding] = useState(false);
 
   const GALLERY_API = `${API_BASE_URL}/api/gallery`;
@@ -40,16 +42,39 @@ const GalleryManager = () => {
     fetchGallery();
   }, []);
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewImage(prev => ({ ...prev, imageFile: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
+    if (!newImage.imageFile && !newImage.imageUrl && !previewUrl) {
+      toast.error('Please select an image file or provide an image URL');
+      return;
+    }
+
     setAdding(true);
     try {
       const formData = new FormData();
       formData.append('title', newImage.title);
       formData.append('location', newImage.location);
       formData.append('category', newImage.category);
+      
       if (newImage.imageFile) {
         formData.append('imageFile', newImage.imageFile);
+      }
+      // Pass base64 data URL or URL string as backup for mock mode / direct storage
+      const backupImage = newImage.imageUrl || previewUrl;
+      if (backupImage) {
+        formData.append('image', backupImage);
       }
 
       const res = await fetch(GALLERY_API, {
@@ -63,12 +88,13 @@ const GalleryManager = () => {
         });
         setGallery([data.data, ...gallery]);
         setShowAddForm(false);
-        setNewImage({ title: '', location: '', category: 'wedding', imageFile: null });
+        setNewImage({ title: '', location: '', category: 'wedding', imageUrl: '', imageFile: null });
+        setPreviewUrl('');
       } else {
         toast.error(data.error || 'Failed to add image');
       }
     } catch (err) {
-      toast.error('Server error');
+      toast.error('Server error while adding image');
     } finally {
       setAdding(false);
     }
@@ -93,6 +119,15 @@ const GalleryManager = () => {
     }
   };
 
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80';
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
+      return imagePath;
+    }
+    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+    return `${API_BASE_URL}${cleanPath}`;
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -100,7 +135,10 @@ const GalleryManager = () => {
         <button
           className="admin-btn admin-btn-primary"
           style={styles.addButton}
-          onClick={() => setShowAddForm(!showAddForm)}
+          onClick={() => {
+            setShowAddForm(!showAddForm);
+            setPreviewUrl('');
+          }}
         >
           <Plus size={20} />
           {showAddForm ? 'Cancel' : 'Add New Image'}
@@ -112,7 +150,7 @@ const GalleryManager = () => {
           <h3 style={{ margin: '0 0 20px 0', color: 'var(--admin-text-main)', fontSize: '18px' }}>Add New Portfolio Image</h3>
           <div style={styles.formGrid}>
             <div>
-              <label style={styles.label}>Title / Description</label>
+              <label style={styles.label}>Title / Description *</label>
               <input
                 className="admin-input"
                 required
@@ -122,7 +160,7 @@ const GalleryManager = () => {
               />
             </div>
             <div>
-              <label style={styles.label}>Location / Venue</label>
+              <label style={styles.label}>Location / Venue *</label>
               <input
                 className="admin-input"
                 required
@@ -132,7 +170,7 @@ const GalleryManager = () => {
               />
             </div>
             <div>
-              <label style={styles.label}>Category</label>
+              <label style={styles.label}>Category *</label>
               <select
                 className="admin-input"
                 value={newImage.category}
@@ -145,18 +183,41 @@ const GalleryManager = () => {
               </select>
             </div>
             <div>
-              <label style={styles.label}>Image File</label>
+              <label style={styles.label}>Upload Image File</label>
               <input
                 className="admin-input"
-                required
                 type="file"
-                accept=".jpg,.jpeg,.png"
-                onChange={e => setNewImage({ ...newImage, imageFile: e.target.files[0] })}
+                accept=".jpg,.jpeg,.png,.webp"
+                onChange={handleFileChange}
+              />
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={styles.label}>OR Paste Image Web URL (Optional)</label>
+              <input
+                className="admin-input"
+                type="url"
+                value={newImage.imageUrl}
+                onChange={e => {
+                  setNewImage({ ...newImage, imageUrl: e.target.value });
+                  if (e.target.value) setPreviewUrl(e.target.value);
+                }}
+                placeholder="https://images.unsplash.com/..."
               />
             </div>
           </div>
+
+          {/* Live Preview Box */}
+          {previewUrl && (
+            <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ width: '120px', height: '80px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--admin-border)' }}>
+                <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+              <span style={{ fontSize: '13px', color: 'var(--admin-success)', fontWeight: '600' }}>✓ Image ready for upload</span>
+            </div>
+          )}
+
           <button type="submit" className="admin-btn admin-btn-primary" style={styles.submitButton} disabled={adding}>
-            {adding ? 'Adding...' : 'Save to Gallery'}
+            {adding ? 'Adding to Gallery...' : 'Save to Gallery'}
           </button>
         </form>
       )}
@@ -167,10 +228,18 @@ const GalleryManager = () => {
         <div style={styles.emptyState}>Your gallery is empty. Add some images!</div>
       ) : (
         <div style={styles.grid}>
-          {gallery.map(item => (
+          {gallery.map((item, index) => (
             <div key={item._id} className="admin-glass-panel" style={styles.card}>
               <div style={styles.imageWrapper}>
-                <img src={item.image} alt={item.title} style={styles.image} />
+                <img
+                  src={getImageUrl(item.image)}
+                  alt={item.title}
+                  style={styles.image}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80';
+                  }}
+                />
                 <button style={styles.deleteButton} onClick={() => handleDelete(item._id)}>
                   <Trash2 size={16} />
                 </button>
