@@ -36,33 +36,13 @@ const upload = multer({
 const DATA_DIR = path.join(__dirname, '../data');
 const GALLERY_FILE = path.join(DATA_DIR, 'gallery.json');
 
-const defaultGallery = [];
-
-// Helper to seed gallery in JSON file for Mock Mode
-const ensureGallerySeeded = () => {
+// Helper to ensure data directory and file exist for Mock Mode
+const ensureFileExists = () => {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
   if (!fs.existsSync(GALLERY_FILE)) {
-    const seededList = defaultGallery.map((item, index) => ({
-      _id: 'mock_gal_' + index,
-      ...item,
-      createdAt: new Date()
-    }));
-    fs.writeFileSync(GALLERY_FILE, JSON.stringify(seededList, null, 2));
-  }
-};
-
-// Seed MongoDB if empty
-const seedMongoDB = async () => {
-  try {
-    const count = await Gallery.countDocuments();
-    if (count === 0 && defaultGallery.length > 0) {
-      await Gallery.create(defaultGallery);
-      console.log('MongoDB: Seeded default gallery items.');
-    }
-  } catch (err) {
-    console.error('MongoDB gallery seeding error:', err);
+    fs.writeFileSync(GALLERY_FILE, JSON.stringify([], null, 2));
   }
 };
 
@@ -72,7 +52,7 @@ const seedMongoDB = async () => {
 router.get('/', async (req, res) => {
   if (process.env.MOCK_DB === 'true') {
     try {
-      ensureGallerySeeded();
+      ensureFileExists();
       const fileData = fs.readFileSync(GALLERY_FILE, 'utf8');
       const gallery = JSON.parse(fileData);
       return res.status(200).json({ success: true, data: gallery });
@@ -82,7 +62,6 @@ router.get('/', async (req, res) => {
   }
 
   try {
-    await seedMongoDB();
     const gallery = await Gallery.find().sort({ createdAt: -1 });
     res.status(200).json({ success: true, data: gallery });
   } catch (err) {
@@ -107,7 +86,7 @@ router.post('/', upload.single('imageFile'), async (req, res) => {
 
   if (process.env.MOCK_DB === 'true') {
     try {
-      ensureGallerySeeded();
+      ensureFileExists();
       const fileData = fs.readFileSync(GALLERY_FILE, 'utf8');
       const gallery = JSON.parse(fileData);
 
@@ -144,7 +123,7 @@ router.delete('/:id', async (req, res) => {
 
   if (process.env.MOCK_DB === 'true') {
     try {
-      ensureGallerySeeded();
+      ensureFileExists();
       const fileData = fs.readFileSync(GALLERY_FILE, 'utf8');
       let gallery = JSON.parse(fileData);
       const initialLength = gallery.length;

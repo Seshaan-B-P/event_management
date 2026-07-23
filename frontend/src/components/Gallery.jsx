@@ -10,51 +10,6 @@ const FALLBACK_IMAGES = [
   'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80'
 ];
 
-const DEFAULT_GALLERY = [
-  {
-    _id: 'default_1',
-    title: 'Luxury Stage Decoration',
-    location: 'Karur Grand Palace',
-    category: 'wedding',
-    image: FALLBACK_IMAGES[0]
-  },
-  {
-    _id: 'default_2',
-    title: 'Royal Mandap Setup',
-    location: 'Vengamedu, Karur',
-    category: 'wedding',
-    image: FALLBACK_IMAGES[1]
-  },
-  {
-    _id: 'default_3',
-    title: 'Theme Birthday Decor',
-    location: 'Karur Club',
-    category: 'birthday',
-    image: FALLBACK_IMAGES[2]
-  },
-  {
-    _id: 'default_4',
-    title: 'Ambient Lighting & Gala',
-    location: 'Texvalley Convention',
-    category: 'other',
-    image: FALLBACK_IMAGES[3]
-  },
-  {
-    _id: 'default_5',
-    title: 'Floral Entrance Arch',
-    location: 'Karur Residency',
-    category: 'wedding',
-    image: FALLBACK_IMAGES[4]
-  },
-  {
-    _id: 'default_6',
-    title: 'Sangeet & Musical Night',
-    location: 'Karur Lawn',
-    category: 'other',
-    image: FALLBACK_IMAGES[5]
-  }
-];
-
 const Gallery = () => {
   const [filter, setFilter] = useState('all');
   const [items, setItems] = useState([]);
@@ -67,14 +22,14 @@ const Gallery = () => {
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data)) {
           setItems(data.data);
         } else {
-          setItems(DEFAULT_GALLERY);
+          setItems([]);
         }
       } catch (err) {
-        console.error('Error fetching gallery, using default gallery items:', err);
-        setItems(DEFAULT_GALLERY);
+        console.error('Error fetching gallery:', err);
+        setItems([]);
       } finally {
         setLoading(false);
       }
@@ -92,11 +47,9 @@ const Gallery = () => {
     return `${API_BASE_URL}${cleanPath}`;
   };
 
-  const displayItems = items.length > 0 ? items : DEFAULT_GALLERY;
-
   const filteredItems = filter === 'all'
-    ? displayItems
-    : displayItems.filter(item => (item.category || '').toLowerCase() === filter.toLowerCase());
+    ? items
+    : items.filter(item => (item.category || '').toLowerCase() === filter.toLowerCase());
 
   return (
     <section id="gallery" className="section" style={{ backgroundColor: 'var(--light-gray)' }}>
