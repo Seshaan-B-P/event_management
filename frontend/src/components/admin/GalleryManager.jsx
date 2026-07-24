@@ -54,9 +54,11 @@ const GalleryManager = () => {
     }
   };
 
+  const FALLBACK_IMAGE = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="350" viewBox="0 0 400 350" fill="%231a1a1a"><rect width="400" height="350" fill="%231a1a1a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23d4af37" font-family="sans-serif" font-size="14" opacity="0.7">Event Photo</text></svg>';
+
   const handleAdd = async (e) => {
     e.preventDefault();
-    const backupImage = newImage.imageUrl || previewUrl;
+    const backupImage = newImage.imageUrl || (newImage.imageFile ? previewUrl : '');
     if (!newImage.imageFile && !backupImage) {
       toast.error('Please select an image file or provide an image URL');
       return;
@@ -75,8 +77,8 @@ const GalleryManager = () => {
           formData.append('location', newImage.location);
           formData.append('category', newImage.category);
           formData.append('imageFile', newImage.imageFile);
-          if (backupImage) {
-            formData.append('image', backupImage);
+          if (newImage.imageUrl) {
+            formData.append('image', newImage.imageUrl);
           }
 
           res = await fetch(GALLERY_API, {
@@ -146,12 +148,14 @@ const GalleryManager = () => {
   };
 
   const getImageUrl = (imagePath) => {
-
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
-      return imagePath;
+    if (!imagePath) return FALLBACK_IMAGE;
+    const normalized = String(imagePath).replace(/\\/g, '/');
+    if (normalized.startsWith('http://') || normalized.startsWith('https://') || normalized.startsWith('data:')) {
+      return normalized;
     }
-    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-    return `${API_BASE_URL}${cleanPath}`;
+    const cleanPath = normalized.startsWith('/') ? normalized : `/${normalized}`;
+    const baseUrl = (API_BASE_URL || 'http://localhost:5000').replace(/\/+$/, '');
+    return `${baseUrl}${cleanPath}`;
   };
 
   return (
@@ -263,7 +267,7 @@ const GalleryManager = () => {
                   style={styles.image}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = '';
+                    e.currentTarget.src = FALLBACK_IMAGE;
                   }}
                 />
                 <button style={styles.deleteButton} onClick={() => handleDelete(item._id)}>

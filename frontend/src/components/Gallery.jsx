@@ -31,13 +31,17 @@ const Gallery = () => {
     fetchGallery();
   }, []);
 
+  const FALLBACK_IMAGE = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="350" viewBox="0 0 400 350" fill="%23251605"><rect width="400" height="350" fill="%23251605"/><path d="M170 140h60v20h-60zM150 170h100v80H150z" fill="%23d4af37" opacity="0.3"/><circle cx="200" cy="165" r="25" stroke="%23d4af37" stroke-width="4" fill="none" opacity="0.5"/><text x="50%" y="75%" dominant-baseline="middle" text-anchor="middle" fill="%23d4af37" font-family="sans-serif" font-size="14" opacity="0.7">Event Photo</text></svg>';
+
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
-      return imagePath;
+    if (!imagePath) return FALLBACK_IMAGE;
+    const normalized = String(imagePath).replace(/\\/g, '/');
+    if (normalized.startsWith('http://') || normalized.startsWith('https://') || normalized.startsWith('data:')) {
+      return normalized;
     }
-    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-    return `${API_BASE_URL}${cleanPath}`;
+    const cleanPath = normalized.startsWith('/') ? normalized : `/${normalized}`;
+    const baseUrl = (API_BASE_URL || 'http://localhost:5000').replace(/\/+$/, '');
+    return `${baseUrl}${cleanPath}`;
   };
 
   const filteredItems = filter === 'all'
@@ -129,7 +133,7 @@ const Gallery = () => {
                     position: 'relative',
                     height: '350px',
                     boxShadow: 'var(--shadow-md)',
-                    backgroundColor: 'var(--white)',
+                    backgroundColor: 'var(--dark-brown)',
                     cursor: 'pointer',
                     animationDelay: `${index * 0.1}s`
                   }}
@@ -146,7 +150,7 @@ const Gallery = () => {
                     }}
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.src = FALLBACK_IMAGE;
                     }}
                   />
                   {/* Overlay with info revealed on hover */}

@@ -106,12 +106,12 @@ router.post('/', uploadSingleImage, async (req, res) => {
     let image = req.body.image;
 
     if (req.file) {
-      image = `/uploads/${req.file.filename}`;
+      image = `/uploads/${req.file.filename}`.replace(/\\/g, '/');
     }
 
     // Fallback to body image (Data URL or Web URL) if file wasn't written to uploads
     if (!image && req.body.image) {
-      image = req.body.image;
+      image = req.body.image.replace(/\\/g, '/');
     }
 
     if (!title || !location || !category || !image) {
