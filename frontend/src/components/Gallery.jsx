@@ -3,6 +3,51 @@ import React, { useState, useEffect } from 'react';
 
 
 
+const INITIAL_SHOWCASE = [
+  {
+    _id: 'showcase_1',
+    title: 'Royal Mandap Decoration',
+    location: 'Karur Grand Palace',
+    category: 'wedding',
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    _id: 'showcase_2',
+    title: 'Floral Stage & Arch Setup',
+    location: 'BPS Convention Hall, Karur',
+    category: 'wedding',
+    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    _id: 'showcase_3',
+    title: 'Grand Birthday Celebration',
+    location: 'Resort Lawn, Karur',
+    category: 'birthday',
+    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    _id: 'showcase_4',
+    title: 'Corporate Event Lighting',
+    location: 'City Hotel Auditorium',
+    category: 'other',
+    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    _id: 'showcase_5',
+    title: 'Reception Outdoor Canopy',
+    location: 'Karur Garden Resort',
+    category: 'wedding',
+    image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    _id: 'showcase_6',
+    title: 'Theme Party & Balloon Decor',
+    location: 'Community Center, Karur',
+    category: 'birthday',
+    image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=800&q=80'
+  }
+];
+
 const Gallery = () => {
   const [filter, setFilter] = useState('all');
   const [items, setItems] = useState([]);
@@ -15,14 +60,14 @@ const Gallery = () => {
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        if (data.success && Array.isArray(data.data)) {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           setItems(data.data);
         } else {
-          setItems([]);
+          setItems(INITIAL_SHOWCASE);
         }
       } catch (err) {
-        console.error('Error fetching gallery:', err);
-        setItems([]);
+        console.error('Error fetching gallery, using showcase:', err);
+        setItems(INITIAL_SHOWCASE);
       } finally {
         setLoading(false);
       }
