@@ -54,12 +54,43 @@ const GalleryManager = () => {
     }
   };
 
-  const FALLBACK_IMAGE = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="350" viewBox="0 0 400 350" fill="%231a1a1a"><rect width="400" height="350" fill="%231a1a1a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23d4af37" font-family="sans-serif" font-size="14" opacity="0.7">Event Photo</text></svg>';
+  const CATEGORY_FALLBACKS = {
+    wedding: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+    birthday: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80',
+    corporate: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
+    other: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80'
+  };
+
+  const getFallbackForCategory = (category) => {
+    const cat = (category || '').toLowerCase();
+    if (cat.includes('wedding')) return CATEGORY_FALLBACKS.wedding;
+    if (cat.includes('birthday')) return CATEGORY_FALLBACKS.birthday;
+    if (cat.includes('corporate')) return CATEGORY_FALLBACKS.corporate;
+    return CATEGORY_FALLBACKS.other;
+  };
+
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    const backupImage = newImage.imageUrl || (newImage.imageFile ? previewUrl : '');
-    if (!newImage.imageFile && !backupImage) {
+
+    let imagePayload = newImage.imageUrl || previewUrl;
+    if (!imagePayload && newImage.imageFile) {
+      try {
+        imagePayload = await fileToBase64(newImage.imageFile);
+      } catch (err) {
+        console.warn('Error converting file to base64:', err);
+      }
+    }
+
+    if (!imagePayload && !newImage.imageFile) {
       toast.error('Please select an image file or provide an image URL');
       return;
     }
@@ -69,7 +100,7 @@ const GalleryManager = () => {
       let res;
       let data;
 
-      // Try FormData (file upload) first if file exists
+      // Try FormData first if file is selected
       if (newImage.imageFile) {
         try {
           const formData = new FormData();
@@ -77,24 +108,19 @@ const GalleryManager = () => {
           formData.append('location', newImage.location);
           formData.append('category', newImage.category);
           formData.append('imageFile', newImage.imageFile);
-          if (newImage.imageUrl) {
-            formData.append('image', newImage.imageUrl);
-          }
+          if (imagePayload) formData.append('image', imagePayload);
 
           res = await fetch(GALLERY_API, {
             method: 'POST',
             body: formData
           });
-
-          if (res.ok) {
-            data = await res.json();
-          }
+          if (res.ok) data = await res.json();
         } catch (formDataErr) {
           console.warn('FormData upload warning, trying JSON fallback:', formDataErr);
         }
       }
 
-      // Fallback to JSON payload (Data URL / Web URL) if FormData wasn't sent or returned non-200
+      // Fallback to JSON payload (Data URL / Web URL)
       if (!data || !data.success) {
         res = await fetch(GALLERY_API, {
           method: 'POST',
@@ -103,7 +129,7 @@ const GalleryManager = () => {
             title: newImage.title,
             location: newImage.location,
             category: newImage.category,
-            image: backupImage
+            image: imagePayload
           })
         });
         data = await res.json();
@@ -148,7 +174,7 @@ const GalleryManager = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return FALLBACK_IMAGE;
+    if (!imagePath) return '';
     const normalized = String(imagePath).replace(/\\/g, '/');
     if (normalized.startsWith('http://') || normalized.startsWith('https://') || normalized.startsWith('data:')) {
       return normalized;
@@ -265,10 +291,6 @@ const GalleryManager = () => {
                   src={getImageUrl(item.image)}
                   alt={item.title}
                   style={styles.image}
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = FALLBACK_IMAGE;
-                  }}
                 />
                 <button style={styles.deleteButton} onClick={() => handleDelete(item._id)}>
                   <Trash2 size={16} />

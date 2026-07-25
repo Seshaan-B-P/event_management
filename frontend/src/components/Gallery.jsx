@@ -31,10 +31,8 @@ const Gallery = () => {
     fetchGallery();
   }, []);
 
-  const FALLBACK_IMAGE = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="350" viewBox="0 0 400 350" fill="%23251605"><rect width="400" height="350" fill="%23251605"/><path d="M170 140h60v20h-60zM150 170h100v80H150z" fill="%23d4af37" opacity="0.3"/><circle cx="200" cy="165" r="25" stroke="%23d4af37" stroke-width="4" fill="none" opacity="0.5"/><text x="50%" y="75%" dominant-baseline="middle" text-anchor="middle" fill="%23d4af37" font-family="sans-serif" font-size="14" opacity="0.7">Event Photo</text></svg>';
-
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return FALLBACK_IMAGE;
+    if (!imagePath) return '';
     const normalized = String(imagePath).replace(/\\/g, '/');
     if (normalized.startsWith('http://') || normalized.startsWith('https://') || normalized.startsWith('data:')) {
       return normalized;
@@ -147,10 +145,6 @@ const Gallery = () => {
                       height: '100%',
                       objectFit: 'cover',
                       transition: 'var(--transition-slow)'
-                    }}
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = FALLBACK_IMAGE;
                     }}
                   />
                   {/* Overlay with info revealed on hover */}

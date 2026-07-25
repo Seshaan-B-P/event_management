@@ -82,7 +82,7 @@ router.get('/', async (req, res) => {
     try {
       ensureFileExists();
       const fileData = fs.readFileSync(GALLERY_FILE, 'utf8');
-      const gallery = JSON.parse(fileData);
+      const gallery = JSON.parse(fileData || '[]');
       return res.status(200).json({ success: true, data: gallery });
     } catch (err) {
       return res.status(200).json({ success: true, data: [] });
@@ -106,10 +106,19 @@ router.post('/', uploadSingleImage, async (req, res) => {
     let image = req.body.image;
 
     if (req.file) {
-      image = `/uploads/${req.file.filename}`.replace(/\\/g, '/');
+      try {
+        const fileBuffer = fs.readFileSync(req.file.path);
+        const mimeType = req.file.mimetype || 'image/jpeg';
+        image = `data:${mimeType};base64,${fileBuffer.toString('base64')}`;
+        // Clean up temp uploaded file from server disk
+        try { fs.unlinkSync(req.file.path); } catch (e) {}
+      } catch (e) {
+        console.warn('File to base64 conversion warning:', e.message);
+        image = `/uploads/${req.file.filename}`.replace(/\\/g, '/');
+      }
     }
 
-    // Fallback to body image (Data URL or Web URL) if file wasn't written to uploads
+    // Fallback or override with body image (Data URL or Web URL) if provided
     if (!image && req.body.image) {
       image = req.body.image.replace(/\\/g, '/');
     }

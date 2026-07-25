@@ -11,8 +11,7 @@ const GallerySchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: [true, 'Category is required'],
-    enum: ['wedding', 'birthday', 'other']
+    required: [true, 'Category is required']
   },
   image: {
     type: String,
