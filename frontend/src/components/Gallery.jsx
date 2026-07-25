@@ -76,14 +76,33 @@ const Gallery = () => {
     fetchGallery();
   }, []);
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
+  const CATEGORY_FALLBACKS = {
+    wedding: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+    birthday: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80',
+    corporate: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
+    other: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80'
+  };
+
+  const getFallbackForCategory = (category) => {
+    const cat = (category || '').toLowerCase();
+    if (cat.includes('wedding')) return CATEGORY_FALLBACKS.wedding;
+    if (cat.includes('birthday')) return CATEGORY_FALLBACKS.birthday;
+    if (cat.includes('corporate')) return CATEGORY_FALLBACKS.corporate;
+    return CATEGORY_FALLBACKS.other;
+  };
+
+  const getImageUrl = (imagePath, category) => {
+    if (!imagePath) return getFallbackForCategory(category);
     const normalized = String(imagePath).replace(/\\/g, '/');
     if (normalized.startsWith('http://') || normalized.startsWith('https://') || normalized.startsWith('data:')) {
       return normalized;
     }
     const cleanPath = normalized.startsWith('/') ? normalized : `/${normalized}`;
     const baseUrl = (API_BASE_URL || 'http://localhost:5000').replace(/\/+$/, '');
+    const isDeployedBrowser = typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (isDeployedBrowser && baseUrl.includes('localhost')) {
+      return getFallbackForCategory(category);
+    }
     return `${baseUrl}${cleanPath}`;
   };
 
@@ -165,7 +184,7 @@ const Gallery = () => {
             }}
           >
             {filteredItems.map((item, index) => {
-              const imageSrc = getImageUrl(item.image);
+              const imageSrc = getImageUrl(item.image, item.category);
 
               return (
                 <div
@@ -190,6 +209,10 @@ const Gallery = () => {
                       height: '100%',
                       objectFit: 'cover',
                       transition: 'var(--transition-slow)'
+                    }}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = getFallbackForCategory(item.category);
                     }}
                   />
                   {/* Overlay with info revealed on hover */}
