@@ -54,20 +54,7 @@ const GalleryManager = () => {
     }
   };
 
-  const CATEGORY_FALLBACKS = {
-    wedding: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
-    birthday: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80',
-    corporate: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
-    other: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80'
-  };
 
-  const getFallbackForCategory = (category) => {
-    const cat = (category || '').toLowerCase();
-    if (cat.includes('wedding')) return CATEGORY_FALLBACKS.wedding;
-    if (cat.includes('birthday')) return CATEGORY_FALLBACKS.birthday;
-    if (cat.includes('corporate')) return CATEGORY_FALLBACKS.corporate;
-    return CATEGORY_FALLBACKS.other;
-  };
 
   const fileToBase64 = (file) => {
     return new Promise((resolve, reject) => {

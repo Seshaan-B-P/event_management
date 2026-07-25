@@ -1,53 +1,6 @@
 import { API_BASE_URL } from '../config';
 import React, { useState, useEffect } from 'react';
 
-
-
-const INITIAL_SHOWCASE = [
-  {
-    _id: 'showcase_1',
-    title: 'Royal Mandap Decoration',
-    location: 'Karur Grand Palace',
-    category: 'wedding',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'showcase_2',
-    title: 'Floral Stage & Arch Setup',
-    location: 'BPS Convention Hall, Karur',
-    category: 'wedding',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'showcase_3',
-    title: 'Grand Birthday Celebration',
-    location: 'Resort Lawn, Karur',
-    category: 'birthday',
-    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'showcase_4',
-    title: 'Corporate Event Lighting',
-    location: 'City Hotel Auditorium',
-    category: 'other',
-    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'showcase_5',
-    title: 'Reception Outdoor Canopy',
-    location: 'Karur Garden Resort',
-    category: 'wedding',
-    image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    _id: 'showcase_6',
-    title: 'Theme Party & Balloon Decor',
-    location: 'Community Center, Karur',
-    category: 'birthday',
-    image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=800&q=80'
-  }
-];
-
 const Gallery = () => {
   const [filter, setFilter] = useState('all');
   const [items, setItems] = useState([]);
@@ -60,14 +13,14 @@ const Gallery = () => {
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data)) {
           setItems(data.data);
         } else {
-          setItems(INITIAL_SHOWCASE);
+          setItems([]);
         }
       } catch (err) {
-        console.error('Error fetching gallery, using showcase:', err);
-        setItems(INITIAL_SHOWCASE);
+        console.error('Error fetching gallery:', err);
+        setItems([]);
       } finally {
         setLoading(false);
       }
@@ -76,33 +29,14 @@ const Gallery = () => {
     fetchGallery();
   }, []);
 
-  const CATEGORY_FALLBACKS = {
-    wedding: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
-    birthday: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80',
-    corporate: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
-    other: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80'
-  };
-
-  const getFallbackForCategory = (category) => {
-    const cat = (category || '').toLowerCase();
-    if (cat.includes('wedding')) return CATEGORY_FALLBACKS.wedding;
-    if (cat.includes('birthday')) return CATEGORY_FALLBACKS.birthday;
-    if (cat.includes('corporate')) return CATEGORY_FALLBACKS.corporate;
-    return CATEGORY_FALLBACKS.other;
-  };
-
-  const getImageUrl = (imagePath, category) => {
-    if (!imagePath) return getFallbackForCategory(category);
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
     const normalized = String(imagePath).replace(/\\/g, '/');
     if (normalized.startsWith('http://') || normalized.startsWith('https://') || normalized.startsWith('data:')) {
       return normalized;
     }
     const cleanPath = normalized.startsWith('/') ? normalized : `/${normalized}`;
     const baseUrl = (API_BASE_URL || 'http://localhost:5000').replace(/\/+$/, '');
-    const isDeployedBrowser = typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-    if (isDeployedBrowser && baseUrl.includes('localhost')) {
-      return getFallbackForCategory(category);
-    }
     return `${baseUrl}${cleanPath}`;
   };
 
@@ -184,7 +118,7 @@ const Gallery = () => {
             }}
           >
             {filteredItems.map((item, index) => {
-              const imageSrc = getImageUrl(item.image, item.category);
+              const imageSrc = getImageUrl(item.image);
 
               return (
                 <div
@@ -201,20 +135,20 @@ const Gallery = () => {
                   }}
                   className="gallery-card animate-item"
                 >
-                  <img
-                    src={imageSrc}
-                    alt={`${item.title || 'BPS Events Stage Decoration'} - Wedding Decorators in Karur`}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      transition: 'var(--transition-slow)'
-                    }}
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = getFallbackForCategory(item.category);
-                    }}
-                  />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc}
+                      alt={`${item.title || 'BPS Events Stage Decoration'} - Wedding Decorators in Karur`}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        transition: 'var(--transition-slow)'
+                      }}
+                    />
+                  ) : (
+                    <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--dark-brown)' }} />
+                  )}
                   {/* Overlay with info revealed on hover */}
                   <div
                     style={{
@@ -298,4 +232,3 @@ const Gallery = () => {
 };
 
 export default Gallery;
-
