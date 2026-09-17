@@ -13,9 +13,11 @@
   --text-muted: #6e5e53;
   --white: #ffffff;
 
-  /* Fonts */
-  --font-sans: 'Poppins', sans-serif;
-  --font-cursive: 'Great Vibes', cursive;
+  /* Luxury & Highly Legible Font System */
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-royal: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-cursive: 'Playfair Display', Georgia, serif;
 
   /* Transitions */
   --transition-fast: all 0.2s ease;
@@ -258,24 +260,26 @@ img {
   position: relative;
 }
 
-/* Headings Design */
+/* Headings Design: Luxury Royal & Crystal Legible */
 .section-subtitle {
-  font-family: var(--font-cursive);
-  font-size: 2.2rem;
-  color: var(--gold);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.55rem;
+  color: var(--gold-dark);
   text-align: center;
   margin-bottom: 8px;
-  font-weight: 400;
-  letter-spacing: 1px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .section-title {
-  font-size: 2.5rem;
+  font-family: var(--font-royal);
+  font-size: 2.3rem;
   font-weight: 700;
   text-align: center;
   color: var(--dark-brown);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   margin-bottom: 50px;
   position: relative;
 }
@@ -596,4 +600,109 @@ img {
 /* Background Gradients */
 .admin-bg-gradient {
   background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+}
+
+/* ==========================================================================
+   3D Luxury Animations & Glassmorphic Utilities
+   ========================================================================== */
+
+@keyframes float3d {
+  0% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotateX(3deg) rotateY(3deg);
+  }
+  100% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.02);
+  }
+}
+
+@keyframes shimmerGold {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3), inset 0 0 15px rgba(212, 175, 55, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), inset 0 0 25px rgba(212, 175, 55, 0.25);
+  }
+}
+
+.spin-slow {
+  animation: spin 6s linear infinite;
+}
+
+.float-3d {
+  animation: float3d 5s ease-in-out infinite;
+}
+
+.float-badge {
+  animation: floatBadge 3.5s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.gold-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    var(--gold-light) 25%,
+    #ffffff 50%,
+    var(--gold) 75%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmerGold 4s linear infinite;
+}
+
+/* 3D Glassmorphic Card Preset */
+.glass-card-3d {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 16px 40px rgba(37, 22, 5, 0.08), 0 2px 8px rgba(212, 175, 55, 0.1);
+  border-radius: 18px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.glass-card-3d:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 24px 50px rgba(37, 22, 5, 0.14), 0 0 25px rgba(212, 175, 55, 0.2);
+}
+
+/* 3D Interactive Button Micro-interactions */
+.btn {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.98);
 }

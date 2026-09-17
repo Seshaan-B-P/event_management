@@ -114,8 +114,8 @@ const Navbar = () => {
             <span style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--white)', letterSpacing: '1px' }}>
               BPS
             </span>
-            <span style={{ fontSize: '1.3rem', fontWeight: '400', color: 'var(--gold)', fontFamily: 'var(--font-cursive)', marginLeft: '6px' }}>
-              Events
+            <span style={{ fontSize: '1.15rem', fontWeight: '700', color: 'var(--gold)', fontFamily: 'var(--font-royal)', letterSpacing: '2px', marginLeft: '6px' }}>
+              EVENTS
             </span>
           </div>
         </a>

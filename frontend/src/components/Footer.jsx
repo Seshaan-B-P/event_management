@@ -55,7 +55,7 @@ const Footer = () => {
                 }}
               />
               <span style={{ fontSize: '1.1rem', fontWeight: '700', letterSpacing: '1px' }}>
-                BPS <span style={{ fontFamily: 'var(--font-cursive)', color: 'var(--gold)', fontSize: '1.25rem', textTransform: 'none', marginLeft: '4px' }}>Events</span>
+                BPS <span style={{ fontFamily: 'var(--font-royal)', color: 'var(--gold)', fontSize: '1.1rem', letterSpacing: '2px', marginLeft: '4px' }}>EVENTS</span>
               </span>
             </div>
             <p style={{ color: 'var(--light-gray)', lineHeight: '1.6', marginBottom: '10px' }}>

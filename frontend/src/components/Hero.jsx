@@ -1,5 +1,6 @@
 import React from 'react';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Sparkles, Star, Award } from 'lucide-react';
+import ThreeHeroBackground from './ThreeHeroBackground';
 
 const Hero = () => {
   return (
@@ -11,58 +12,89 @@ const Hero = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '120px 0 80px',
-        backgroundColor: '#1b0f04',
-        backgroundImage: 'radial-gradient(circle at center, rgba(74, 53, 37, 0.4) 0%, rgba(37, 22, 5, 0.95) 100%)',
+        padding: '130px 0 90px',
+        backgroundColor: '#140c04',
+        backgroundImage: 'radial-gradient(circle at center, rgba(60, 40, 20, 0.4) 0%, rgba(20, 12, 4, 0.96) 100%)',
         overflow: 'hidden',
         color: 'var(--white)',
         textAlign: 'center'
       }}
     >
-      {/* Decorative Gold Sparkles or Lights Overlay */}
+      {/* 1. Real-time Three.js 3D WebGL Canvas (Intertwined Golden Rings & Stardust) */}
+      <ThreeHeroBackground />
+
+      {/* 2. Soft Ambient Radial Light Overlay */}
       <div
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          opacity: 0.15,
+          top: '20%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '600px',
+          height: '400px',
+          background: 'radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%)',
+          filter: 'blur(50px)',
           pointerEvents: 'none',
-          backgroundImage: 'radial-gradient(circle, var(--gold) 1px, transparent 1px)',
-          backgroundSize: '30px 30px'
+          zIndex: 0
         }}
       />
 
-      <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '900px' }}>
+      <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '960px' }}>
+        {/* Floating 3D Luxury Pill Badge */}
+        <div
+          className="float-badge"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 22px',
+            borderRadius: '40px',
+            backgroundColor: 'rgba(212, 175, 55, 0.12)',
+            border: '1px solid rgba(212, 175, 55, 0.4)',
+            backdropFilter: 'blur(12px)',
+            color: 'var(--gold-light)',
+            fontSize: '0.88rem',
+            fontWeight: '600',
+            letterSpacing: '0.8px',
+            marginBottom: '18px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+            animation: 'fadeInUp 0.6s ease-out forwards'
+          }}
+        >
+          <Sparkles size={16} style={{ color: 'var(--gold)' }} />
+          <span>Karur's Premier Luxury Event &amp; Wedding Designers</span>
+        </div>
+
         {/* Floating Subtitle */}
         <p
           style={{
-            fontFamily: 'var(--font-cursive)',
-            fontSize: '3rem',
+            fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
+            fontWeight: '600',
+            fontSize: 'clamp(1.5rem, 3.2vw, 2.3rem)',
             color: 'var(--gold)',
-            marginBottom: '10px',
+            marginBottom: '8px',
+            letterSpacing: '0.5px',
             animation: 'fadeInUp 0.8s ease-out forwards',
-            textShadow: '0 2px 10px rgba(212, 175, 55, 0.2)'
+            textShadow: '0 2px 14px rgba(212, 175, 55, 0.35)'
           }}
         >
           Crafting Your Dream Celebration
         </p>
 
-        {/* Main Brand Title */}
+        {/* Main Brand Title with 3D Shimmer */}
         <h1
+          className="gold-shimmer-text"
           style={{
+            fontFamily: 'var(--font-royal)',
             fontSize: 'calc(2.2rem + 1.8vw)',
             fontWeight: '800',
-            letterSpacing: '2px',
+            letterSpacing: '2.5px',
             lineHeight: 1.25,
             textTransform: 'uppercase',
             marginBottom: '20px',
             animation: 'fadeInUp 1s ease-out forwards',
-            background: 'linear-gradient(to right, #ffffff 30%, var(--gold-light) 70%, var(--gold) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            textShadow: '0 4px 20px rgba(0,0,0,0.5)'
+            textShadow: '0 4px 30px rgba(0,0,0,0.6)'
           }}
         >
           BPS EVENTS | Best Event Decorators in Karur
@@ -71,13 +103,13 @@ const Hero = () => {
         {/* Secondary Title & Copy */}
         <p
           style={{
-            fontSize: '1.2rem',
+            fontSize: '1.18rem',
             fontWeight: '300',
             maxWidth: '780px',
-            margin: '0 auto 40px',
-            color: 'var(--light-gray)',
-            lineHeight: 1.7,
-            letterSpacing: '0.5px',
+            margin: '0 auto 35px',
+            color: 'rgba(245, 236, 200, 0.9)',
+            lineHeight: 1.75,
+            letterSpacing: '0.3px',
             animation: 'fadeInUp 1.2s ease-out forwards'
           }}
         >
@@ -88,20 +120,90 @@ const Hero = () => {
         <div
           style={{
             display: 'flex',
-            gap: '20px',
+            gap: '18px',
             justifyContent: 'center',
+            alignItems: 'center',
             flexWrap: 'wrap',
+            marginBottom: '40px',
             animation: 'fadeInUp 1.4s ease-out forwards'
           }}
         >
-          <a href="#contact" className="btn btn-primary" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <a
+            href="#contact"
+            className="btn"
+            style={{
+              display: 'inline-flex',
+              gap: '10px',
+              alignItems: 'center',
+              backgroundColor: 'var(--gold)',
+              color: 'var(--dark-brown)',
+              fontWeight: '700',
+              padding: '14px 28px',
+              borderRadius: '30px',
+              boxShadow: '0 10px 30px rgba(212, 175, 55, 0.45)',
+              border: 'none',
+              fontSize: '1rem'
+            }}
+          >
             <Calendar size={18} />
             Book Your Event
           </a>
-          <a href="#services" className="btn btn-secondary" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            Our Services
+
+          <a
+            href="#services"
+            className="btn"
+            style={{
+              display: 'inline-flex',
+              gap: '8px',
+              alignItems: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(212, 175, 55, 0.5)',
+              backdropFilter: 'blur(8px)',
+              color: 'var(--white)',
+              fontWeight: '600',
+              padding: '14px 26px',
+              borderRadius: '30px',
+              fontSize: '1rem'
+            }}
+          >
+            <span>Our Services</span>
             <ArrowRight size={18} />
           </a>
+        </div>
+
+        {/* 3D Floating Feature Highlights */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '24px',
+            flexWrap: 'wrap',
+            animation: 'fadeInUp 1.6s ease-out forwards'
+          }}
+        >
+          {[
+            { icon: <Award size={18} />, label: 'Award-Winning Decorators' },
+            { icon: <Star size={18} />, label: '500+ Luxury Celebrations' },
+            { icon: <Sparkles size={18} />, label: 'Bespoke Theme Decoration' }
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(212, 175, 55, 0.2)',
+                color: 'var(--gold-light)',
+                fontSize: '0.85rem'
+              }}
+            >
+              <span style={{ color: 'var(--gold)' }}>{item.icon}</span>
+              <span>{item.label}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -113,7 +215,8 @@ const Hero = () => {
           left: 0,
           width: '100%',
           overflow: 'hidden',
-          lineHeight: 0
+          lineHeight: 0,
+          zIndex: 1
         }}
       >
         <svg
@@ -132,3 +235,4 @@ const Hero = () => {
 };
 
 export default Hero;
+
