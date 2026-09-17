@@ -15,6 +15,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 import AdminDashboard from './components/AdminDashboard';
 import WorkerDashboard from './components/WorkerDashboard';
 import UnifiedLogin from './components/UnifiedLogin';
+import CustomCursor from './components/CustomCursor';
 
 function LandingPage() {
   // Implement Scroll Reveal Animation Observer
@@ -86,6 +87,7 @@ function LandingPage() {
 function App() {
   return (
     <>
+      <CustomCursor />
       <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<LandingPage />} />
