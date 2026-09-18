@@ -485,17 +485,21 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '14px',
-    padding: '14px 18px',
-    borderRadius: '12px',
+    padding: '13px 18px',
+    borderRadius: '14px',
     color: 'var(--admin-text-muted)',
     textDecoration: 'none',
     fontWeight: '500',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)',
+    position: 'relative',
+    border: '1px solid transparent'
   },
   navItemActive: {
-    backgroundColor: 'rgba(212, 175, 55, 0.1)',
+    background: 'linear-gradient(90deg, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.04) 100%)',
     color: 'var(--admin-primary)',
-    boxShadow: 'inset 4px 0 0 0 var(--admin-primary)'
+    borderColor: 'rgba(212, 175, 55, 0.3)',
+    boxShadow: 'inset 4px 0 0 0 var(--admin-primary), 0 4px 20px rgba(0, 0, 0, 0.25)',
+    fontWeight: '600'
   },
   bottomNav: {
     padding: '24px 16px',

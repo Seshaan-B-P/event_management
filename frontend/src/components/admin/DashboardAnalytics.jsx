@@ -1,9 +1,12 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TrendingUp, Users, Calendar, Star, Phone, Activity, Download } from 'lucide-react';
+import { TrendingUp, Users, Calendar, Star, Phone, Activity, Download, ArrowUpRight, Sparkles } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import TiltCard3D from '../TiltCard3D';
+import Admin3DHeroBanner from './Admin3DHeroBanner';
+import AnimatedCounter from './AnimatedCounter';
 
 const DashboardAnalytics = () => {
   const [dbHealthy, setDbHealthy] = useState('Checking...');
@@ -152,16 +155,41 @@ const DashboardAnalytics = () => {
     doc.save('BPS_Analytics_Report.pdf');
   };
 
+  const adminName = localStorage.getItem('bps_admin_username') || 'Administrator';
+  const adminRole = localStorage.getItem('bps_admin_role') || 'Super Admin';
+
   return (
     <div style={styles.container}>
+      {/* 3D Executive Command Banner with Interactive Three.js */}
+      <Admin3DHeroBanner adminName={adminName} role={adminRole} />
+
+      {/* Quick Action & Health Toolbar */}
       <div style={styles.header}>
-        <button
-          onClick={generateDashboardPDF}
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '8px', border: '1px solid var(--admin-primary)', backgroundColor: 'transparent', color: 'var(--admin-primary)', cursor: 'pointer', fontWeight: '500', marginRight: '16px' }}
-        >
-          <Download size={16} />
-          Export Report (PDF)
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            onClick={generateDashboardPDF}
+            className="tactile-press"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 18px',
+              borderRadius: '12px',
+              border: '1px solid rgba(212, 175, 55, 0.4)',
+              backgroundColor: 'rgba(212, 175, 55, 0.1)',
+              color: 'var(--admin-primary)',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '13px',
+              boxShadow: '0 4px 15px rgba(212, 175, 55, 0.15)',
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            <Download size={16} />
+            Export Executive Report (PDF)
+          </button>
+        </div>
+
         <div style={styles.healthBadgeContainer}>
           <div style={styles.healthDot(dbHealthy)}></div>
           <span style={styles.healthText(dbHealthy)}>
@@ -170,12 +198,44 @@ const DashboardAnalytics = () => {
         </div>
       </div>
 
+      {/* 3D Holographic Stat Cards */}
       <div style={styles.statsGrid}>
-        <StatCard title="Total Leads" value={stats.totalInquiries} icon={Users} color="#3b82f6" />
-        <StatCard title="Completed Events" value={stats.completedEvents} icon={Calendar} color="var(--admin-primary)" />
-        <StatCard title="Pending Review" value={stats.pendingLeads} icon={Activity} color="#f59e0b" />
-        <StatCard title="In Progress" value={stats.inProgressLeads} icon={TrendingUp} color="#10b981" />
-        <StatCard title="Average Rating" value={stats.avgRating} icon={Star} color="#d4af37" />
+        <StatCard
+          title="Total Leads"
+          value={stats.totalInquiries}
+          icon={Users}
+          color="#3b82f6"
+          trend="+18% Active"
+        />
+        <StatCard
+          title="Completed Events"
+          value={stats.completedEvents}
+          icon={Calendar}
+          color="#d4af37"
+          trend="Grand Celebrations"
+        />
+        <StatCard
+          title="Pending Review"
+          value={stats.pendingLeads}
+          icon={Activity}
+          color="#f59e0b"
+          trend="Needs Attention"
+        />
+        <StatCard
+          title="In Progress"
+          value={stats.inProgressLeads}
+          icon={TrendingUp}
+          color="#10b981"
+          trend="Actively Serviced"
+        />
+        <StatCard
+          title="Average Rating"
+          value={stats.avgRating}
+          icon={Star}
+          color="#f59e0b"
+          isRating={true}
+          trend="Client Feedback"
+        />
       </div>
 
       <div className="admin-glass-panel" style={styles.chartContainer}>
@@ -255,16 +315,64 @@ const DashboardAnalytics = () => {
   );
 };
 
-const StatCard = ({ title, value, icon: Icon, color }) => (
-  <div className="admin-glass-panel" style={styles.statCard}>
-    <div style={{ ...styles.iconWrapper, backgroundColor: `${color}15`, color: color, boxShadow: `0 0 15px ${color}20` }}>
-      <Icon size={24} />
+const StatCard = ({ title, value, icon: Icon, color, isRating = false, trend }) => (
+  <TiltCard3D maxTilt={10} scale={1.03} glare={true} style={{ height: '100%' }}>
+    <div className="stat-card-tilt" style={styles.statCard}>
+      {/* Background soft ambient radial glow */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-20%',
+          right: '-20%',
+          width: '120px',
+          height: '120px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${color}30 0%, transparent 70%)`,
+          filter: 'blur(20px)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+      />
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', zIndex: 1, position: 'relative' }}>
+        <div
+          style={{
+            ...styles.iconWrapper,
+            backgroundColor: `${color}18`,
+            color: color,
+            border: `1px solid ${color}40`,
+            boxShadow: `0 0 20px ${color}30`
+          }}
+        >
+          <Icon size={22} />
+        </div>
+
+        {trend && (
+          <span
+            style={{
+              fontSize: '11px',
+              fontWeight: '600',
+              padding: '3px 8px',
+              borderRadius: '20px',
+              backgroundColor: `${color}15`,
+              color: color,
+              border: `1px solid ${color}30`,
+              letterSpacing: '0.3px'
+            }}
+          >
+            {trend}
+          </span>
+        )}
+      </div>
+
+      <div style={{ ...styles.statInfo, zIndex: 1, position: 'relative' }}>
+        <p style={styles.statTitle}>{title}</p>
+        <h3 style={styles.statValue}>
+          <AnimatedCounter value={value} decimals={isRating ? 1 : 0} suffix={isRating ? ' ★' : ''} />
+        </h3>
+      </div>
     </div>
-    <div style={styles.statInfo}>
-      <p style={styles.statTitle}>{title}</p>
-      <h3 style={styles.statValue}>{value}</h3>
-    </div>
-  </div>
+  </TiltCard3D>
 );
 
 const styles = {
@@ -304,15 +412,16 @@ const styles = {
   }),
   statsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(5, 1fr)',
-    gap: '24px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+    gap: '20px',
   },
   statCard: {
-    padding: '24px',
+    padding: '22px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '20px',
-    borderTop: '2px solid rgba(255, 255, 255, 0.05)',
+    gap: '16px',
+    height: '100%',
+    boxSizing: 'border-box'
   },
   iconWrapper: {
     width: '48px',
