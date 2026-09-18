@@ -4,7 +4,8 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import toast from 'react-hot-toast';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Calendar as CalIcon, Sparkles, CheckCircle2, Clock } from 'lucide-react';
+import TiltCard3D from '../TiltCard3D';
 
 const localizer = momentLocalizer(moment);
 
@@ -99,8 +100,47 @@ const CalendarManager = () => {
 
   return (
     <div style={styles.container}>
+      {/* 3D Calendar Metrics */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+        <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+          <div className="stat-card-tilt" style={{ padding: '20px', borderRadius: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ fontSize: '13px', color: 'var(--admin-text-muted)' }}>Calendar Bookings</span>
+              <CalIcon size={18} style={{ color: 'var(--admin-primary)' }} />
+            </div>
+            <h3 style={{ margin: 0, fontSize: '26px', fontWeight: '800', color: '#fff' }}>
+              {events.length}
+            </h3>
+          </div>
+        </TiltCard3D>
+
+        <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+          <div className="stat-card-tilt" style={{ padding: '20px', borderRadius: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ fontSize: '13px', color: 'var(--admin-text-muted)' }}>Confirmed Galas</span>
+              <CheckCircle2 size={18} style={{ color: 'var(--admin-success)' }} />
+            </div>
+            <h3 style={{ margin: 0, fontSize: '26px', fontWeight: '800', color: 'var(--admin-success)' }}>
+              {events.filter(e => e.resource?.status === 'Completed').length}
+            </h3>
+          </div>
+        </TiltCard3D>
+
+        <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+          <div className="stat-card-tilt" style={{ padding: '20px', borderRadius: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ fontSize: '13px', color: 'var(--admin-text-muted)' }}>Pending Approvals</span>
+              <Clock size={18} style={{ color: '#f59e0b' }} />
+            </div>
+            <h3 style={{ margin: 0, fontSize: '26px', fontWeight: '800', color: '#f59e0b' }}>
+              {events.filter(e => e.resource?.status === 'Pending').length}
+            </h3>
+          </div>
+        </TiltCard3D>
+      </div>
+
       <div style={styles.header}>
-        <h2 style={styles.title}>Event Calendar</h2>
+        <h2 style={styles.title}>Event Calendar Matrix</h2>
         <p style={styles.subtitle}>View all upcoming events and booked leads</p>
       </div>
 

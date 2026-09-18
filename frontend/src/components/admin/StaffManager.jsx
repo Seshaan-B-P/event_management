@@ -1,7 +1,8 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Mail, Phone, Users, Check, X, FileText } from 'lucide-react';
+import { Plus, Edit2, Trash2, Mail, Phone, Users, Check, X, FileText, Shield, UserCheck, Clock, Award } from 'lucide-react';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
 
 const StaffManager = () => {
   const [staffList, setStaffList] = useState([]);
@@ -330,12 +331,34 @@ const StaffManager = () => {
                     <tr key={staff._id} style={styles.tr}>
                       <td style={styles.td}>
                         <div style={styles.nameWrap}>
-                          <div style={styles.avatar}>
+                          <div
+                            style={{
+                              ...styles.avatar,
+                              background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0.1) 100%)',
+                              border: '1.5px solid rgba(212, 175, 55, 0.4)',
+                              color: 'var(--admin-primary)',
+                              boxShadow: '0 0 15px rgba(212, 175, 55, 0.25)',
+                              fontWeight: '700'
+                            }}
+                          >
                             {staff.name.charAt(0).toUpperCase()}
                           </div>
                           <div>
                             <div style={styles.staffName}>{staff.name}</div>
-                            <div style={styles.staffRole}>{staff.role}</div>
+                            <span
+                              className="worker-holo-badge"
+                              style={{
+                                display: 'inline-block',
+                                marginTop: '4px',
+                                padding: '2px 8px',
+                                fontSize: '11px',
+                                fontWeight: '600',
+                                color: 'var(--admin-primary)',
+                                letterSpacing: '0.4px'
+                              }}
+                            >
+                              {staff.role}
+                            </span>
                           </div>
                         </div>
                       </td>
@@ -352,19 +375,30 @@ const StaffManager = () => {
                       <td style={styles.td}>
                         <span style={{
                           ...styles.statusBadge,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
                           backgroundColor: getStatusColor(staff.status).bg,
                           color: getStatusColor(staff.status).text,
                           border: `1px solid ${getStatusColor(staff.status).bg}`
                         }}>
+                          <span
+                            style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              backgroundColor: getStatusColor(staff.status).text
+                            }}
+                          />
                           {staff.status}
                         </span>
                       </td>
                       <td style={styles.td}>
                         <div style={styles.actions}>
-                          <button onClick={() => handleEdit(staff)} style={styles.iconBtn}>
+                          <button onClick={() => handleEdit(staff)} className="tactile-press" style={styles.iconBtn} title="Edit Staff Profile">
                             <Edit2 size={16} />
                           </button>
-                          <button onClick={() => handleDelete(staff._id)} style={{ ...styles.iconBtn, color: 'var(--admin-danger)' }}>
+                          <button onClick={() => handleDelete(staff._id)} className="tactile-press" style={{ ...styles.iconBtn, color: 'var(--admin-danger)' }} title="Remove Staff">
                             <Trash2 size={16} />
                           </button>
                         </div>

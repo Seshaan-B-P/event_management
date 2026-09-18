@@ -1,7 +1,8 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
-import { Package, Plus, Edit2, Trash2, X, Search, Filter, Box, Users, Truck, Briefcase } from 'lucide-react';
+import { Package, Plus, Edit2, Trash2, X, Search, Filter, Box, Users, Truck, Briefcase, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
 
 const PackageManager = () => {
   const [packages, setPackages] = useState([]);
@@ -174,48 +175,60 @@ const PackageManager = () => {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
           {packages.map(pkg => (
-            <div key={pkg._id} style={{
-              backgroundColor: 'var(--admin-bg-panel)', border: '1px solid var(--admin-border)',
-              borderRadius: '16px', padding: '24px', display: 'flex', flexDirection: 'column'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                <div>
-                  <h3 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: '600', color: 'var(--admin-primary)' }}>{pkg.name}</h3>
-                  <p style={{ margin: 0, fontSize: '14px', color: 'var(--admin-text-muted)' }}>{pkg.description}</p>
+            <TiltCard3D key={pkg._id} maxTilt={8} scale={1.02} glare={true} style={{ height: '100%' }}>
+              <div
+                className="stat-card-tilt"
+                style={{
+                  padding: '24px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <div>
+                    <h3 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: '700', color: 'var(--admin-primary)' }}>{pkg.name}</h3>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--admin-text-muted)', lineHeight: '1.5' }}>{pkg.description}</p>
+                  </div>
+                  <div style={{ fontWeight: '800', fontSize: '18px', color: '#fff', backgroundColor: 'rgba(212, 175, 55, 0.15)', padding: '4px 12px', borderRadius: '12px', border: '1px solid rgba(212, 175, 55, 0.3)' }}>
+                    ₹{pkg.price?.toLocaleString()}
+                  </div>
                 </div>
-                <div style={{ fontWeight: '700', fontSize: '18px' }}>Rs. {pkg.price}</div>
-              </div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '20px', flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#ccc' }}>
-                  <Briefcase size={14} color="var(--admin-primary)" /> {pkg.services.length} Services
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#ccc', padding: '4px 10px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.03)' }}>
+                    <Briefcase size={14} color="var(--admin-primary)" /> {pkg.services.length} Services
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#ccc', padding: '4px 10px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.03)' }}>
+                    <Box size={14} color="var(--admin-primary)" /> {pkg.inventoryItems.length} Items
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#ccc', padding: '4px 10px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.03)' }}>
+                    <Truck size={14} color="var(--admin-primary)" /> {pkg.vendors.length} Vendors
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#ccc', padding: '4px 10px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.03)' }}>
+                    <Users size={14} color="var(--admin-primary)" /> {pkg.staffCount} Staff
+                  </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#ccc' }}>
-                  <Box size={14} color="var(--admin-primary)" /> {pkg.inventoryItems.length} Items
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#ccc' }}>
-                  <Truck size={14} color="var(--admin-primary)" /> {pkg.vendors.length} Vendors
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#ccc' }}>
-                  <Users size={14} color="var(--admin-primary)" /> {pkg.staffCount} Staff
-                </div>
-              </div>
 
-              <div style={{ display: 'flex', gap: '12px', borderTop: '1px solid var(--admin-border)', paddingTop: '16px' }}>
-                <button
-                  onClick={() => openModal(pkg)}
-                  style={{ flex: 1, padding: '10px', backgroundColor: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '8px', color: 'var(--admin-text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                >
-                  <Edit2 size={14} /> Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(pkg._id)}
-                  style={{ flex: 1, padding: '10px', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: 'none', borderRadius: '8px', color: 'var(--admin-danger)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                >
-                  <Trash2 size={14} /> Delete
-                </button>
+                <div style={{ display: 'flex', gap: '12px', borderTop: '1px solid var(--admin-border)', paddingTop: '16px', marginTop: 'auto' }}>
+                  <button
+                    onClick={() => openModal(pkg)}
+                    className="tactile-press"
+                    style={{ flex: 1, padding: '10px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid var(--admin-border)', borderRadius: '10px', color: 'var(--admin-text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '13px', fontWeight: '600' }}
+                  >
+                    <Edit2 size={14} /> Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(pkg._id)}
+                    className="tactile-press"
+                    style={{ flex: 1, padding: '10px', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '10px', color: 'var(--admin-danger)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '13px', fontWeight: '600' }}
+                  >
+                    <Trash2 size={14} /> Delete
+                  </button>
+                </div>
               </div>
-            </div>
+            </TiltCard3D>
           ))}
         </div>
       )}

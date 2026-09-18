@@ -1,8 +1,9 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState } from 'react';
-import { Lock, Mail, ChevronRight, Loader2, CalendarHeart, ShieldCheck, Users, TrendingUp } from 'lucide-react';
+import { Lock, Mail, ChevronRight, Loader2, ShieldCheck, Users, TrendingUp, Sparkles, KeyRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
 
 const AdminAuth = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -49,105 +50,135 @@ const AdminAuth = ({ onLogin }) => {
       <div style={styles.leftPanel}>
         <div style={styles.overlay}></div>
         <div style={styles.leftContent} className="admin-animate-fade">
-          <div style={styles.brandIcon}>
+          <div style={styles.brandIcon} className="float-badge">
             <img
               src="/logo.png"
               alt="BPS Events Logo"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px', boxShadow: '0 0 30px rgba(212, 175, 55, 0.4)' }}
             />
           </div>
-          <h1 style={styles.heroTitle}>BPS Event Management</h1>
+          <h1 style={styles.heroTitle} className="gold-shimmer-text">BPS Event Management</h1>
           <p style={styles.heroSubtitle}>
-            Streamline your operations, manage client interactions, and orchestrate unforgettable events all from one secure dashboard.
+            Executive Operations Command Suite. Orchestrate luxury weddings, galas, and corporate events with precision.
           </p>
 
           <div style={styles.features}>
-            <div style={styles.featureItem}>
-              <div style={styles.featureIcon}><TrendingUp size={20} /></div>
-              <div>
-                <h4 style={styles.featureTitle}>Real-time Analytics</h4>
-                <p style={styles.featureDesc}>Track bookings and revenue</p>
+            <TiltCard3D maxTilt={8} scale={1.02} glare={false}>
+              <div style={styles.featureItem}>
+                <div style={styles.featureIcon}><TrendingUp size={20} /></div>
+                <div>
+                  <h4 style={styles.featureTitle}>3D Real-time Analytics</h4>
+                  <p style={styles.featureDesc}>Track bookings, cashflow & pipeline</p>
+                </div>
               </div>
-            </div>
-            <div style={styles.featureItem}>
-              <div style={styles.featureIcon}><Users size={20} /></div>
-              <div>
-                <h4 style={styles.featureTitle}>Client CRM</h4>
-                <p style={styles.featureDesc}>Manage leads and communications</p>
+            </TiltCard3D>
+
+            <TiltCard3D maxTilt={8} scale={1.02} glare={false}>
+              <div style={styles.featureItem}>
+                <div style={styles.featureIcon}><Users size={20} /></div>
+                <div>
+                  <h4 style={styles.featureTitle}>VIP Client CRM</h4>
+                  <p style={styles.featureDesc}>Manage luxury leads and communications</p>
+                </div>
               </div>
-            </div>
-            <div style={styles.featureItem}>
-              <div style={styles.featureIcon}><ShieldCheck size={20} /></div>
-              <div>
-                <h4 style={styles.featureTitle}>Secure Access</h4>
-                <p style={styles.featureDesc}>Enterprise-grade security</p>
+            </TiltCard3D>
+
+            <TiltCard3D maxTilt={8} scale={1.02} glare={false}>
+              <div style={styles.featureItem}>
+                <div style={styles.featureIcon}><ShieldCheck size={20} /></div>
+                <div>
+                  <h4 style={styles.featureTitle}>Biometric Encryption</h4>
+                  <p style={styles.featureDesc}>Role-based military-grade access</p>
+                </div>
               </div>
-            </div>
+            </TiltCard3D>
           </div>
         </div>
       </div>
 
       <div style={styles.rightPanel} className="admin-mesh-background">
-        <div className="admin-glass-panel admin-animate-fade" style={styles.card}>
-          <div style={styles.header}>
-            <div style={styles.iconContainer}>
-              <Lock size={32} style={{ color: 'var(--admin-primary)' }} />
-            </div>
-            <h2 style={styles.title}>Admin Portal</h2>
-            <p style={styles.subtitle}>Secure Access Only</p>
-          </div>
-
-          <form onSubmit={handleLogin} style={styles.form}>
-            <div style={styles.inputGroup}>
-              <Mail size={18} style={styles.inputIcon} />
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="admin-input"
-                style={{ paddingLeft: '44px' }}
-                required
+        <TiltCard3D maxTilt={7} scale={1.01} glare={true} style={{ width: '100%', maxWidth: '440px' }}>
+          <div className="admin-glass-panel admin-animate-fade hologram-border" style={{ ...styles.card, maxWidth: '100%', position: 'relative' }}>
+            {/* Laser Scanline Beam during login */}
+            {loading && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '3px',
+                  background: 'linear-gradient(90deg, transparent, #d4af37, #ffffff, #d4af37, transparent)',
+                  boxShadow: '0 0 15px #d4af37',
+                  animation: 'laserSweep 1s infinite linear',
+                  zIndex: 20
+                }}
               />
+            )}
+
+            <div style={styles.header}>
+              <div style={{ ...styles.iconContainer, boxShadow: '0 0 25px rgba(212, 175, 55, 0.4)' }} className="float-badge">
+                <Lock size={32} style={{ color: 'var(--admin-primary)' }} />
+              </div>
+              <h2 style={styles.title}>Executive Portal</h2>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                <span className="neon-pulse-dot" />
+                <p style={styles.subtitle}>Protected Admin Gate</p>
+              </div>
             </div>
 
-            <div style={styles.inputGroup}>
-              <Lock size={18} style={styles.inputIcon} />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="admin-input"
-                style={{ paddingLeft: '44px' }}
-                required
-              />
+            <form onSubmit={handleLogin} style={styles.form}>
+              <div style={styles.inputGroup}>
+                <Mail size={18} style={styles.inputIcon} />
+                <input
+                  type="text"
+                  placeholder="Username or Email"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="admin-input"
+                  style={{ paddingLeft: '44px' }}
+                  required
+                />
+              </div>
+
+              <div style={styles.inputGroup}>
+                <KeyRound size={18} style={styles.inputIcon} />
+                <input
+                  type="password"
+                  placeholder="Secret Passkey"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="admin-input"
+                  style={{ paddingLeft: '44px' }}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="admin-btn admin-btn-primary tactile-press"
+                style={{ marginTop: '12px', height: '48px', fontSize: '15px', fontWeight: '700' }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={18} className="admin-spin" />
+                    Verifying Credentials...
+                  </>
+                ) : (
+                  <>
+                    <Lock size={16} /> Enter Executive Suite
+                    <ChevronRight size={18} />
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div style={styles.footer}>
+              <p style={styles.footerText}>© {new Date().getFullYear()} Elite Events. All rights reserved.</p>
             </div>
-
-            <button
-              type="submit"
-              className="admin-btn admin-btn-primary"
-              style={{ marginTop: '12px', height: '48px', fontSize: '15px' }}
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 size={18} className="admin-spin" />
-                  Authenticating...
-                </>
-              ) : (
-                <>
-                  Secure Login
-                  <ChevronRight size={18} />
-                </>
-              )}
-            </button>
-          </form>
-
-          <div style={styles.footer}>
-            <p style={styles.footerText}>© {new Date().getFullYear()} Elite Events. All rights reserved.</p>
           </div>
-        </div>
+        </TiltCard3D>
       </div>
     </div>
   );

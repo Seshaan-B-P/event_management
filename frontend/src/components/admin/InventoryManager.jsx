@@ -1,7 +1,9 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
-import { Package, Search, Filter, Plus, AlertTriangle, Box, Check, X, Edit2, Trash2, Download } from 'lucide-react';
+import { Package, Search, Filter, Plus, AlertTriangle, Box, Check, X, Edit2, Trash2, Download, Sparkles, Layers } from 'lucide-react';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
+import AnimatedCounter from './AnimatedCounter';
 
 const InventoryManager = () => {
   const [items, setItems] = useState([]);
@@ -221,10 +223,50 @@ const InventoryManager = () => {
       </div>
 
       {activeTab === 'inventory' && (
-        <div style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--admin-border)',
-          borderRadius: '16px', overflow: 'hidden'
-        }}>
+        <>
+          {/* 3D Inventory Metric Strip */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+            <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+              <div className="stat-card-tilt" style={{ padding: '20px', borderRadius: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--admin-text-muted)' }}>Total Fleet Units</span>
+                  <Package size={18} style={{ color: 'var(--admin-primary)' }} />
+                </div>
+                <h3 style={{ margin: 0, fontSize: '26px', fontWeight: '800', color: '#fff' }}>
+                  <AnimatedCounter value={items.reduce((s, i) => s + (parseInt(i.quantity) || 0), 0)} />
+                </h3>
+              </div>
+            </TiltCard3D>
+
+            <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+              <div className="stat-card-tilt" style={{ padding: '20px', borderRadius: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--admin-text-muted)' }}>Unique Asset Types</span>
+                  <Layers size={18} style={{ color: '#3b82f6' }} />
+                </div>
+                <h3 style={{ margin: 0, fontSize: '26px', fontWeight: '800', color: '#3b82f6' }}>
+                  <AnimatedCounter value={items.length} />
+                </h3>
+              </div>
+            </TiltCard3D>
+
+            <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+              <div className="stat-card-tilt" style={{ padding: '20px', borderRadius: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--admin-text-muted)' }}>Crew Loan Requests</span>
+                  <Box size={18} style={{ color: '#f59e0b' }} />
+                </div>
+                <h3 style={{ margin: 0, fontSize: '26px', fontWeight: '800', color: '#f59e0b' }}>
+                  <AnimatedCounter value={requests.filter(r => r.status === 'Pending').length} />
+                </h3>
+              </div>
+            </TiltCard3D>
+          </div>
+
+          <div style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--admin-border)',
+            borderRadius: '16px', overflow: 'hidden'
+          }}>
           <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--admin-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h2 style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>Equipment Catalog</h2>
             <div style={{ display: 'flex', gap: '12px' }}>
@@ -317,6 +359,7 @@ const InventoryManager = () => {
             </tbody>
           </table>
         </div>
+        </>
       )}
 
       {activeTab === 'requests' && (

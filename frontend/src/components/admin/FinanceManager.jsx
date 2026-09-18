@@ -1,9 +1,11 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
-import { IndianRupee, FileText, Download, Plus, Search, Filter, CheckCircle, AlertCircle, Clock, X } from 'lucide-react';
+import { IndianRupee, FileText, Download, Plus, Search, Filter, CheckCircle, AlertCircle, Clock, X, TrendingUp, Sparkles } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
+import AnimatedCounter from './AnimatedCounter';
 
 const FinanceManager = () => {
   const [contacts, setContacts] = useState([]);
@@ -64,9 +66,9 @@ const FinanceManager = () => {
     .reduce((sum, c) => sum + ((c.totalAmount || 0) - (c.paidAmount || 0)), 0);
 
   const stats = [
-    { title: 'Total Revenue', value: `₹${totalRevenue.toLocaleString()}`, icon: IndianRupee, color: 'var(--admin-primary)' },
-    { title: 'Pending Payments', value: `₹${pendingInvoices.toLocaleString()}`, icon: Clock, color: 'var(--admin-warning)' },
-    { title: 'Overdue Payments', value: `₹${overduePayments.toLocaleString()}`, icon: AlertCircle, color: 'var(--admin-danger)' }
+    { title: 'Total Revenue', rawValue: totalRevenue, icon: IndianRupee, color: 'var(--admin-primary)', trend: 'Settled Income' },
+    { title: 'Pending Payments', rawValue: pendingInvoices, icon: Clock, color: 'var(--admin-warning)', trend: 'Receivable Due' },
+    { title: 'Overdue Payments', rawValue: overduePayments, icon: AlertCircle, color: 'var(--admin-danger)', trend: 'Action Required' }
   ];
 
   // Only show contacts with a totalAmount
@@ -275,24 +277,83 @@ const FinanceManager = () => {
         </button>
       </div>
 
-      {/* Summary Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+      {/* 3D Holographic Summary Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '32px' }}>
         {stats.map((stat, index) => (
-          <div key={index} style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--admin-border)',
-            borderRadius: '16px', padding: '24px', backdropFilter: 'blur(10px)'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-              <div style={{
-                width: '40px', height: '40px', borderRadius: '10px',
-                backgroundColor: `${stat.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: stat.color
-              }}>
-                <stat.icon size={20} />
+          <TiltCard3D key={index} maxTilt={10} scale={1.03} glare={true} style={{ height: '100%' }}>
+            <div
+              className="stat-card-tilt"
+              style={{
+                borderRadius: '18px',
+                padding: '24px',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '14px',
+                height: '100%',
+                boxSizing: 'border-box'
+              }}
+            >
+              {/* Ambient radial glow */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '-15%',
+                  right: '-15%',
+                  width: '120px',
+                  height: '120px',
+                  borderRadius: '50%',
+                  background: `radial-gradient(circle, ${stat.color}30 0%, transparent 70%)`,
+                  filter: 'blur(20px)',
+                  pointerEvents: 'none',
+                  zIndex: 0
+                }}
+              />
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 1 }}>
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    backgroundColor: `${stat.color}18`,
+                    border: `1px solid ${stat.color}40`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: stat.color,
+                    boxShadow: `0 0 20px ${stat.color}25`
+                  }}
+                >
+                  <stat.icon size={22} />
+                </div>
+                {stat.trend && (
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: '600',
+                      padding: '3px 10px',
+                      borderRadius: '20px',
+                      backgroundColor: `${stat.color}15`,
+                      color: stat.color,
+                      border: `1px solid ${stat.color}30`
+                    }}
+                  >
+                    {stat.trend}
+                  </span>
+                )}
+              </div>
+
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <h3 style={{ fontSize: '13px', color: 'var(--admin-text-muted)', margin: '0 0 4px 0', fontWeight: '500' }}>
+                  {stat.title}
+                </h3>
+                <p style={{ fontSize: '28px', fontWeight: '800', margin: 0, color: '#fff', letterSpacing: '-0.5px' }}>
+                  ₹<AnimatedCounter value={stat.rawValue || 0} />
+                </p>
               </div>
             </div>
-            <h3 style={{ fontSize: '14px', color: 'var(--admin-text-muted)', margin: '0 0 8px 0', fontWeight: '500' }}>{stat.title}</h3>
-            <p style={{ fontSize: '28px', fontWeight: '700', margin: 0 }}>{stat.value}</p>
-          </div>
+          </TiltCard3D>
         ))}
       </div>
 
@@ -362,17 +423,31 @@ const FinanceManager = () => {
                   <td style={{ padding: '16px 24px' }}>{contact.firstName} {contact.lastName}</td>
                   <td style={{ padding: '16px 24px', color: 'var(--admin-text-muted)' }}>{contact.eventDate || new Date(contact.createdAt).toISOString().split('T')[0]}</td>
                   <td style={{ padding: '16px 24px', fontWeight: '600' }}>
-                    ₹{contact.totalAmount?.toLocaleString()}
-                    {contact.paidAmount > 0 && contact.paidAmount < contact.totalAmount && (
-                      <div style={{ fontSize: '12px', color: 'var(--admin-text-muted)', fontWeight: '400' }}>
-                        Paid: ₹{contact.paidAmount.toLocaleString()}
+                    <div>₹{contact.totalAmount?.toLocaleString()}</div>
+                    {contact.totalAmount > 0 && (
+                      <div style={{ marginTop: '6px', width: '120px' }}>
+                        <div style={{ height: '4px', width: '100%', backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '4px', overflow: 'hidden' }}>
+                          <div
+                            style={{
+                              height: '100%',
+                              width: `${Math.min(100, Math.round(((contact.paidAmount || 0) / contact.totalAmount) * 100))}%`,
+                              background: 'linear-gradient(90deg, #10b981, #d4af37)',
+                              borderRadius: '4px',
+                              boxShadow: '0 0 8px rgba(212, 175, 55, 0.5)'
+                            }}
+                          />
+                        </div>
+                        <div style={{ fontSize: '11px', color: 'var(--admin-text-muted)', fontWeight: '400', marginTop: '3px' }}>
+                          Paid: ₹{(contact.paidAmount || 0).toLocaleString()} ({Math.round(((contact.paidAmount || 0) / contact.totalAmount) * 100)}%)
+                        </div>
                       </div>
                     )}
                   </td>
                   <td style={{ padding: '16px 24px' }}>
                     <span style={{
-                      display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 10px',
-                      backgroundColor: `${getStatusColor(contact.paymentStatus)}15`, color: getStatusColor(contact.paymentStatus),
+                      display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 12px',
+                      backgroundColor: `${getStatusColor(contact.paymentStatus)}18`, color: getStatusColor(contact.paymentStatus),
+                      border: `1px solid ${getStatusColor(contact.paymentStatus)}35`,
                       borderRadius: '20px', fontSize: '12px', fontWeight: '600'
                     }}>
                       {getStatusIcon(contact.paymentStatus)}
@@ -382,11 +457,24 @@ const FinanceManager = () => {
                   <td style={{ padding: '16px 24px', textAlign: 'right' }}>
                     <button
                       onClick={() => generateClientInvoice(contact)}
+                      className="tactile-press"
                       style={{
-                        background: 'none', border: 'none', color: 'var(--admin-text-muted)', cursor: 'pointer',
-                        padding: '4px'
-                      }} title="Download Invoice">
-                      <Download size={18} />
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '6px 14px',
+                        borderRadius: '10px',
+                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                        border: '1px solid rgba(212, 175, 55, 0.3)',
+                        color: 'var(--admin-primary)',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        fontWeight: '600'
+                      }}
+                      title="Download Official Invoice PDF"
+                    >
+                      <Download size={14} />
+                      Invoice
                     </button>
                   </td>
                 </tr>

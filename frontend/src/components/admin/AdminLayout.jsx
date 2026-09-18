@@ -23,9 +23,12 @@ import {
   Info,
   Send,
   Layers,
-  MessageCircle
+  MessageCircle,
+  Search,
+  Command
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import CommandPalette from './CommandPalette';
 
 const AdminLayout = ({ onLogout }) => {
   const navigate = useNavigate();
@@ -38,6 +41,18 @@ const AdminLayout = ({ onLogout }) => {
   const [showSendModal, setShowSendModal] = useState(false);
   const [newNotif, setNewNotif] = useState({ title: '', message: '', type: 'info', targetRole: 'all' });
   const [isSending, setIsSending] = useState(false);
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setShowCommandPalette(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -226,7 +241,44 @@ const AdminLayout = ({ onLogout }) => {
               Manage your event platform effectively
             </p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            {/* Spotlight Command Palette Trigger */}
+            <button
+              type="button"
+              onClick={() => setShowCommandPalette(true)}
+              className="tactile-press"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(212, 175, 55, 0.3)',
+                color: 'var(--admin-text-muted)',
+                cursor: 'pointer',
+                fontSize: '13px',
+                transition: 'all 0.2s ease',
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <Search size={15} style={{ color: 'var(--admin-primary)' }} />
+              <span>Search or Jump...</span>
+              <kbd
+                style={{
+                  fontSize: '10px',
+                  padding: '2px 6px',
+                  borderRadius: '6px',
+                  backgroundColor: 'rgba(212, 175, 55, 0.15)',
+                  color: 'var(--admin-primary)',
+                  fontWeight: '700',
+                  border: '1px solid rgba(212, 175, 55, 0.2)'
+                }}
+              >
+                Ctrl K
+              </kbd>
+            </button>
+
             {/* Notification Bell */}
             <div style={{ position: 'relative' }} ref={notificationRef}>
               <button
@@ -419,6 +471,12 @@ const AdminLayout = ({ onLogout }) => {
             </div>
           </div>
         )}
+
+        {/* Global Spotlight Command Palette */}
+        <CommandPalette
+          isOpen={showCommandPalette}
+          onClose={() => setShowCommandPalette(false)}
+        />
 
       </main>
     </div>

@@ -1,7 +1,9 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Mail, Phone, Calendar, Clock, Edit3, Check, ChevronRight, Plus } from 'lucide-react';
+import { Search, Filter, Mail, Phone, Calendar, Clock, Edit3, Check, ChevronRight, Plus, Sparkles, Award, Users, CheckCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
+import AnimatedCounter from './AnimatedCounter';
 
 const CRMManager = () => {
   const [messages, setMessages] = useState([]);
@@ -135,17 +137,73 @@ const CRMManager = () => {
     }
   };
 
+  const totalCount = messages.length;
+  const pendingCount = messages.filter(m => m.status === 'Pending').length;
+  const contactedCount = messages.filter(m => m.status === 'Contacted').length;
+  const completedCount = messages.filter(m => m.status === 'Completed').length;
+
   return (
     <div style={styles.container}>
+      {/* 3D CRM Quick Metric Strip */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+        <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+          <div className="stat-card-tilt" style={{ padding: '18px 20px', borderRadius: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '12px', color: 'var(--admin-text-muted)' }}>Total Inquiries</span>
+              <Users size={16} style={{ color: 'var(--admin-primary)' }} />
+            </div>
+            <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: '#fff' }}>
+              <AnimatedCounter value={totalCount} />
+            </h3>
+          </div>
+        </TiltCard3D>
+
+        <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+          <div className="stat-card-tilt" style={{ padding: '18px 20px', borderRadius: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '12px', color: 'var(--admin-text-muted)' }}>Pending Review</span>
+              <Clock size={16} style={{ color: '#f59e0b' }} />
+            </div>
+            <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: '#f59e0b' }}>
+              <AnimatedCounter value={pendingCount} />
+            </h3>
+          </div>
+        </TiltCard3D>
+
+        <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+          <div className="stat-card-tilt" style={{ padding: '18px 20px', borderRadius: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '12px', color: 'var(--admin-text-muted)' }}>Active Negotiation</span>
+              <Mail size={16} style={{ color: '#3b82f6' }} />
+            </div>
+            <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: '#3b82f6' }}>
+              <AnimatedCounter value={contactedCount} />
+            </h3>
+          </div>
+        </TiltCard3D>
+
+        <TiltCard3D maxTilt={8} scale={1.02} glare={true}>
+          <div className="stat-card-tilt" style={{ padding: '18px 20px', borderRadius: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '12px', color: 'var(--admin-text-muted)' }}>Confirmed Bookings</span>
+              <CheckCircle2 size={16} style={{ color: 'var(--admin-success)' }} />
+            </div>
+            <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: 'var(--admin-success)' }}>
+              <AnimatedCounter value={completedCount} />
+            </h3>
+          </div>
+        </TiltCard3D>
+      </div>
+
       <div style={styles.header}>
         <div>
-          <h2 style={styles.title}>CRM & Leads</h2>
-          <p style={styles.subtitle}>Manage client inquiries and bookings</p>
+          <h2 style={styles.title}>CRM & Client Pipeline</h2>
+          <p style={styles.subtitle}>VIP client interactions, inquiries and bookings lifecycle</p>
         </div>
 
         <div style={styles.controls}>
           <button
-            className="admin-btn admin-btn-primary"
+            className="admin-btn admin-btn-primary tactile-press"
             onClick={() => setShowAddForm(!showAddForm)}
           >
             <Plus size={18} />
@@ -311,7 +369,18 @@ const CRMManager = () => {
                   <React.Fragment key={msg._id}>
                     <tr style={styles.tr}>
                       <td style={styles.td}>
-                        <div style={styles.clientName}>{msg.firstName} {msg.lastName}</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                          <span style={styles.clientName}>{msg.firstName} {msg.lastName}</span>
+                          {msg.totalAmount >= 100000 ? (
+                            <span className="worker-holo-badge" style={{ padding: '2px 8px', fontSize: '10px', color: 'var(--admin-primary)', fontWeight: '700' }}>
+                              ★ PLATINUM VIP
+                            </span>
+                          ) : msg.totalAmount >= 40000 ? (
+                            <span style={{ padding: '2px 8px', fontSize: '10px', borderRadius: '12px', backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.3)', fontWeight: '600' }}>
+                              GOLD GALA
+                            </span>
+                          ) : null}
+                        </div>
                         <div style={styles.clientMessage}>{msg.message.substring(0, 50)}...</div>
                       </td>
                       <td style={styles.td}>

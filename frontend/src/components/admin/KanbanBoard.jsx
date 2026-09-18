@@ -1,7 +1,8 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Calendar as CalendarIcon, User } from 'lucide-react';
+import { Plus, Trash2, Calendar as CalendarIcon, User, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
 
 const KanbanBoard = () => {
   const [tasks, setTasks] = useState([]);
@@ -211,62 +212,86 @@ const KanbanBoard = () => {
         </div>
       ) : (
         <div className="admin-scroll" style={styles.board}>
-          {columns.map(colStatus => (
-            <div
-              key={colStatus}
-              className="admin-glass-panel"
-              style={styles.column}
-              onDragOver={onDragOver}
-              onDrop={(e) => onDrop(e, colStatus)}
-            >
-              <div style={styles.columnHeader}>
-                <h3 style={styles.columnTitle}>{colStatus}</h3>
-                <span style={styles.taskCount}>{tasks.filter(t => t.status === colStatus).length}</span>
-              </div>
+          {columns.map(colStatus => {
+            const colColor = colStatus === 'Done' ? 'var(--admin-success)' : colStatus === 'In Progress' ? '#f59e0b' : '#3b82f6';
+            const colTasks = tasks.filter(t => t.status === colStatus);
 
-              <div className="admin-scroll" style={styles.taskList}>
-                {tasks.filter(t => t.status === colStatus).map(task => (
-                  <div
-                    key={task._id}
-                    style={styles.taskCard}
-                    draggable
-                    onDragStart={(e) => onDragStart(e, task._id)}
-                    onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--admin-primary)'}
-                    onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--admin-border)'}
-                  >
-                    <div style={styles.taskHeader}>
-                      <h4 style={styles.taskTitle}>{task.title}</h4>
-                      <button
-                        onClick={() => handleDelete(task._id)}
-                        style={styles.deleteBtn}
-                        onMouseEnter={e => e.currentTarget.style.color = 'var(--admin-danger)'}
-                        onMouseLeave={e => e.currentTarget.style.color = 'var(--admin-text-muted)'}
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                    {task.description && <p style={styles.taskDesc}>{task.description}</p>}
-
-                    <div style={styles.taskFooter}>
-                      {getContactName(task.contactId) ? (
-                        <span style={styles.tag} title="Linked Event">
-                          <CalendarIcon size={12} /> {getContactName(task.contactId)}
-                        </span>
-                      ) : (
-                        <span style={{ ...styles.tag, visibility: 'hidden' }}>No Event</span>
-                      )}
-
-                      {task.assignee && (
-                        <span style={styles.tag} title="Assignee">
-                          <User size={12} /> {getStaffNameByUsername(task.assignee)}
-                        </span>
-                      )}
-                    </div>
+            return (
+              <div
+                key={colStatus}
+                className="admin-glass-panel"
+                style={{
+                  ...styles.column,
+                  borderTop: `3px solid ${colColor}`
+                }}
+                onDragOver={onDragOver}
+                onDrop={(e) => onDrop(e, colStatus)}
+              >
+                <div style={styles.columnHeader}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span
+                      style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        backgroundColor: colColor,
+                        boxShadow: `0 0 10px ${colColor}`
+                      }}
+                    />
+                    <h3 style={styles.columnTitle}>{colStatus}</h3>
                   </div>
-                ))}
+                  <span style={{ ...styles.taskCount, borderColor: `${colColor}40`, color: colColor, backgroundColor: `${colColor}15` }}>
+                    {colTasks.length}
+                  </span>
+                </div>
+
+                <div className="admin-scroll" style={styles.taskList}>
+                  {colTasks.map(task => (
+                    <TiltCard3D key={task._id} maxTilt={6} scale={1.02} glare={true} style={{ marginBottom: '12px' }}>
+                      <div
+                        className="stat-card-tilt"
+                        style={{
+                          ...styles.taskCard,
+                          marginBottom: 0,
+                          cursor: 'grab'
+                        }}
+                        draggable
+                        onDragStart={(e) => onDragStart(e, task._id)}
+                      >
+                        <div style={styles.taskHeader}>
+                          <h4 style={styles.taskTitle}>{task.title}</h4>
+                          <button
+                            onClick={() => handleDelete(task._id)}
+                            style={styles.deleteBtn}
+                            className="tactile-press"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                        {task.description && <p style={styles.taskDesc}>{task.description}</p>}
+
+                        <div style={styles.taskFooter}>
+                          {getContactName(task.contactId) ? (
+                            <span style={styles.tag} title="Linked Event">
+                              <CalendarIcon size={12} /> {getContactName(task.contactId)}
+                            </span>
+                          ) : (
+                            <span style={{ ...styles.tag, visibility: 'hidden' }}>No Event</span>
+                          )}
+
+                          {task.assignee && (
+                            <span style={{ ...styles.tag, borderColor: 'rgba(212, 175, 55, 0.3)', color: 'var(--admin-primary)' }} title="Assignee">
+                              <User size={12} /> {getStaffNameByUsername(task.assignee)}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </TiltCard3D>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

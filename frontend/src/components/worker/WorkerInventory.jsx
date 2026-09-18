@@ -1,7 +1,8 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
-import { Package, Plus, Clock, CheckCircle, XCircle, Search } from 'lucide-react';
+import { Package, Plus, Clock, CheckCircle, XCircle, Search, ShieldCheck, AlertCircle, Sparkles, Box } from 'lucide-react';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
 
 const WorkerInventory = () => {
   const [requests, setRequests] = useState([]);
@@ -18,7 +19,7 @@ const WorkerInventory = () => {
   });
 
   const staffId = localStorage.getItem('bps_staff_id');
-  const staffName = localStorage.getItem('bps_staff_username');
+  const staffName = localStorage.getItem('bps_staff_username') || 'Crew Specialist';
 
   useEffect(() => {
     if (staffId) {
@@ -35,7 +36,7 @@ const WorkerInventory = () => {
         setRequests(data.data);
       }
     } catch (err) {
-      toast.error('Failed to load requests');
+      toast.error('Failed to load gear requests');
     } finally {
       setLoading(false);
     }
@@ -56,7 +57,7 @@ const WorkerInventory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.itemId || formData.quantityRequested < 1) {
-      toast.error('Please select an item and valid quantity');
+      toast.error('Select equipment asset and valid quantity');
       return;
     }
 
@@ -77,82 +78,154 @@ const WorkerInventory = () => {
       });
       const data = await res.json();
       if (data.success) {
-        toast.success('Equipment request submitted');
+        toast.success('Equipment requisition submitted');
         setRequests([data.data, ...requests]);
         setShowForm(false);
         setFormData({ itemId: '', quantityRequested: 1, reason: '' });
       } else {
-        toast.error('Failed to submit request');
+        toast.error(data.error || 'Failed to submit requisition');
       }
     } catch (err) {
-      toast.error('Server error');
+      toast.error('Server error during submission');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusBadge = (status) => {
     switch (status) {
-      case 'Approved': return <CheckCircle size={16} color="var(--admin-success)" />;
-      case 'Rejected': return <XCircle size={16} color="var(--admin-danger)" />;
-      case 'Returned': return <CheckCircle size={16} color="var(--admin-primary)" />;
-      default: return <Clock size={16} color="var(--admin-warning)" />;
+      case 'Approved':
+        return (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: '800', color: 'var(--admin-success)', padding: '3px 8px', borderRadius: '6px', backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+            <CheckCircle size={12} /> APPROVED
+          </span>
+        );
+      case 'Rejected':
+        return (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: '800', color: 'var(--admin-danger)', padding: '3px 8px', borderRadius: '6px', backgroundColor: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <XCircle size={12} /> REJECTED
+          </span>
+        );
+      case 'Returned':
+        return (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: '800', color: 'var(--admin-primary)', padding: '3px 8px', borderRadius: '6px', backgroundColor: 'rgba(212, 175, 55, 0.12)', border: '1px solid rgba(212, 175, 55, 0.3)' }}>
+            <CheckCircle size={12} /> RETURNED
+          </span>
+        );
+      default:
+        return (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: '800', color: 'var(--admin-warning)', padding: '3px 8px', borderRadius: '6px', backgroundColor: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+            <Clock size={12} /> PENDING ADMIN
+          </span>
+        );
     }
   };
 
   const filteredInventory = inventory.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.category.toLowerCase().includes(searchQuery.toLowerCase())
+    (item.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.category || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Metrics
+  const totalRequisitions = requests.length;
+  const approvedCount = requests.filter(r => r.status === 'Approved').length;
+  const pendingCount = requests.filter(r => r.status === 'Pending').length;
 
   return (
     <div className="admin-animate-fade" style={styles.container}>
+      {/* Header */}
       <div style={styles.header}>
         <div>
-          <h2 style={styles.title}>Equipment Requests</h2>
-          <p style={styles.subtitle}>Request tools and gear for your tasks</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <h2 style={styles.title}>Field Gear & Inventory Requisitions</h2>
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '11px', fontWeight: '700',
+              padding: '4px 10px', borderRadius: '12px', backgroundColor: 'rgba(212, 175, 55, 0.1)',
+              color: 'var(--admin-primary)', border: '1px solid rgba(212, 175, 55, 0.25)'
+            }}>
+              <Sparkles size={12} /> Armory Link
+            </span>
+          </div>
+          <p style={styles.subtitle}>Check out tools, audio gear, decorative assets, and lighting rigs for on-site operations.</p>
         </div>
         {!showForm && (
-          <button onClick={() => setShowForm(true)} style={styles.addButton}>
-            <Plus size={18} /> New Request
+          <button onClick={() => setShowForm(true)} style={styles.addButton} className="tactile-press">
+            <Plus size={18} /> Requisition Gear
           </button>
         )}
       </div>
 
-      {showForm && (
-        <div className="admin-glass-panel" style={styles.formCard}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>Request Equipment</h3>
-          <form onSubmit={handleSubmit} style={styles.form}>
+      {/* 3D Metrics Strip */}
+      <div style={styles.metricGrid}>
+        <TiltCard3D style={styles.metricCard}>
+          <div style={styles.metricLabel}>TOTAL REQUISITIONS</div>
+          <div style={styles.metricValue}>{totalRequisitions}</div>
+          <div style={{ fontSize: '11px', color: 'var(--admin-text-muted)', marginTop: '2px' }}>Your requested items</div>
+        </TiltCard3D>
 
+        <TiltCard3D style={styles.metricCard}>
+          <div style={styles.metricLabel}>APPROVED ASSETS</div>
+          <div style={{ ...styles.metricValue, color: 'var(--admin-success)' }}>{approvedCount}</div>
+          <div style={{ fontSize: '11px', color: 'var(--admin-text-muted)', marginTop: '2px' }}>Authorized for field use</div>
+        </TiltCard3D>
+
+        <TiltCard3D style={styles.metricCard}>
+          <div style={styles.metricLabel}>IN REVIEW</div>
+          <div style={{ ...styles.metricValue, color: pendingCount > 0 ? 'var(--admin-warning)' : 'var(--admin-text-muted)' }}>{pendingCount}</div>
+          <div style={{ fontSize: '11px', color: 'var(--admin-text-muted)', marginTop: '2px' }}>Awaiting admin dispatch</div>
+        </TiltCard3D>
+
+        <TiltCard3D style={styles.metricCard}>
+          <div style={styles.metricLabel}>AVAILABLE CATALOG</div>
+          <div style={{ ...styles.metricValue, color: 'var(--admin-primary)' }}>{inventory.length}</div>
+          <div style={{ fontSize: '11px', color: 'var(--admin-text-muted)', marginTop: '2px' }}>In company storage</div>
+        </TiltCard3D>
+      </div>
+
+      {/* Form Drawer */}
+      {showForm && (
+        <div className="admin-glass-panel hologram-border admin-animate-fade" style={styles.formCard}>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '17px', fontWeight: '700', color: 'var(--admin-text-main)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Box size={18} color="var(--admin-primary)" />
+            Requisition Equipment for Task
+          </h3>
+          <form onSubmit={handleSubmit} style={styles.form}>
             <div style={styles.formGroup}>
-              <label style={styles.label}>Select Item</label>
+              <label style={styles.label}>Select Gear Asset from Armory</label>
               <div style={{ position: 'relative', marginBottom: '8px' }}>
-                <Search size={14} style={{ position: 'absolute', left: '12px', top: '12px', color: 'var(--admin-text-muted)' }} />
+                <Search size={14} style={{ position: 'absolute', left: '12px', top: '13px', color: 'var(--admin-text-muted)' }} />
                 <input
                   type="text"
-                  placeholder="Search equipment..."
+                  placeholder="Filter available gear..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  style={{ ...styles.input, paddingLeft: '32px', marginBottom: '8px', width: '100%', boxSizing: 'border-box' }}
+                  style={{ ...styles.input, paddingLeft: '34px', width: '100%', boxSizing: 'border-box' }}
                 />
               </div>
 
-              <div className="admin-scroll" style={{ maxHeight: '150px', overflowY: 'auto', border: '1px solid var(--admin-border)', borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.2)' }}>
+              <div className="admin-scroll" style={{ maxHeight: '160px', overflowY: 'auto', border: '1px solid var(--admin-border)', borderRadius: '10px', backgroundColor: 'rgba(0,0,0,0.3)' }}>
                 {filteredInventory.map(item => (
                   <div
                     key={item._id}
                     onClick={() => setFormData({ ...formData, itemId: item._id })}
                     style={{
-                      padding: '10px 12px',
+                      padding: '11px 14px',
                       cursor: 'pointer',
-                      backgroundColor: formData.itemId === item._id ? 'rgba(212, 175, 55, 0.2)' : 'transparent',
-                      borderBottom: '1px solid rgba(255,255,255,0.05)',
-                      display: 'flex', justifyContent: 'space-between'
+                      backgroundColor: formData.itemId === item._id ? 'rgba(212, 175, 55, 0.18)' : 'transparent',
+                      borderBottom: '1px solid rgba(255,255,255,0.04)',
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center'
                     }}
                   >
-                    <span>{item.name} <small style={{ color: 'var(--admin-text-muted)' }}>({item.category})</small></span>
-                    <span style={{ fontSize: '12px', color: item.quantity > 0 ? 'var(--admin-success)' : 'var(--admin-danger)' }}>
-                      {item.quantity} available
+                    <div>
+                      <span style={{ fontWeight: '600', color: 'var(--admin-text-main)', fontSize: '13px' }}>{item.name}</span>
+                      <span style={{ color: 'var(--admin-text-muted)', fontSize: '11px', marginLeft: '8px' }}>({item.category})</span>
+                    </div>
+                    <span style={{
+                      fontSize: '11px', fontWeight: '700',
+                      color: item.quantity > 0 ? 'var(--admin-success)' : 'var(--admin-danger)',
+                      padding: '2px 8px', borderRadius: '6px', backgroundColor: item.quantity > 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'
+                    }}>
+                      {item.quantity} in stock
                     </span>
                   </div>
                 ))}
@@ -161,7 +234,7 @@ const WorkerInventory = () => {
 
             <div style={styles.row}>
               <div style={styles.formGroup}>
-                <label style={styles.label}>Quantity Needed</label>
+                <label style={styles.label}>Quantity Required</label>
                 <input
                   type="number"
                   min="1"
@@ -174,20 +247,29 @@ const WorkerInventory = () => {
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>Reason / Event Details</label>
+              <label style={styles.label}>Assignment / Venue Purpose</label>
               <textarea
                 value={formData.reason}
                 onChange={e => setFormData({ ...formData, reason: e.target.value })}
-                style={{ ...styles.input, minHeight: '60px', resize: 'vertical' }}
-                placeholder="Why do you need this equipment?"
+                style={{ ...styles.input, minHeight: '70px', resize: 'vertical' }}
+                placeholder="e.g. Required for Stage sound setup at Grand Palace hall tomorrow..."
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-              <button type="submit" disabled={isSubmitting || !formData.itemId} style={{ ...styles.submitButton, opacity: formData.itemId ? 1 : 0.5 }}>
-                {isSubmitting ? 'Submitting...' : 'Submit Request'}
+            <div style={{ display: 'flex', gap: '12px', marginTop: '6px' }}>
+              <button
+                type="submit"
+                disabled={isSubmitting || !formData.itemId}
+                className="tactile-press"
+                style={{
+                  ...styles.submitButton,
+                  opacity: formData.itemId ? 1 : 0.5,
+                  cursor: formData.itemId ? 'pointer' : 'not-allowed'
+                }}
+              >
+                {isSubmitting ? 'Transmitting Request...' : 'Submit Requisition'}
               </button>
-              <button type="button" onClick={() => setShowForm(false)} style={styles.cancelButton}>
+              <button type="button" onClick={() => setShowForm(false)} style={styles.cancelButton} className="tactile-press">
                 Cancel
               </button>
             </div>
@@ -195,44 +277,59 @@ const WorkerInventory = () => {
         </div>
       )}
 
+      {/* Requisition Cards Grid */}
       <div style={styles.content}>
         {loading ? (
-          <div style={{ padding: '24px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading...</div>
+          <div style={{ padding: '36px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading your gear requisitions...</div>
         ) : requests.length === 0 ? (
           <div className="admin-glass-panel" style={styles.emptyState}>
-            <Package size={48} style={{ opacity: 0.2, marginBottom: '16px' }} />
-            <p>You haven't made any equipment requests.</p>
+            <Package size={48} style={{ opacity: 0.25, marginBottom: '16px', color: 'var(--admin-primary)' }} />
+            <p style={{ margin: 0, fontSize: '15px', fontWeight: '600' }}>No active equipment requisitions.</p>
+            <span style={{ fontSize: '12px', color: 'var(--admin-text-muted)' }}>Need microphones, speakers, or lighting? Click "Requisition Gear" above.</span>
           </div>
         ) : (
           <div style={styles.grid}>
             {requests.map(req => (
-              <div key={req._id} className="admin-glass-panel" style={styles.card}>
+              <TiltCard3D key={req._id} style={styles.card}>
                 <div style={styles.cardHeader}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {getStatusIcon(req.status)}
-                    <span style={{ fontWeight: '600' }}>{req.status}</span>
-                  </div>
-                  <div style={{ fontSize: '12px', color: 'var(--admin-text-muted)' }}>
+                  <div>{getStatusBadge(req.status)}</div>
+                  <div style={{ fontSize: '11px', color: 'var(--admin-text-muted)' }}>
                     {new Date(req.createdAt).toLocaleDateString()}
                   </div>
                 </div>
 
-                <div style={{ margin: '12px 0' }}>
-                  <div style={{ fontSize: '15px', fontWeight: '600', marginBottom: '4px' }}>
-                    {req.itemName} (x{req.quantityRequested})
+                <div style={{ margin: '14px 0', flex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: 'var(--admin-text-main)' }}>
+                      {req.itemName}
+                    </div>
+                    <span style={{
+                      fontSize: '11px', fontWeight: '800', padding: '2px 8px', borderRadius: '6px',
+                      backgroundColor: 'rgba(212,175,55,0.12)', color: 'var(--admin-primary)', border: '1px solid rgba(212,175,55,0.25)'
+                    }}>
+                      x{req.quantityRequested} UNITS
+                    </span>
                   </div>
-                  <p style={{ fontSize: '13px', color: 'var(--admin-text-muted)', margin: 0 }}>
-                    {req.reason || 'No reason provided'}
+                  <p style={{ fontSize: '13px', color: 'var(--admin-text-muted)', margin: 0, lineHeight: '1.5' }}>
+                    {req.reason || 'No assignment details specified'}
                   </p>
                 </div>
 
                 {req.adminReply && (
-                  <div style={{ marginTop: '12px', padding: '12px', backgroundColor: 'rgba(212, 175, 55, 0.05)', borderRadius: '8px', border: '1px solid rgba(212, 175, 55, 0.2)' }}>
-                    <div style={{ fontSize: '12px', color: 'var(--admin-primary)', marginBottom: '4px', fontWeight: '600' }}>Admin Reply:</div>
-                    <div style={{ fontSize: '13px' }}>{req.adminReply}</div>
+                  <div style={{
+                    marginTop: '12px', padding: '12px', backgroundColor: 'rgba(212, 175, 55, 0.06)',
+                    borderRadius: '10px', borderLeft: '3px solid var(--admin-primary)', borderTop: '1px solid rgba(212,175,55,0.15)',
+                    borderRight: '1px solid rgba(212,175,55,0.15)', borderBottom: '1px solid rgba(212,175,55,0.15)'
+                  }}>
+                    <div style={{ fontSize: '11px', color: 'var(--admin-primary)', marginBottom: '3px', fontWeight: '800', letterSpacing: '0.4px' }}>
+                      ADMIN INSTRUCTION:
+                    </div>
+                    <div style={{ fontSize: '12px', color: 'var(--admin-text-main)', lineHeight: '1.4' }}>
+                      {req.adminReply}
+                    </div>
                   </div>
                 )}
-              </div>
+              </TiltCard3D>
             ))}
           </div>
         )}
@@ -243,50 +340,76 @@ const WorkerInventory = () => {
 
 const styles = {
   container: {
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    gap: '24px',
+    padding: '16px 0'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '24px',
+    marginBottom: '8px',
     flexWrap: 'wrap',
     gap: '16px'
   },
   title: {
-    fontSize: '24px',
-    fontWeight: '700',
-    margin: '0 0 8px 0',
-    color: 'var(--admin-text-main)'
+    fontSize: '26px',
+    fontWeight: '800',
+    margin: 0,
+    color: 'var(--admin-text-main)',
+    letterSpacing: '-0.5px'
   },
   subtitle: {
     fontSize: '14px',
     color: 'var(--admin-text-muted)',
-    margin: 0
+    margin: '4px 0 0 0'
   },
   addButton: {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
-    padding: '10px 16px',
+    padding: '10px 18px',
     backgroundColor: 'var(--admin-primary)',
     color: '#000',
     border: 'none',
-    borderRadius: '8px',
-    fontWeight: '600',
-    cursor: 'pointer'
+    borderRadius: '10px',
+    fontWeight: '700',
+    cursor: 'pointer',
+    fontSize: '13px',
+    boxShadow: '0 4px 16px rgba(212,175,55,0.25)'
+  },
+  metricGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '16px'
+  },
+  metricCard: {
+    padding: '18px 20px',
+    backgroundColor: 'var(--admin-bg-panel)',
+    borderRadius: '14px',
+    border: '1px solid var(--admin-border)'
+  },
+  metricLabel: {
+    fontSize: '11px',
+    fontWeight: '700',
+    color: 'var(--admin-text-muted)',
+    letterSpacing: '0.8px'
+  },
+  metricValue: {
+    fontSize: '28px',
+    fontWeight: '800',
+    color: 'var(--admin-text-main)',
+    marginTop: '4px'
   },
   formCard: {
     padding: '24px',
-    marginBottom: '24px',
     borderRadius: '16px'
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px'
+    gap: '14px'
   },
   row: {
     display: 'flex',
@@ -296,38 +419,42 @@ const styles = {
   formGroup: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: '6px',
     flex: 1
   },
   label: {
-    fontSize: '13px',
+    fontSize: '12px',
+    fontWeight: '600',
     color: 'var(--admin-text-muted)'
   },
   input: {
-    padding: '12px',
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    padding: '11px 14px',
+    backgroundColor: 'rgba(0,0,0,0.3)',
     border: '1px solid var(--admin-border)',
     borderRadius: '8px',
     color: 'var(--admin-text-main)',
-    outline: 'none'
+    outline: 'none',
+    fontSize: '13px'
   },
   submitButton: {
-    padding: '10px 20px',
+    padding: '11px 22px',
     backgroundColor: 'var(--admin-primary)',
     color: '#000',
     border: 'none',
     borderRadius: '8px',
-    fontWeight: '600',
-    cursor: 'pointer'
+    fontWeight: '700',
+    cursor: 'pointer',
+    fontSize: '13px'
   },
   cancelButton: {
-    padding: '10px 20px',
+    padding: '11px 22px',
     backgroundColor: 'transparent',
     color: 'var(--admin-text-main)',
     border: '1px solid var(--admin-border)',
     borderRadius: '8px',
     fontWeight: '600',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    fontSize: '13px'
   },
   content: {
     flex: 1
@@ -345,7 +472,11 @@ const styles = {
   },
   card: {
     padding: '20px',
-    borderRadius: '12px'
+    borderRadius: '16px',
+    backgroundColor: 'var(--admin-bg-panel)',
+    border: '1px solid var(--admin-border)',
+    display: 'flex',
+    flexDirection: 'column'
   },
   cardHeader: {
     display: 'flex',
@@ -357,3 +488,4 @@ const styles = {
 };
 
 export default WorkerInventory;
+

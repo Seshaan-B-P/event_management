@@ -1,8 +1,9 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState } from 'react';
-import { Lock, User, ChevronRight, Loader2, Wrench, Calendar, MessageSquare, ClipboardList } from 'lucide-react';
+import { Lock, User, ChevronRight, Loader2, Wrench, Calendar, MessageSquare, ClipboardList, Shield, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import TiltCard3D from '../TiltCard3D';
 
 const WorkerAuth = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -63,7 +64,7 @@ const WorkerAuth = ({ onLogin }) => {
       } else {
         toast.error(data.message || 'Error sending request');
       }
-    } catch (err) {
+    } catch {
       toast.error('Server error');
     } finally {
       setLoading(false);
@@ -75,150 +76,180 @@ const WorkerAuth = ({ onLogin }) => {
       <div style={styles.leftPanel}>
         <div style={styles.overlay}></div>
         <div style={styles.leftContent} className="admin-animate-fade">
-          <div style={styles.brandIcon}>
+          <div style={styles.brandIcon} className="float-badge">
             <img
               src="/logo.png"
               alt="BPS Events Logo"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px', boxShadow: '0 0 30px rgba(16, 185, 129, 0.3)' }}
             />
           </div>
-          <h1 style={styles.heroTitle}>Staff Portal</h1>
+          <h1 style={styles.heroTitle} className="gold-shimmer-text">Field Operations Portal</h1>
           <p style={styles.heroSubtitle}>
-            Manage your tasks, collaborate with the team, and keep events running smoothly.
+            Tactical Duty Management. Coordinate setup, audio/visual gear, stage decoration, and team shifts.
           </p>
 
           <div style={styles.features}>
-            <div style={styles.featureItem}>
-              <div style={styles.featureIcon}><ClipboardList size={20} /></div>
-              <div>
-                <h4 style={styles.featureTitle}>Task Management</h4>
-                <p style={styles.featureDesc}>View and update your assignments</p>
+            <TiltCard3D maxTilt={8} scale={1.02} glare={false}>
+              <div style={styles.featureItem}>
+                <div style={{ ...styles.featureIcon, backgroundColor: 'rgba(16, 185, 129, 0.15)', color: 'var(--admin-success)' }}><ClipboardList size={20} /></div>
+                <div>
+                  <h4 style={styles.featureTitle}>3D Shift Roster</h4>
+                  <p style={styles.featureDesc}>Real-time task assignments</p>
+                </div>
               </div>
-            </div>
-            <div style={styles.featureItem}>
-              <div style={styles.featureIcon}><MessageSquare size={20} /></div>
-              <div>
-                <h4 style={styles.featureTitle}>Team Chat</h4>
-                <p style={styles.featureDesc}>Instant communication with staff</p>
+            </TiltCard3D>
+
+            <TiltCard3D maxTilt={8} scale={1.02} glare={false}>
+              <div style={styles.featureItem}>
+                <div style={{ ...styles.featureIcon, backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6' }}><MessageSquare size={20} /></div>
+                <div>
+                  <h4 style={styles.featureTitle}>Instant Field Comms</h4>
+                  <p style={styles.featureDesc}>Direct walkie-talkie team chat</p>
+                </div>
               </div>
-            </div>
-            <div style={styles.featureItem}>
-              <div style={styles.featureIcon}><Calendar size={20} /></div>
-              <div>
-                <h4 style={styles.featureTitle}>Event Schedule</h4>
-                <p style={styles.featureDesc}>Stay on top of timelines</p>
+            </TiltCard3D>
+
+            <TiltCard3D maxTilt={8} scale={1.02} glare={false}>
+              <div style={styles.featureItem}>
+                <div style={styles.featureIcon}><Calendar size={20} /></div>
+                <div>
+                  <h4 style={styles.featureTitle}>Event Timeline Waypoints</h4>
+                  <p style={styles.featureDesc}>Load-in & execution schedules</p>
+                </div>
               </div>
-            </div>
+            </TiltCard3D>
           </div>
         </div>
       </div>
 
       <div style={styles.rightPanel} className="admin-mesh-background">
-        <div className="admin-glass-panel admin-animate-fade" style={styles.card}>
-          <div style={styles.header}>
-            <div style={styles.iconContainer}>
-              <Wrench size={32} style={{ color: 'var(--admin-primary)' }} />
+        <TiltCard3D maxTilt={7} scale={1.01} glare={true} style={{ width: '100%', maxWidth: '440px' }}>
+          <div className="admin-glass-panel admin-animate-fade hologram-border" style={{ ...styles.card, maxWidth: '100%', position: 'relative' }}>
+            {/* Laser Scanline Beam during login */}
+            {loading && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '3px',
+                  background: 'linear-gradient(90deg, transparent, #10b981, #ffffff, #10b981, transparent)',
+                  boxShadow: '0 0 15px #10b981',
+                  animation: 'laserSweep 1s infinite linear',
+                  zIndex: 20
+                }}
+              />
+            )}
+
+            <div style={styles.header}>
+              <div style={{ ...styles.iconContainer, backgroundColor: 'rgba(16, 185, 129, 0.15)', color: 'var(--admin-success)', boxShadow: '0 0 25px rgba(16, 185, 129, 0.3)' }} className="float-badge">
+                <Wrench size={32} />
+              </div>
+              <h2 style={styles.title}>{showForgot ? 'Reset Password' : 'Staff Access'}</h2>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                <span className="neon-pulse-dot" />
+                <p style={styles.subtitle}>{showForgot ? 'Request Admin Assistance' : 'Field Personnel Gate'}</p>
+              </div>
             </div>
-            <h2 style={styles.title}>{showForgot ? 'Reset Password' : 'Worker Login'}</h2>
-            <p style={styles.subtitle}>{showForgot ? 'Request Admin Assistance' : 'Staff Access Only'}</p>
-          </div>
 
-          {showForgot ? (
-            <form onSubmit={handleForgotSubmit} style={styles.form}>
-              <p style={{ color: 'var(--admin-text-muted)', fontSize: '14px', marginBottom: '8px', lineHeight: '1.5' }}>
-                Enter your login ID. A notification will be sent to the Administrator to reset your password.
-              </p>
-              <div style={styles.inputGroup}>
-                <User size={18} style={styles.inputIcon} />
-                <input
-                  type="text"
-                  placeholder="Login ID (e.g. worker@bpsevent.com)"
-                  value={forgotUsername}
-                  onChange={(e) => setForgotUsername(e.target.value)}
-                  className="admin-input"
-                  style={{ paddingLeft: '44px' }}
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="admin-btn admin-btn-primary"
-                style={{ marginTop: '12px', height: '48px', fontSize: '15px' }}
-                disabled={loading}
-              >
-                {loading ? 'Sending Request...' : 'Send Request to Admin'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowForgot(false)}
-                style={{ ...styles.forgotLink, textAlign: 'center', marginTop: '12px' }}
-              >
-                Back to Login
-              </button>
-            </form>
-          ) : (
-            <form onSubmit={handleLogin} style={styles.form}>
-              <div style={styles.inputGroup}>
-                <User size={18} style={styles.inputIcon} />
-                <input
-                  type="text"
-                  placeholder="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="admin-input"
-                  style={{ paddingLeft: '44px' }}
-                  required
-                />
-              </div>
-
-              <div style={styles.inputGroup}>
-                <Lock size={18} style={styles.inputIcon} />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="admin-input"
-                  style={{ paddingLeft: '44px' }}
-                  required
-                />
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '-8px' }}>
+            {showForgot ? (
+              <form onSubmit={handleForgotSubmit} style={styles.form}>
+                <p style={{ color: 'var(--admin-text-muted)', fontSize: '14px', marginBottom: '8px', lineHeight: '1.5' }}>
+                  Enter your login ID. A notification will be sent to the Administrator to reset your password.
+                </p>
+                <div style={styles.inputGroup}>
+                  <User size={18} style={styles.inputIcon} />
+                  <input
+                    type="text"
+                    placeholder="Login ID (e.g. worker@bpsevent.com)"
+                    value={forgotUsername}
+                    onChange={(e) => setForgotUsername(e.target.value)}
+                    className="admin-input"
+                    style={{ paddingLeft: '44px' }}
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="admin-btn admin-btn-primary tactile-press"
+                  style={{ marginTop: '12px', height: '48px', fontSize: '15px' }}
+                  disabled={loading}
+                >
+                  {loading ? 'Sending Request...' : 'Send Request to Admin'}
+                </button>
                 <button
                   type="button"
-                  onClick={() => setShowForgot(true)}
-                  style={styles.forgotLink}
+                  onClick={() => setShowForgot(false)}
+                  style={{ ...styles.forgotLink, textAlign: 'center', marginTop: '12px' }}
                 >
-                  Forgot Password?
+                  Back to Login
                 </button>
-              </div>
+              </form>
+            ) : (
+              <form onSubmit={handleLogin} style={styles.form}>
+                <div style={styles.inputGroup}>
+                  <User size={18} style={styles.inputIcon} />
+                  <input
+                    type="text"
+                    placeholder="Staff Username / ID"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="admin-input"
+                    style={{ paddingLeft: '44px' }}
+                    required
+                  />
+                </div>
 
-              <button
-                type="submit"
-                className="admin-btn admin-btn-primary"
-                style={{ marginTop: '12px', height: '48px', fontSize: '15px' }}
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 size={18} className="admin-spin" />
-                    Authenticating...
-                  </>
-                ) : (
-                  <>
-                    Secure Login
-                    <ChevronRight size={18} />
-                  </>
-                )}
-              </button>
-            </form>
-          )}
+                <div style={styles.inputGroup}>
+                  <Lock size={18} style={styles.inputIcon} />
+                  <input
+                    type="password"
+                    placeholder="Duty Access Code"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="admin-input"
+                    style={{ paddingLeft: '44px' }}
+                    required
+                  />
+                </div>
 
-          <div style={styles.footer}>
-            <p style={styles.footerText}>© {new Date().getFullYear()} Elite Events. All rights reserved.</p>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <button
+                    type="button"
+                    onClick={() => setShowForgot(true)}
+                    style={styles.forgotLink}
+                  >
+                    Forgot passcode?
+                  </button>
+                </div>
+
+                <button
+                  type="submit"
+                  className="admin-btn admin-btn-primary tactile-press"
+                  style={{ marginTop: '12px', height: '48px', fontSize: '15px', fontWeight: '700' }}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="admin-spin" />
+                      Clocking In...
+                    </>
+                  ) : (
+                    <>
+                      Verify Duty Badge
+                      <ChevronRight size={18} />
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+
+            <div style={styles.footer}>
+              <p style={styles.footerText}>© {new Date().getFullYear()} Elite Events Staff System</p>
+            </div>
           </div>
-        </div>
+        </TiltCard3D>
       </div>
     </div>
   );
