@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../../config';
-import React, { useState, useEffect } from 'react';
-import { ClipboardList, Loader2, CheckCircle, Clock, AlertCircle, Sparkles, Check } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Loader2, CheckCircle, Clock, AlertCircle, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import TiltCard3D from '../TiltCard3D';
 import Worker3DProgressRing from './Worker3DProgressRing';
@@ -11,13 +11,7 @@ const WorkerTasks = () => {
 
   const username = localStorage.getItem('bps_staff_username');
 
-  useEffect(() => {
-    fetchTasks();
-    const interval = setInterval(fetchTasks, 5000); // Poll for new assignments/updates
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/tasks`);
       const data = await res.json();
@@ -25,18 +19,24 @@ const WorkerTasks = () => {
         // Filter tasks assigned to this worker (exact username match or partial legacy match)
         const myTasks = data.data.filter(t =>
           t.assignee && (
-            t.assignee.toLowerCase() === username.toLowerCase() ||
-            username.toLowerCase().includes(t.assignee.toLowerCase())
+            t.assignee.toLowerCase() === (username || '').toLowerCase() ||
+            (username || '').toLowerCase().includes(t.assignee.toLowerCase())
           )
         );
         setTasks(myTasks);
       }
-    } catch (err) {
+    } catch {
       toast.error('Failed to load tasks');
     } finally {
       setLoading(false);
     }
-  };
+  }, [username]);
+
+  useEffect(() => {
+    fetchTasks();
+    const interval = setInterval(fetchTasks, 5000); // Poll for new assignments/updates
+    return () => clearInterval(interval);
+  }, [fetchTasks]);
 
   const handleStatusChange = async (taskId, newStatus) => {
     try {

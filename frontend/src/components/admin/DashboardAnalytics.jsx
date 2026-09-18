@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TrendingUp, Users, Calendar, Star, Phone, Activity, Download, ArrowUpRight, Sparkles } from 'lucide-react';
+import { TrendingUp, Users, Calendar, Star, Activity, Download } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import TiltCard3D from '../TiltCard3D';
